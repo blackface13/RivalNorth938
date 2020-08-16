@@ -26,7 +26,6 @@ public class InputController : MonoBehaviour
     private bool IsTouchMove = false;
     private float LimitRangeCircle = 1.5f;//Độ kéo lớn tối đa của vòng di chuyển
     private Vector2 OutCirclePosXOriginal;//Tọa độ ban đầu của control move 
-    private bool IsViewLeft = false;
 
     private HeroController Hero;
     #endregion
@@ -35,6 +34,7 @@ public class InputController : MonoBehaviour
     void Awake()
     {
         OutCirclePosXOriginal = outerCircle.position;
+        Hero = Player.GetComponent<HeroController>();
     }
     #endregion
 
@@ -74,6 +74,17 @@ public class InputController : MonoBehaviour
                 circle.transform.position = new Vector3(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y, CanvasZ);
                 IsTouchMove = true;
 
+                //Set hướng nhìn trái phải
+                if (offset.x < 0)
+                {
+                    Hero.IsViewLeft = true;
+                    Hero.SetView();
+                }
+                else
+                {
+                    Hero.IsViewLeft = false;
+                    Hero.SetView();
+                }
             }
             else if (t.phase == TouchPhase.Ended && leftTouch == t.fingerId)
             {
@@ -92,7 +103,8 @@ public class InputController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            IsViewLeft = true;
+            Hero.IsViewLeft = true;
+            Hero.SetView();
             Vector2 offset = Vector2.zero - new Vector2(LimitRangeCircle, 0);
             direction = Vector2.ClampMagnitude(offset, LimitRangeCircle);
             circle.transform.position = new Vector3(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y, CanvasZ);
@@ -100,7 +112,8 @@ public class InputController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            IsViewLeft = false ;
+            Hero.IsViewLeft = false;
+            Hero.SetView();
             Vector2 offset = Vector2.zero + new Vector2(LimitRangeCircle, 0);
             direction = Vector2.ClampMagnitude(offset, LimitRangeCircle);
             circle.transform.position = new Vector3(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y, CanvasZ);
@@ -110,17 +123,13 @@ public class InputController : MonoBehaviour
         //Nhảy
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Player.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 100f), ForceMode2D.Impulse);
+            Hero.ActionJump();
         }
 
         //Lướt
         if (Input.GetKeyDown(KeyCode.J))
         {
-            if (IsViewLeft)
-                Player.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-50f, 0), ForceMode2D.Impulse);
-            else
-            Player.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(50f, 0), ForceMode2D.Impulse);
-
+            StartCoroutine(Hero.ActionSurf());
         }
 
         //Nhả phím

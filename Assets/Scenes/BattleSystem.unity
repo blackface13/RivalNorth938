@@ -131,9 +131,10 @@ GameObject:
   m_Component:
   - component: {fileID: 133462199}
   - component: {fileID: 133462198}
+  - component: {fileID: 133462202}
   - component: {fileID: 133462201}
   - component: {fileID: 133462200}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +220,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 40
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -251,6 +252,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.51, y: 0.47}
   m_EdgeRadius: 0
+--- !u!114 &133462202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133462197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5215f47c1e48ee543b5cca29ee3e0f32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SurfDelayTime: 1
+  JumpForce: 50
+  HeroWeight: 40
+  IsMoving: 0
+  IsJumping: 0
+  IsSurfing: 0
+  IsViewLeft: 0
 --- !u!1 &304980901
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +579,6 @@ MonoBehaviour:
   CanvasZ: 20
   circle: {fileID: 1122874823}
   outerCircle: {fileID: 1143937736}
-  test: {fileID: 304980903}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -796,7 +815,6 @@ MonoBehaviour:
   CanvasZ: 0
   circle: {fileID: 1122874823}
   outerCircle: {fileID: 1143937736}
-  test: {fileID: 0}
 --- !u!1 &1122874822
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,8 +976,8 @@ GameObject:
   - component: {fileID: 1490388806}
   - component: {fileID: 1490388805}
   - component: {fileID: 1490388808}
-  m_Layer: 0
-  m_Name: Cau
+  m_Layer: 8
+  m_Name: Lane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
