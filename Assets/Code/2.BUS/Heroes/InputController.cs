@@ -5,6 +5,7 @@ using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 using UnityEditor;
 using Sirenix.OdinInspector;
+using UnityEngine.EventSystems;
 
 public class InputController : MonoBehaviour
 {
@@ -35,6 +36,10 @@ public class InputController : MonoBehaviour
     {
         OutCirclePosXOriginal = outerCircle.position;
         Hero = Player.GetComponent<HeroController>();
+    }
+    private void Start()
+    {
+        
     }
     #endregion
 
@@ -123,13 +128,13 @@ public class InputController : MonoBehaviour
         //Nhảy
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Hero.ActionJump();
+            Hero.ActionJump(null);
         }
 
         //Lướt
         if (Input.GetKeyDown(KeyCode.J))
         {
-            StartCoroutine(Hero.ActionSurf());
+            Hero.ActionSurf(null);
         }
 
         //Nhả phím

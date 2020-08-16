@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class HeroController : MonoBehaviour
 {
@@ -53,7 +54,7 @@ public class HeroController : MonoBehaviour
     /// <summary>
     /// Lướt
     /// </summary>
-    public IEnumerator ActionSurf()
+    public void ActionSurf(BaseEventData eventData)
     {
         if (!IsSurfing)
         {
@@ -64,17 +65,22 @@ public class HeroController : MonoBehaviour
 
             if (IsJumping) HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
             IsSurfing = true;
-            yield return new WaitForSeconds(.2f);
-            if (IsJumping) HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
-            yield return new WaitForSeconds(SurfDelayTime - .2f);
-            IsSurfing = false;
+            StartCoroutine(WaitSurf());
         }
+    }
+
+    private IEnumerator WaitSurf()
+    {
+        yield return new WaitForSeconds(.2f);
+        if (IsJumping) HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
+        yield return new WaitForSeconds(SurfDelayTime - .2f);
+        IsSurfing = false;
     }
 
     /// <summary>
     /// Nhảy
     /// </summary>
-    public void ActionJump()
+    public void ActionJump(BaseEventData  eventData)
     {
         if (!IsJumping)
         {
