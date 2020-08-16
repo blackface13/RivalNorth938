@@ -14,6 +14,13 @@
 *.userprefs
 
 # Build results
+Library/PackageCache/
+Temp/
+Assets/Anima2D/Examples/
+Library/PlayerDataCache/
+Library/ShaderCache/
+Library/StateCache/
+Library/AtlasCache/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
