@@ -26,8 +26,9 @@ public class InputController : MonoBehaviour
     private bool IsTouchMove = false;
     private float LimitRangeCircle = 1.5f;//Độ kéo lớn tối đa của vòng di chuyển
     private Vector2 OutCirclePosXOriginal;//Tọa độ ban đầu của control move 
+    private bool IsViewLeft = false;
 
-    public Text test;
+    private HeroController Hero;
     #endregion
 
     #region Inityalize
@@ -57,7 +58,7 @@ public class InputController : MonoBehaviour
         {
             Touch t = Input.GetTouch(i);
             Vector2 touchPos = getTouchPosition(t.position); // * -1 for perspective cameras
-            test.text = touchPos.x + ":" + touchPos.y;
+
             if (t.phase == TouchPhase.Began)
             {
                 if (t.position.x < Screen.width / 3 && t.position.y < Screen.height / 2)
@@ -91,6 +92,7 @@ public class InputController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
+            IsViewLeft = true;
             Vector2 offset = Vector2.zero - new Vector2(LimitRangeCircle, 0);
             direction = Vector2.ClampMagnitude(offset, LimitRangeCircle);
             circle.transform.position = new Vector3(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y, CanvasZ);
@@ -98,14 +100,27 @@ public class InputController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
+            IsViewLeft = false ;
             Vector2 offset = Vector2.zero + new Vector2(LimitRangeCircle, 0);
             direction = Vector2.ClampMagnitude(offset, LimitRangeCircle);
             circle.transform.position = new Vector3(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y, CanvasZ);
             IsTouchMove = true;
         }
+
+        //Nhảy
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Player.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 100f), ForceMode2D.Impulse);
+        }
+
+        //Lướt
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            if (IsViewLeft)
+                Player.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-50f, 0), ForceMode2D.Impulse);
+            else
+            Player.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(50f, 0), ForceMode2D.Impulse);
+
         }
 
         //Nhả phím
