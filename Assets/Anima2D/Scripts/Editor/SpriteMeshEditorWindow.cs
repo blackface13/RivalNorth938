@@ -1,9 +1,6 @@
 using UnityEngine;
-using UnityEngine.Sprites;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEditor.Sprites;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -1540,11 +1537,8 @@ namespace Anima2D
 			{
 				m_Zoom = newZoom;
 			}
-			
-			int width = 1;
-			int height = 1;
-			
-			SpriteMeshUtils.GetWidthAndHeight(m_TextureImporter,ref width,ref height);
+
+			SpriteMeshUtils.GetWidthAndHeight(m_TextureImporter, out var width, out var height);
 			
 			m_ScrollPosition = Vector2.Scale((m_SpriteMeshCache.rect.center - new Vector2(width,height) * 0.5f),new Vector2(1f,-1f)) * m_Zoom;
 		}
@@ -1570,10 +1564,7 @@ namespace Anima2D
 				
 				if(m_OriginalTexture)
 				{
-					int width = 0;
-					int height = 0;
-					
-					SpriteMeshUtils.GetWidthAndHeight(m_TextureImporter,ref width, ref height);
+					SpriteMeshUtils.GetWidthAndHeight(m_TextureImporter, out var width, out var height);
 					
 					m_Texture = CreateTemporaryDuplicate(m_OriginalTexture,width,height);
 					m_Texture.filterMode = UnityEngine.FilterMode.Point;

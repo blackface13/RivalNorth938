@@ -8,7 +8,7 @@ namespace Anima2D
 {
 	public class SpriteMesh : ScriptableObject
 	{
-		public const int api_version = 4;
+		public const int api_version = 5;
 
 		[SerializeField][HideInInspector]
 		private int m_ApiVersion;
@@ -20,7 +20,7 @@ namespace Anima2D
 		public Sprite sprite
 		{
 			get { return m_Sprite; }
-			private set { m_Sprite = value; }
+			internal set { m_Sprite = value; }
 		}
 
 		public Mesh sharedMesh

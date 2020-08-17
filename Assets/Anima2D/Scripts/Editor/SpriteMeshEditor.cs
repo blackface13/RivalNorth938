@@ -1,13 +1,10 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.Sprites;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Anima2D 
 {
-	[CanEditMultipleObjects][CustomEditor(typeof(SpriteMesh))]
+	[CustomEditor(typeof(SpriteMesh))]
 	public class SpriteMeshEditor : Editor
 	{
 		SerializedProperty m_SpriteProperty;
@@ -21,7 +18,7 @@ namespace Anima2D
 
 		override public void OnInspectorGUI()
 		{
-			Sprite oldSprite = m_SpriteProperty.objectReferenceValue as Sprite;
+			var oldSprite = m_SpriteProperty.objectReferenceValue as Sprite;
 
 			EditorGUI.BeginChangeCheck();
 
@@ -33,20 +30,22 @@ namespace Anima2D
 
 			if(EditorGUI.EndChangeCheck())
 			{
-				Sprite sprite = m_SpriteProperty.objectReferenceValue as Sprite;
+				if(oldSprite != null)
+				{
+					SpriteMeshUtils.ClearDataFromSprite(oldSprite);
+				}
+
+				var sprite = m_SpriteProperty.objectReferenceValue as Sprite;
 
 				SpriteMeshUtils.UpdateAssets(target as SpriteMesh);
 				AssetDatabase.SaveAssets();
 				AssetDatabase.Refresh();
-				AssetDatabase.StartAssetEditing();
 
-				if(oldSprite)
+				if (sprite != null)
 				{
-					AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(oldSprite));
+					var spriteMeshData = SpriteMeshUtils.LoadSpriteMeshData(target as SpriteMesh);
+					spriteMeshData.ApplyToSprite(sprite);
 				}
-
-				AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(sprite));
-				AssetDatabase.StopAssetEditing();
 			}
 
 			serializedObject.Update();

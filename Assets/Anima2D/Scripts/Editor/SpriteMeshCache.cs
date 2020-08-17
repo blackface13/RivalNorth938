@@ -37,9 +37,7 @@ namespace Anima2D
 		
 		public List<Vector2> uvs {
 			get {
-				int width = 1;
-				int height = 1;
-				SpriteMeshUtils.GetSpriteTextureSize(spriteMesh.sprite,ref width, ref height);
+				SpriteMeshUtils.GetSpriteTextureSize(spriteMesh.sprite, out var width, out var height);
 				Vector2 t = new Vector2(1f/width,1f/height);
 				return m_TexVertices.ConvertAll( v => Vector2.Scale(v,t) );
 			}
@@ -280,11 +278,8 @@ namespace Anima2D
 				SpriteMeshUtils.UpdateAssets(spriteMesh,spriteMeshData);
 				AssetDatabase.SaveAssets();
 				AssetDatabase.Refresh();
-				TextureImporter textureImporter = AssetImporter.GetAtPath(spriteAssetPath) as TextureImporter;
-				textureImporter.userData = textureImporter.assetTimeStamp.ToString();
-				AssetDatabase.StartAssetEditing();
-				AssetDatabase.ImportAsset(spriteAssetPath);
-				AssetDatabase.StopAssetEditing();
+				spriteMeshData.ApplyToSprite(spriteMesh.sprite);
+
 				isDirty = false;
 			}
 			
