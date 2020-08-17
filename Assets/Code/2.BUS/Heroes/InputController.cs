@@ -29,6 +29,9 @@ public class InputController : MonoBehaviour
     private Vector2 OutCirclePosXOriginal;//Tọa độ ban đầu của control move 
 
     private HeroController Hero;
+
+    private Vector2 posTmp;
+    public Text Infor;
     #endregion
 
     #region Inityalize
@@ -39,7 +42,7 @@ public class InputController : MonoBehaviour
     }
     private void Start()
     {
-        
+
     }
     #endregion
 
@@ -63,18 +66,19 @@ public class InputController : MonoBehaviour
         {
             Touch t = Input.GetTouch(i);
             Vector2 touchPos = getTouchPosition(t.position); // * -1 for perspective cameras
-
             if (t.phase == TouchPhase.Began)
             {
                 if (t.position.x < Screen.width / 3 && t.position.y < Screen.height / 2)
                 {
                     leftTouch = t.fingerId;
                     startingPoint = touchPos;
+                    posTmp = new Vector2(Camera.main.transform.position.x, 0);
                 }
             }
             else if ((t.phase == TouchPhase.Moved) && leftTouch == t.fingerId)
             {
-                Vector2 offset = touchPos - (startingPoint + new Vector2(Camera.main.transform.position.x, 0));
+                Vector2 offset = touchPos - (startingPoint + new Vector2(Camera.main.transform.position.x, 0) - posTmp);
+                Infor.text = touchPos + ":" + (startingPoint + new Vector2(Camera.main.transform.position.x, 0) - posTmp) + ":" + posTmp;
                 direction = Vector2.ClampMagnitude(offset, LimitRangeCircle);
                 circle.transform.position = new Vector3(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y, CanvasZ);
                 IsTouchMove = true;

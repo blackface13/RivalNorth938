@@ -225,7 +225,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &133462201
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -305,8 +305,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -243, y: -64}
-  m_SizeDelta: {x: 417.7094, y: 78.32052}
+  m_AnchoredPosition: {x: -517.1, y: -64}
+  m_SizeDelta: {x: 965.8615, y: 78.32052}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &304980903
 MonoBehaviour:
@@ -329,11 +329,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 30
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 40
+    m_MaxSize: 50
     m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -728,6 +728,7 @@ MonoBehaviour:
   CanvasZ: 20
   circle: {fileID: 1122874823}
   outerCircle: {fileID: 1143937736}
+  Infor: {fileID: 304980903}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -964,6 +965,7 @@ MonoBehaviour:
   CanvasZ: 0
   circle: {fileID: 1122874823}
   outerCircle: {fileID: 1143937736}
+  Infor: {fileID: 0}
 --- !u!1 &1082375805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1272,12 +1274,13 @@ GameObject:
   - component: {fileID: 1490388806}
   - component: {fileID: 1490388805}
   - component: {fileID: 1490388808}
+  - component: {fileID: 1490388809}
   m_Layer: 8
   m_Name: Lane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!114 &1490388805
 MonoBehaviour:
@@ -1292,7 +1295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Spline:
-    m_IsOpenEnded: 1
+    m_IsOpenEnded: 0
     m_ControlPoints:
     - position: {x: -2, y: 0, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
@@ -1402,7 +1405,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 133.02681, y: -0.010546207}
+  m_Offset: {x: 133.02681, y: -3.6685815}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1413,8 +1416,29 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 270.0552, y: 1.4883665}
+  m_Size: {x: 270.0552, y: 8.804437}
   m_EdgeRadius: 0
+--- !u!50 &1490388809
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490388804}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1740360859
 GameObject:
   m_ObjectHideFlags: 0

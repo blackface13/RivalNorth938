@@ -22,6 +22,7 @@ public class HeroController : MonoBehaviour
     public bool IsViewLeft = false;//Hướng nhìn
     private SpriteRenderer HeroSpriteRenderer;
     private Rigidbody2D HeroRigidBody2D;
+    //private bool IsStay = false;
     #endregion
 
     // Start is called before the first frame update
@@ -36,7 +37,7 @@ public class HeroController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //print(IsJumping);
+        // print(IsStay);
     }
 
     /// <summary>
@@ -58,12 +59,14 @@ public class HeroController : MonoBehaviour
     {
         if (!IsSurfing)
         {
+            HeroRigidBody2D.velocity = Vector3.zero;
+            HeroRigidBody2D.gravityScale = 0;
+
             if (IsViewLeft)
-                HeroRigidBody2D.AddForce(new Vector2(0- JumpForce, 0), ForceMode2D.Impulse);
+                HeroRigidBody2D.AddForce(new Vector2(0 - JumpForce, 0), ForceMode2D.Impulse);
             else
                 HeroRigidBody2D.AddForce(new Vector2(JumpForce, 0), ForceMode2D.Impulse);
-
-            if (IsJumping) HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
+            //HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
             IsSurfing = true;
             StartCoroutine(WaitSurf());
         }
@@ -72,7 +75,8 @@ public class HeroController : MonoBehaviour
     private IEnumerator WaitSurf()
     {
         yield return new WaitForSeconds(.2f);
-        if (IsJumping) HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
+        HeroRigidBody2D.gravityScale = HeroWeight;
+        //HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
         yield return new WaitForSeconds(SurfDelayTime - .2f);
         IsSurfing = false;
     }
@@ -80,7 +84,7 @@ public class HeroController : MonoBehaviour
     /// <summary>
     /// Nhảy
     /// </summary>
-    public void ActionJump(BaseEventData  eventData)
+    public void ActionJump(BaseEventData eventData)
     {
         if (!IsJumping)
         {
