@@ -88,6 +88,7 @@
     <Compile Include="Assets\Anima2D\Scripts\SpriteMeshAnimation.cs" />
     <Compile Include="Assets\Anima2D\Scripts\SpriteMeshInstance.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\AnimationObjectControl.cs" />
+    <Compile Include="Assets\Code\2.BUS\FunctionsController\MainCameraController.cs" />
     <Compile Include="Assets\Code\2.BUS\Heroes\HeroController.cs" />
     <Compile Include="Assets\Code\2.BUS\Heroes\InputController.cs" />
     <Compile Include="Assets\Code\4.CORE\GameSettings.cs" />

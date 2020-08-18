@@ -2,13 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationObjectControl : MonoBehaviour {
+public class AnimationObjectControl : MonoBehaviour
+{
     [Header("Tên animation")]
     public string AnimationName;
-    private  Animator Anim;
+    public bool HideOnCreate;
+    private Animator Anim;
+    float AnimTime;
     private void Awake()
     {
-            Anim = this.GetComponent<Animator>();
+        if (HideOnCreate)
+            gameObject.SetActive(false);
+        Anim = this.GetComponent<Animator>();
+        AnimationClip[] clips = Anim.runtimeAnimatorController.animationClips;
+        foreach (AnimationClip clip in clips)
+        {
+            if (clip.name.Equals(AnimationName))
+            {
+                AnimTime = clip.length;
+                break;
+            }
+
+        }
         if (AnimationName != "" && AnimationName != null)
         {
             Anim.SetTrigger(AnimationName);
@@ -19,7 +34,8 @@ public class AnimationObjectControl : MonoBehaviour {
         if (AnimationName != "" && AnimationName != null)
         {
             Anim.speed = Random.Range(0.3f, 1f);
-            Anim.SetTrigger(AnimationName);
+            Anim.Play(AnimationName, 0, Random.Range(0, AnimTime));
+            //Anim.SetTrigger(AnimationName);
         }
     }
 }

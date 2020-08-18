@@ -16,8 +16,8 @@ TagManager:
   - Lane
   - Hero
   - Enemy
-  - 
-  - 
+  - MapObject
+  - MainCamera
   - 
   - 
   - 

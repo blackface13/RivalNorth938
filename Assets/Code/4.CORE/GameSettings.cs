@@ -14,6 +14,8 @@ namespace Assets.Code._4.CORE
             Lane = 8,
             Hero = 9,
             Enemy = 10,
+            MapObject = 11,
+            MainCamera = 12,
         }
 
         //Battle
