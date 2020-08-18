@@ -1,20 +1,16 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Sprites;
-using System;
 using System.IO;
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using TriangleNet.Geometry;
-using UnityEngine.U2D;
-using UnityEditor.U2D;
-using UnityEditor.U2D.Sprites;
-using UnityBoneWeight = UnityEngine.BoneWeight;
 
 namespace Anima2D 
 {
-	public static class SpriteMeshUtils
+	public class SpriteMeshUtils
 	{
 		static Material m_DefaultMaterial = null;
 		public static Material defaultMaterial {
@@ -63,14 +59,14 @@ namespace Anima2D
 		
 		public static SpriteMesh CreateSpriteMesh(Sprite sprite)
 		{
-			var spriteMesh = SpriteMeshPostprocessor.GetSpriteMeshFromSprite(sprite);
-			var spriteMeshData = default(SpriteMeshData);
+			SpriteMesh spriteMesh = SpriteMeshPostprocessor.GetSpriteMeshFromSprite(sprite);
+			SpriteMeshData spriteMeshData = null;
 			
-			if(spriteMesh == null && sprite)
+			if(!spriteMesh && sprite)
 			{
-				var spritePath = AssetDatabase.GetAssetPath(sprite);
-				var directory = Path.GetDirectoryName(spritePath);
-				var assetPath = AssetDatabase.GenerateUniqueAssetPath(directory + Path.DirectorySeparatorChar + sprite.name + ".asset");
+				string spritePath = AssetDatabase.GetAssetPath(sprite);
+				string directory = Path.GetDirectoryName(spritePath);
+				string assetPath = AssetDatabase.GenerateUniqueAssetPath(directory + Path.DirectorySeparatorChar + sprite.name + ".asset");
 				
 				spriteMesh = ScriptableObject.CreateInstance<SpriteMesh>();
 				InitFromSprite(spriteMesh,sprite);
@@ -85,8 +81,7 @@ namespace Anima2D
 				UpdateAssets(spriteMesh,spriteMeshData);
 				
 				AssetDatabase.SaveAssets();
-
-				spriteMeshData.ApplyToSprite(spriteMesh.sprite);
+				AssetDatabase.ImportAsset(assetPath);
 				
 				Selection.activeObject = spriteMesh;
 			}
@@ -98,11 +93,11 @@ namespace Anima2D
 		{
 			if(texture)
 			{
-				var objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(texture));
+				Object[] objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(texture));
 				
 				for (int i = 0; i < objects.Length; i++)
 				{
-					var o = objects [i];
+					Object o = objects [i];
 					Sprite sprite = o as Sprite;
 					if (sprite) {
 						EditorUtility.DisplayProgressBar ("Processing " + texture.name, sprite.name, (i+1) / (float)objects.Length);
@@ -161,103 +156,120 @@ namespace Anima2D
 				}
 				
 				spriteMesh.sharedMesh.name = spriteMesh.name;
-				spriteMesh.sharedMesh.Clear();
 
 				spriteMeshData.hideFlags = HideFlags.HideInHierarchy;
 				EditorUtility.SetDirty(spriteMeshData);
+				
+				int width = 0;
+				int height = 0;
+				
+				GetSpriteTextureSize(spriteMesh.sprite,ref width,ref height);
 
-				if (spriteMesh.sprite != null)
+				Vector3[] vertices = GetMeshVertices(spriteMesh.sprite, spriteMeshData);
+
+				Vector2 textureWidthHeightInv = new Vector2(1f/width,1f/height);
+				
+				Vector2[] uvs = (new List<Vector2>(spriteMeshData.vertices)).ConvertAll( v => Vector2.Scale(v,textureWidthHeightInv)).ToArray();
+				
+				Vector3[] normals = (new List<Vector3>(vertices)).ConvertAll( v => Vector3.back ).ToArray();
+				
+				BoneWeight[] boneWeightsData = spriteMeshData.boneWeights;
+				
+				if(boneWeightsData.Length != spriteMeshData.vertices.Length)
 				{
-					GetSpriteTextureSize(spriteMesh.sprite, out var width, out var height);
-
-					Vector3[] vertices = GetMeshVertices(spriteMesh.sprite, spriteMeshData);
-
-					Vector2 textureWidthHeightInv = new Vector2(1f/width,1f/height);
-					
-					Vector2[] uvs = (new List<Vector2>(spriteMeshData.vertices)).ConvertAll( v => Vector2.Scale(v,textureWidthHeightInv)).ToArray();
-					
-					Vector3[] normals = (new List<Vector3>(vertices)).ConvertAll( v => Vector3.back ).ToArray();
-					
-					BoneWeight[] boneWeightsData = spriteMeshData.boneWeights;
-					
-					if(boneWeightsData.Length != spriteMeshData.vertices.Length)
-					{
-						boneWeightsData = new BoneWeight[spriteMeshData.vertices.Length];
-					}
-					
-					List<UnityEngine.BoneWeight> boneWeights = new List<UnityEngine.BoneWeight>(boneWeightsData.Length);
-					
-					List<float> verticesOrder = new List<float>(spriteMeshData.vertices.Length);
-					
-					for (int i = 0; i < boneWeightsData.Length; i++)
-					{
-						var boneWeight = boneWeightsData[i];
-						var boneWeight2 = boneWeight.ToUnityBoneWeight();
-						
-						boneWeights.Add(boneWeight2);
-						
-						float vertexOrder = i;
-						
-						if(spriteMeshData.bindPoses.Length > 0)
-						{
-							vertexOrder = spriteMeshData.bindPoses[boneWeight2.boneIndex0].zOrder * boneWeight2.weight0 +
-								spriteMeshData.bindPoses[boneWeight2.boneIndex1].zOrder * boneWeight2.weight1 +
-									spriteMeshData.bindPoses[boneWeight2.boneIndex2].zOrder * boneWeight2.weight2 +
-									spriteMeshData.bindPoses[boneWeight2.boneIndex3].zOrder * boneWeight2.weight3;
-						}
-						
-						verticesOrder.Add(vertexOrder);
-					}
-					
-					List<WeightedTriangle> weightedTriangles = new List<WeightedTriangle>(spriteMeshData.indices.Length / 3);
-					
-					for(int i = 0; i < spriteMeshData.indices.Length; i+=3)
-					{
-						int p1 = spriteMeshData.indices[i];
-						int p2 = spriteMeshData.indices[i+1];
-						int p3 = spriteMeshData.indices[i+2];
-						
-						weightedTriangles.Add(new WeightedTriangle(p1,p2,p3,
-																verticesOrder[p1],
-																verticesOrder[p2],
-																verticesOrder[p3]));
-					}
-					
-					weightedTriangles = weightedTriangles.OrderBy( t => t.weight ).ToList();
-					
-					List<int> indices = new List<int>(spriteMeshData.indices.Length);
-					
-					for(int i = 0; i < weightedTriangles.Count; ++i)
-					{
-						WeightedTriangle t = weightedTriangles[i];
-						indices.Add(t.p1);
-						indices.Add(t.p2);
-						indices.Add(t.p3);
-					}
-
-					List<Matrix4x4> bindposes = (new List<BindInfo>(spriteMeshData.bindPoses)).ConvertAll( p => p.bindPose );
-
-					for (int i = 0; i < bindposes.Count; i++)
-					{
-						Matrix4x4 bindpose = bindposes [i];
-
-						bindpose.m23 = 0f;
-
-						bindposes[i] = bindpose;
-					}	
-
-					spriteMesh.sharedMesh.vertices = vertices;
-					spriteMesh.sharedMesh.uv = uvs;
-					spriteMesh.sharedMesh.triangles = indices.ToArray();
-					spriteMesh.sharedMesh.normals = normals;
-					spriteMesh.sharedMesh.boneWeights = boneWeights.ToArray();
-					spriteMesh.sharedMesh.bindposes = bindposes.ToArray();
-					spriteMesh.sharedMesh.RecalculateBounds();
-	#if UNITY_5_6_OR_NEWER
-					spriteMesh.sharedMesh.RecalculateTangents();
-	#endif
-					RebuildBlendShapes(spriteMesh);
+					boneWeightsData = new BoneWeight[spriteMeshData.vertices.Length];
 				}
+				
+				List<UnityEngine.BoneWeight> boneWeights = new List<UnityEngine.BoneWeight>(boneWeightsData.Length);
+				
+				List<float> verticesOrder = new List<float>(spriteMeshData.vertices.Length);
+				
+				for (int i = 0; i < boneWeightsData.Length; i++)
+				{
+					BoneWeight boneWeight = boneWeightsData[i];
+					
+					List< KeyValuePair<int,float> > pairs = new List<KeyValuePair<int, float>>();
+					pairs.Add(new KeyValuePair<int, float>(boneWeight.boneIndex0,boneWeight.weight0));
+					pairs.Add(new KeyValuePair<int, float>(boneWeight.boneIndex1,boneWeight.weight1));
+					pairs.Add(new KeyValuePair<int, float>(boneWeight.boneIndex2,boneWeight.weight2));
+					pairs.Add(new KeyValuePair<int, float>(boneWeight.boneIndex3,boneWeight.weight3));
+					
+					pairs = pairs.OrderByDescending(s=>s.Value).ToList();
+					
+					UnityEngine.BoneWeight boneWeight2 = new UnityEngine.BoneWeight();
+					boneWeight2.boneIndex0 = Mathf.Max(0,pairs[0].Key);
+					boneWeight2.boneIndex1 = Mathf.Max(0,pairs[1].Key);
+					boneWeight2.boneIndex2 = Mathf.Max(0,pairs[2].Key);
+					boneWeight2.boneIndex3 = Mathf.Max(0,pairs[3].Key);
+					boneWeight2.weight0 = pairs[0].Value;
+					boneWeight2.weight1 = pairs[1].Value;
+					boneWeight2.weight2 = pairs[2].Value;
+					boneWeight2.weight3 = pairs[3].Value;
+					
+					boneWeights.Add(boneWeight2);
+					
+					float vertexOrder = i;
+					
+					if(spriteMeshData.bindPoses.Length > 0)
+					{
+						vertexOrder = spriteMeshData.bindPoses[boneWeight2.boneIndex0].zOrder * boneWeight2.weight0 +
+							spriteMeshData.bindPoses[boneWeight2.boneIndex1].zOrder * boneWeight2.weight1 +
+								spriteMeshData.bindPoses[boneWeight2.boneIndex2].zOrder * boneWeight2.weight2 +
+								spriteMeshData.bindPoses[boneWeight2.boneIndex3].zOrder * boneWeight2.weight3;
+					}
+					
+					verticesOrder.Add(vertexOrder);
+				}
+				
+				List<WeightedTriangle> weightedTriangles = new List<WeightedTriangle>(spriteMeshData.indices.Length / 3);
+				
+				for(int i = 0; i < spriteMeshData.indices.Length; i+=3)
+				{
+					int p1 = spriteMeshData.indices[i];
+					int p2 = spriteMeshData.indices[i+1];
+					int p3 = spriteMeshData.indices[i+2];
+					
+					weightedTriangles.Add(new WeightedTriangle(p1,p2,p3,
+					                                           verticesOrder[p1],
+					                                           verticesOrder[p2],
+					                                           verticesOrder[p3]));
+				}
+				
+				weightedTriangles = weightedTriangles.OrderBy( t => t.weight ).ToList();
+				
+				List<int> indices = new List<int>(spriteMeshData.indices.Length);
+				
+				for(int i = 0; i < weightedTriangles.Count; ++i)
+				{
+					WeightedTriangle t = weightedTriangles[i];
+					indices.Add(t.p1);
+					indices.Add(t.p2);
+					indices.Add(t.p3);
+				}
+
+				List<Matrix4x4> bindposes = (new List<BindInfo>(spriteMeshData.bindPoses)).ConvertAll( p => p.bindPose );
+
+				for (int i = 0; i < bindposes.Count; i++)
+				{
+					Matrix4x4 bindpose = bindposes [i];
+
+					bindpose.m23 = 0f;
+
+					bindposes[i] = bindpose;
+				}	
+
+				spriteMesh.sharedMesh.Clear();
+				spriteMesh.sharedMesh.vertices = vertices;
+				spriteMesh.sharedMesh.uv = uvs;
+				spriteMesh.sharedMesh.triangles = indices.ToArray();
+				spriteMesh.sharedMesh.normals = normals;
+				spriteMesh.sharedMesh.boneWeights = boneWeights.ToArray();
+				spriteMesh.sharedMesh.bindposes = bindposes.ToArray();
+				spriteMesh.sharedMesh.RecalculateBounds();
+#if UNITY_5_6_OR_NEWER
+				spriteMesh.sharedMesh.RecalculateTangents();
+#endif
+				RebuildBlendShapes(spriteMesh);
 			}
 		}
 
@@ -273,38 +285,29 @@ namespace Anima2D
 			return (new List<Vector2>(spriteMeshData.vertices)).ConvertAll( v => TexCoordToVertex(spriteMeshData.pivotPoint,v,pixelsPerUnit)).ToArray();
 		}
 
-		public static void GetSpriteTextureSize(Sprite sprite, out int width, out int height)
+		public static void GetSpriteTextureSize(Sprite sprite, ref int width, ref int height)
 		{
-			if(sprite == null)
+			if(sprite)
 			{
-				Debug.Log(UnityEngine.StackTraceUtility.ExtractStackTrace());
-				throw new System.Exception("Sprite is null");
+				Texture2D texture = SpriteUtility.GetSpriteTexture(sprite,false);
+				
+				TextureImporter textureImporter = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(texture)) as TextureImporter;
+				
+				GetWidthAndHeight(textureImporter,ref width, ref height);
 			}
-	
-			var texture = SpriteUtility.GetSpriteTexture(sprite,false);
-
-			if(texture == null)
-				throw new System.Exception("Texture is null");
-
-			var textureImporter = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(texture)) as TextureImporter;
-			
-			GetWidthAndHeight(textureImporter, out width, out height);
 		}
 		
-		public static void GetWidthAndHeight(TextureImporter textureImporter, out int width, out int height)
+		public static void GetWidthAndHeight(TextureImporter textureImporter, ref int width, ref int height)
 		{
-			if(textureImporter == null)
-				throw new System.Exception("textureImporter is null");
-
-			var methodInfo = typeof(TextureImporter).GetMethod("GetWidthAndHeight", BindingFlags.Instance | BindingFlags.NonPublic);
+			MethodInfo methodInfo = typeof(TextureImporter).GetMethod("GetWidthAndHeight", BindingFlags.Instance | BindingFlags.NonPublic);
 			
-			if(methodInfo == null)
-				throw new System.Exception("Couldn't find method GetWidthAndHeight");
-
-			object[] parameters = new object[] { null, null };
-			methodInfo.Invoke(textureImporter,parameters);
-			width = (int)parameters[0];
-			height = (int)parameters[1];
+			if(methodInfo != null)
+			{
+				object[] parameters = new object[] { null, null };
+				methodInfo.Invoke(textureImporter,parameters);
+				width = (int)parameters[0];
+				height = (int)parameters[1];
+			}
 		}
 		
 		public static float GetSpritePixelsPerUnit(Sprite sprite)
@@ -345,8 +348,11 @@ namespace Anima2D
 		}
 		
 		public static void GetSpriteData(Sprite sprite, out Vector2[] vertices, out IndexedEdge[] edges, out int[] indices, out Vector2 pivotPoint)
-		{			
-			GetSpriteTextureSize(sprite, out var width, out var height);
+		{
+			int width = 0;
+			int height = 0;
+			
+			GetSpriteTextureSize(sprite,ref width,ref height);
 			
 			pivotPoint = Vector2.zero;
 			
@@ -608,7 +614,10 @@ namespace Anima2D
 		
 		public static Rect CalculateSpriteRect(SpriteMesh spriteMesh, int padding)
 		{
-			GetSpriteTextureSize(spriteMesh.sprite, out var width, out var height);
+			int width = 0;
+			int height = 0;
+			
+			GetSpriteTextureSize(spriteMesh.sprite,ref width,ref height);
 			
 			SpriteMeshData spriteMeshData = LoadSpriteMeshData(spriteMesh);
 			
@@ -1032,230 +1041,6 @@ namespace Anima2D
 			}
 
 			return result;
-		}
-
-		static SpriteDataProviderFactories s_Factories;
-
-        static ISpriteEditorDataProvider GetSpriteEditorDataProvider(Texture texture)
-        {
-            if (s_Factories == null)
-            {
-                s_Factories = new SpriteDataProviderFactories();
-                s_Factories.Init();
-            }
-
-            return s_Factories.GetSpriteEditorDataProviderFromObject(texture);
-        }
-
-		
-		internal static void ApplyToSprite(this SpriteMeshData spriteMeshData, Sprite sprite)
-        {
-            Debug.Assert(sprite != null);
-            Debug.Assert(spriteMeshData != null);
-
-            var assetPath = AssetDatabase.GetAssetPath(sprite);
-            var spriteEditorDP = GetSpriteEditorDataProvider(sprite.texture);
-            
-            spriteEditorDP.InitSpriteEditorDataProvider();
-
-			var spriteRects = spriteEditorDP.GetSpriteRects();
-			var spriteRect = spriteRects.FirstOrDefault(s => s.spriteID == sprite.GetSpriteID());
-			var rectSizeInv = new Vector2(1f / spriteRect.rect.width, 1f / spriteRect.rect.height);
-
-			spriteRect.alignment = SpriteAlignment.Custom;
-			spriteRect.pivot = Vector2.Scale(spriteMeshData.pivotPoint - spriteRect.rect.position, rectSizeInv);
-			spriteEditorDP.SetSpriteRects(spriteRects);
-
-            var meshDP = spriteEditorDP.GetDataProvider<ISpriteMeshDataProvider>();
-            var boneWeights = spriteMeshData.boneWeights;
-            var vertices = Array.ConvertAll(
-				spriteMeshData.vertices,
-				v => new Vertex2DMetaData()
-				{
-					position = v - spriteRect.rect.position,
-					boneWeight = new UnityBoneWeight() { weight0 = 1f }
-				});
-
-			if (boneWeights.Length == vertices.Length)
-			{
-				for (var i = 0; i < vertices.Length; ++i)
-				{
-					var vertex = vertices[i];
-					vertex.boneWeight = boneWeights[i].ToUnityBoneWeight();
-					vertices[i] = vertex;
-				}
-			}
-
-            meshDP.SetVertices(sprite.GetSpriteID(), vertices.ToArray());
-            meshDP.SetEdges(sprite.GetSpriteID(), Array.ConvertAll(spriteMeshData.edges, e => new Vector2Int(e.index1, e.index2)));
-
-			var skeletonDP = spriteEditorDP.GetDataProvider<ISpriteBoneDataProvider>();
-			var importer = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(sprite)) as TextureImporter;
-			var bindInfos = spriteMeshData.bindPoses;
-			var worldToLocalMatrixes = Array.ConvertAll(bindInfos, b => b.bindPose);
-			var spriteBones = new SpriteBone[worldToLocalMatrixes.Length];
-			var bindPosePaths = Array.ConvertAll(bindInfos, b => b.path);
-			var pixelsPerUnit = importer.spritePixelsPerUnit;
-
-			// Initialize root bones
-			for (var i = 0; i < worldToLocalMatrixes.Length; ++i)
-			{
-				var localToWorldMatrix = worldToLocalMatrixes[i].inverse;
-				Vector3 position = (Vector2)localToWorldMatrix.GetPosition() * pixelsPerUnit
-					+ spriteMeshData.pivotPoint - spriteRect.rect.position;
-				position.z = bindInfos[i].zOrder;
-
-				spriteBones[i] = new SpriteBone()
-				{
-					name = bindInfos[i].name,
-					position = position,
-					rotation = localToWorldMatrix.GetRotation(),
-					length = bindInfos[i].boneLength * pixelsPerUnit,
-					parentId = -1
-				};
-			}
-
-			// Calculate localPosition/Rotation
-			for (var i = 0; i < worldToLocalMatrixes.Length; ++i)
-			{
-				var path = bindPosePaths[i];
-
-				for (var j = 0; j < worldToLocalMatrixes.Length; ++j)
-				{
-					var otherPath = bindPosePaths[j];
-
-					if(i != j && !path.Equals(otherPath) && otherPath.Contains(path))
-					{
-						var localToWorldMatrix = worldToLocalMatrixes[i] * worldToLocalMatrixes[j].inverse;
-						var position = localToWorldMatrix.GetPosition() * pixelsPerUnit;
-						position.z = bindInfos[j].zOrder;
-
-						spriteBones[j] = new SpriteBone()
-						{
-							name = bindInfos[j].name,
-							position = position,
-							rotation = localToWorldMatrix.GetRotation(),
-							length = bindInfos[j].boneLength * pixelsPerUnit,
-							parentId = i
-						};
-					}
-				}
-			}
-
-			skeletonDP.SetBones(sprite.GetSpriteID(), spriteBones.ToList());
-
-			var vertexOrders = Array.ConvertAll(vertices, v =>
-			{
-				var order = spriteBones[v.boneWeight.boneIndex0].position.z * v.boneWeight.weight0 +
-					spriteBones[v.boneWeight.boneIndex1].position.z * v.boneWeight.weight1 +
-					spriteBones[v.boneWeight.boneIndex2].position.z * v.boneWeight.weight2 +
-					spriteBones[v.boneWeight.boneIndex3].position.z * v.boneWeight.weight3;
-				return order;
-			});		
-			
-			var weightedTriangles = new List<WeightedTriangle>(spriteMeshData.indices.Length / 3);
-					
-			for(var i = 0; i < spriteMeshData.indices.Length; i+=3)
-			{
-				var p1 = spriteMeshData.indices[i];
-				var p2 = spriteMeshData.indices[i+1];
-				var p3 = spriteMeshData.indices[i+2];
-				
-				weightedTriangles.Add(new WeightedTriangle(p1, p2, p3, vertexOrders[p1], vertexOrders[p2], vertexOrders[p3]));
-			}
-			
-			weightedTriangles = weightedTriangles.OrderBy(t => t.weight).ToList();
-
-			var indices = new List<int>(spriteMeshData.indices.Length);
-					
-			for(var i = 0; i < weightedTriangles.Count; ++i)
-			{
-				var t = weightedTriangles[i];
-				indices.Add(t.p1);
-				indices.Add(t.p2);
-				indices.Add(t.p3);
-			}
-
-            meshDP.SetIndices(sprite.GetSpriteID(), indices.ToArray());
-
-            spriteEditorDP.Apply();
-
-            // Do this so that asset change save dialog will not show
-            var verifySavingAssets = EditorPrefs.GetBool("VerifySavingAssets", false);
-            EditorPrefs.SetBool("VerifySavingAssets", false);
-            AssetDatabase.ForceReserializeAssets(
-                new[] { assetPath },
-                ForceReserializeAssetsOptions.ReserializeMetadata);
-            EditorPrefs.SetBool("VerifySavingAssets", verifySavingAssets);
-
-            try
-            {
-                AssetDatabase.StartAssetEditing();
-                AssetDatabase.ImportAsset(assetPath);
-            }
-            finally
-            {
-                AssetDatabase.StopAssetEditing();
-            }
-        }
-
-		internal static void ClearDataFromSprite(Sprite sprite)
-		{
-            Debug.Assert(sprite != null);
-
-            var assetPath = AssetDatabase.GetAssetPath(sprite);
-            var spriteEditorDP = GetSpriteEditorDataProvider(sprite.texture);
-            
-            spriteEditorDP.InitSpriteEditorDataProvider();
-
-            var meshDP = spriteEditorDP.GetDataProvider<ISpriteMeshDataProvider>();
-
-            meshDP.SetVertices(sprite.GetSpriteID(), new Vertex2DMetaData[] {});
-            meshDP.SetIndices(sprite.GetSpriteID(), new int[] {});
-            meshDP.SetEdges(sprite.GetSpriteID(), new Vector2Int[] {});
-
-            spriteEditorDP.Apply();
-
-            // Do this so that asset change save dialog will not show
-            var verifySavingAssets = EditorPrefs.GetBool("VerifySavingAssets", false);
-            EditorPrefs.SetBool("VerifySavingAssets", false);
-            AssetDatabase.ForceReserializeAssets(
-                new[] { assetPath },
-                ForceReserializeAssetsOptions.ReserializeMetadata);
-            EditorPrefs.SetBool("VerifySavingAssets", verifySavingAssets);
-
-            try
-            {
-                AssetDatabase.StartAssetEditing();
-                AssetDatabase.ImportAsset(assetPath);
-            }
-            finally
-            {
-                AssetDatabase.StopAssetEditing();
-            }
-		}
-
-		static UnityBoneWeight ToUnityBoneWeight(this BoneWeight boneWeight)
-		{
-			var pairs = new List<KeyValuePair<int, float>>();
-			pairs.Add(new KeyValuePair<int, float>(boneWeight.boneIndex0,boneWeight.weight0));
-			pairs.Add(new KeyValuePair<int, float>(boneWeight.boneIndex1,boneWeight.weight1));
-			pairs.Add(new KeyValuePair<int, float>(boneWeight.boneIndex2,boneWeight.weight2));
-			pairs.Add(new KeyValuePair<int, float>(boneWeight.boneIndex3,boneWeight.weight3));
-			
-			pairs = pairs.OrderByDescending(s=>s.Value).ToList();
-			
-			return new UnityEngine.BoneWeight()
-			{
-				boneIndex0 = Mathf.Max(0,pairs[0].Key),
-				boneIndex1 = Mathf.Max(0,pairs[1].Key),
-				boneIndex2 = Mathf.Max(0,pairs[2].Key),
-				boneIndex3 = Mathf.Max(0,pairs[3].Key),
-				weight0 = pairs[0].Value,
-				weight1 = pairs[1].Value,
-				weight2 = pairs[2].Value,
-				weight3 = pairs[3].Value
-			};
 		}
 	}
 }
