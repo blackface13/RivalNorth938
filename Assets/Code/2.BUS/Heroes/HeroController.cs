@@ -68,6 +68,7 @@ public class HeroController : MonoBehaviour
                 HeroRigidBody2D.AddForce(new Vector2(JumpForce, 0), ForceMode2D.Impulse);
             //HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
             IsSurfing = true;
+            IsJumping = true;
             StartCoroutine(WaitSurf());
         }
     }
@@ -75,6 +76,7 @@ public class HeroController : MonoBehaviour
     private IEnumerator WaitSurf()
     {
         yield return new WaitForSeconds(.2f);
+        IsJumping = false ;
         HeroRigidBody2D.gravityScale = HeroWeight;
         //HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
         yield return new WaitForSeconds(SurfDelayTime - .2f);

@@ -10,6 +10,11 @@ public class MainCameraController : MonoBehaviour
     //{
 
     //}
+
+    //private void Awake()
+    //{
+    //    this.GetComponent<BoxCollider2D>().size = Camera.main.orz
+    //}
     public void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.MapObject))
