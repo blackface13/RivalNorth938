@@ -20,6 +20,7 @@ namespace Assets.Code._4.CORE
 
         //Battle
         public static readonly float[] BattleSpeed = new float[] { 1f, 1.5f, 2f, 3f };//Tốc độ trận đấu
+        public static int MaxAtkCombo = 2;//Tối da combo atk của player
         #endregion
 
         #region Functions

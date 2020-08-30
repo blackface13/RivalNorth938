@@ -97,8 +97,11 @@ public class InputController : MonoBehaviour
             }
             else if (t.phase == TouchPhase.Ended && leftTouch == t.fingerId)
             {
-                if (Hero.IsMoving)
+                if (Hero.IsMoving && !Hero.IsAtking)
+                {
                     Hero.SetAnimation(HeroController.Actions.Idle);
+                    Hero.IsMoving = false;
+                }
                 IsTouchMove = false;
                 leftTouch = 99;
                 circle.transform.position = new Vector3(outerCircle.transform.position.x, outerCircle.transform.position.y, CanvasZ);
@@ -150,7 +153,7 @@ public class InputController : MonoBehaviour
             {
                 IsTouchMove = false;
 
-                if (Hero.IsMoving)
+                if (Hero.IsMoving && !Hero.IsAtking)
                     Hero.SetAnimation(HeroController.Actions.Idle);
                 Hero.IsMoving = false;
             }
@@ -161,7 +164,7 @@ public class InputController : MonoBehaviour
             if (!Input.GetKey(KeyCode.A))
             {
                 IsTouchMove = false;
-                if (Hero.IsMoving)
+                if (Hero.IsMoving && !Hero.IsAtking)
                     Hero.SetAnimation(HeroController.Actions.Idle);
                 Hero.IsMoving = false;
             }
@@ -185,8 +188,9 @@ public class InputController : MonoBehaviour
     /// <param name="direction"></param>
     void moveCharacter(Vector2 direction)
     {
-        Player.Translate(new Vector2(direction.x, 0) * MoveSpeed * Time.deltaTime);
-        if (Hero.CurentAction == HeroController.Actions.Idle && !Hero.IsJumping && !Hero.IsSurfing && !Hero.IsMoving)
+        if (!Hero.IsAtking)
+            Player.Translate(new Vector2(direction.x, 0) * MoveSpeed * Time.deltaTime);
+        if (Hero.CurrentAction == HeroController.Actions.Idle && !Hero.IsJumping && !Hero.IsSurfing && !Hero.IsMoving && !Hero.IsAtking)
         {
             Hero.SetAnimation(HeroController.Actions.Move);
             Hero.IsMoving = true;

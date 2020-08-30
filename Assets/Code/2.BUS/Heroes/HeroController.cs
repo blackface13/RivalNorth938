@@ -16,29 +16,36 @@ public class HeroController : MonoBehaviour
     public float HeroWeight;
 
     [Title("Phần dưới này không cần bận tâm")]
+    private float DelayTime2Atk = .3f;//Thời gian chờ đợi giữa combo atk khi ng chơi nghỉ nhấn
     public bool IsMoving = false;//Di chuyển
     public bool IsJumping = false;//Nhảy
     public bool IsSurfing = false;//Lướt
     public bool IsViewLeft = false;//Hướng nhìn
+    public bool IsAtking = false;//Có đang thực hiện tấn công hay ko
+    private bool IsPressAtk = false;//Có đang nhấn atk hay ko
 
     private Animator Anim;
     private SpriteRenderer HeroSpriteRenderer;
     private Rigidbody2D HeroRigidBody2D;
+    private int CurrentCombo = 0;
 
-    public enum Weapons
+    public enum Weapons//Vũ khí nhân vật có thể sử dụng
     {
         Blade,
         Staff
     }
-    public Weapons CurentWeapon = Weapons.Blade;
-    public enum Actions
+    public Weapons CurrentWeapon = Weapons.Blade;
+    public enum Actions//Hành động hiện tại
     {
         Idle,
         Move,
         Jump,
         Surf,
+        Atk
     }
-    public Actions CurentAction = Actions.Idle;
+    public Actions CurrentAction = Actions.Idle;
+
+    private bool IsAlowAtk = true;//Xác định cho phép thực hiện anim atk hay ko
     //private bool IsStay = false;
     #endregion
 
@@ -56,6 +63,7 @@ public class HeroController : MonoBehaviour
     void Update()
     {
         // print(IsStay);
+        AttackActionController();
     }
 
     /// <summary>
@@ -64,17 +72,17 @@ public class HeroController : MonoBehaviour
     /// <param name="weapon"></param>
     private void ChangeWeapon(Weapons weapon)
     {
-        CurentWeapon = weapon;
-        SetAnimation(CurentAction);
+        CurrentWeapon = weapon;
+        SetAnimation(CurrentAction);
         //switch (weapon)
         //{
         //    case Weapons.Blade:
-        //        CurentWeapon = Weapons.Blade;
-        //        SetAnimation(CurentAction);
+        //        CurrentWeapon = Weapons.Blade;
+        //        SetAnimation(CurrentAction);
         //        break;
         //    case Weapons.Staff:
-        //        CurentWeapon = Weapons.Staff;
-        //        SetAnimation(CurentAction);
+        //        CurrentWeapon = Weapons.Staff;
+        //        SetAnimation(CurrentAction);
         //        break;
         //    default: break;
         //}
@@ -82,8 +90,8 @@ public class HeroController : MonoBehaviour
 
     public void ChangeWeaponTmp(BaseEventData eventData)
     {
-        CurentWeapon = CurentWeapon.Equals(Weapons.Blade) ? Weapons.Staff: Weapons.Blade;
-        SetAnimation(CurentAction);
+        CurrentWeapon = CurrentWeapon.Equals(Weapons.Blade) ? Weapons.Staff : Weapons.Blade;
+        SetAnimation(CurrentAction);
     }
 
     /// <summary>
@@ -128,7 +136,7 @@ public class HeroController : MonoBehaviour
     {
         IsMoving = false;
         yield return new WaitForSeconds(.2f);
-            SetAnimation(Actions.Idle);
+        SetAnimation(Actions.Idle);
         IsJumping = false;
         HeroRigidBody2D.gravityScale = HeroWeight;
         //HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
@@ -153,27 +161,84 @@ public class HeroController : MonoBehaviour
     /// <summary>
     /// Gán animation cho nhân vật
     /// </summary>
-    public void SetAnimation(Actions action)
+    public void SetAnimation(Actions action, bool isAtk = false)
     {
-        switch (action)
+        if (isAtk)
         {
-            case Actions.Move:
-                Anim.SetTrigger(CurentWeapon + "Move");
-                CurentAction = action;
-                break;
-            case Actions.Idle:
-                Anim.SetTrigger(CurentWeapon + "Idle");
-                CurentAction = action;
-                break;
-            case Actions.Jump:
-                Anim.SetTrigger(CurentWeapon + "Jump");
-                CurentAction = action;
-                break;
-            case Actions.Surf:
-                Anim.SetTrigger(CurentWeapon + "Surf");
-                CurentAction = action;
-                break;
-            default: break;
+            if (IsPressAtk)
+            {
+                IsAtking = true;
+                Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo+1).ToString());
+                HeroRigidBody2D.AddForce(new Vector2(IsViewLeft?-40f:40f, 0f), ForceMode2D.Impulse);
+                CurrentAction = action;
+                IsAlowAtk = false;
+            }
+            else goto End;
+        }
+    Begin:
+        {
+            Anim.SetTrigger(CurrentWeapon + action.ToString());
+            CurrentAction = action;
+        }
+    End: { }
+        //switch (action)
+        //{
+        //    case Actions.Move:
+        //        Anim.SetTrigger(CurrentWeapon + "Move");
+        //        CurrentAction = action;
+        //        break;
+        //    case Actions.Idle:
+        //        Anim.SetTrigger(CurrentWeapon + "Idle");
+        //        CurrentAction = action;
+        //        break;
+        //    case Actions.Jump:
+        //        Anim.SetTrigger(CurrentWeapon + "Jump");
+        //        CurrentAction = action;
+        //        break;
+        //    case Actions.Surf:
+        //        Anim.SetTrigger(CurrentWeapon + "Surf");
+        //        CurrentAction = action;
+        //        break;
+        //    default: break;
+        //}
+    }
+
+    /// <summary>
+    /// Kết thúc anim tấn công
+    /// </summary>
+    public void EndAtk()
+    {
+                IsAtking = false;
+        IsAlowAtk = true;
+        if (!IsPressAtk)
+            SetAnimation(Actions.Idle);
+        if(IsMoving)
+            SetAnimation(Actions.Move);
+
+    }
+
+    /// <summary>
+    /// Cho phép nhảy sang animation khác (Dành cho atk liên tiếp)
+    /// </summary>
+    public void CanNextAnim()
+    {
+        IsAlowAtk = true;
+    }
+
+    /// <summary>
+    /// Điều khiển atk
+    /// </summary>
+    private void AttackActionController()
+    {
+        if (IsPressAtk)
+        {
+            if (IsAlowAtk)
+            {
+                SetAnimation(Actions.Atk, true);
+                if (CurrentCombo >= GameSettings.MaxAtkCombo)
+                    CurrentCombo = 0;
+                else CurrentCombo++;
+            }
         }
     }
     #endregion
@@ -199,6 +264,26 @@ public class HeroController : MonoBehaviour
     /// <param name="col"></param>
     public void OnTriggerEnter2D(Collider2D col)
     {
+    }
+    #endregion
+
+    #region Events
+    /// <summary>
+    /// Nhấn nút atk
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void BtnAtkDown(BaseEventData eventData)
+    {
+        IsPressAtk = true;
+    }
+
+    /// <summary>
+    /// Nhả nút atk
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void BtnAtkUp(BaseEventData eventData)
+    {
+        IsPressAtk = false;
     }
     #endregion
 }
