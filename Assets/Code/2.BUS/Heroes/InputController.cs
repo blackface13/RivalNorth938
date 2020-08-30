@@ -97,6 +97,8 @@ public class InputController : MonoBehaviour
             }
             else if (t.phase == TouchPhase.Ended && leftTouch == t.fingerId)
             {
+                if (Hero.IsMoving)
+                    Hero.SetAnimation(HeroController.Actions.Idle);
                 IsTouchMove = false;
                 leftTouch = 99;
                 circle.transform.position = new Vector3(outerCircle.transform.position.x, outerCircle.transform.position.y, CanvasZ);
@@ -145,13 +147,24 @@ public class InputController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.A))
         {
             if (!Input.GetKey(KeyCode.D))
+            {
                 IsTouchMove = false;
+
+                if (Hero.IsMoving)
+                    Hero.SetAnimation(HeroController.Actions.Idle);
+                Hero.IsMoving = false;
+            }
             circle.transform.position = new Vector3(outerCircle.transform.position.x, outerCircle.transform.position.y, CanvasZ);
         }
         if (Input.GetKeyUp(KeyCode.D))
         {
             if (!Input.GetKey(KeyCode.A))
+            {
                 IsTouchMove = false;
+                if (Hero.IsMoving)
+                    Hero.SetAnimation(HeroController.Actions.Idle);
+                Hero.IsMoving = false;
+            }
             circle.transform.position = new Vector3(outerCircle.transform.position.x, outerCircle.transform.position.y, CanvasZ);
         }
     }
@@ -173,6 +186,11 @@ public class InputController : MonoBehaviour
     void moveCharacter(Vector2 direction)
     {
         Player.Translate(new Vector2(direction.x, 0) * MoveSpeed * Time.deltaTime);
+        if (Hero.CurentAction == HeroController.Actions.Idle && !Hero.IsJumping && !Hero.IsSurfing && !Hero.IsMoving)
+        {
+            Hero.SetAnimation(HeroController.Actions.Move);
+            Hero.IsMoving = true;
+        }
         //Camera.main.transform.position = new Vector3(Player.transform.position.x, Player.transform.position.y, Camera.main.transform.position.z);
     }
     #endregion
