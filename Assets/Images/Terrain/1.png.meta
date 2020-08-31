@@ -26,6 +26,12 @@ TextureImporter:
   - first:
       213: 21300014
     second: 1_7
+  - first:
+      213: 992728304312703659
+    second: CoLeft
+  - first:
+      213: -2136464288153343608
+    second: Coright
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -126,12 +132,12 @@ TextureImporter:
       name: 1_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 127
         y: 813
-        width: 1022
+        width: 791
         height: 159
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -152,7 +158,7 @@ TextureImporter:
         width: 1024
         height: 142
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,7 +179,7 @@ TextureImporter:
         width: 4
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,7 +200,7 @@ TextureImporter:
         width: 4
         height: 4
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -215,7 +221,7 @@ TextureImporter:
         width: 1024
         height: 146
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -236,7 +242,7 @@ TextureImporter:
         width: 4
         height: 4
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -257,7 +263,7 @@ TextureImporter:
         width: 4
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -278,7 +284,7 @@ TextureImporter:
         width: 1024
         height: 141
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -286,6 +292,48 @@ TextureImporter:
       bones: []
       spriteID: ebb501bfdaf93f24c9f91d362ca70f39
       internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoLeft
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 812
+        width: 126
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: baad8011221e6cd00800000000000000
+      internalID: 992728304312703659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Coright
+      rect:
+        serializedVersion: 2
+        x: 918
+        y: 813
+        width: 106
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 889ef45ac01c952e0800000000000000
+      internalID: -2136464288153343608
       vertices: []
       indices: 
       edges: []

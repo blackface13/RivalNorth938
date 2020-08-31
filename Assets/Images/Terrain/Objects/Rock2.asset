@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: Rock2
   m_EditorClassIdentifier: 
   m_Angles:
-  - m_Start: -45
-    m_End: 45
+  - m_Start: 176
+    m_End: 536
     m_Order: 0
     m_Sprites:
-    - {fileID: 21300004, guid: beb812ac116a9f0429e2fa11629c1082, type: 3}
+    - {fileID: 21300000, guid: efcb1d1724819ac49ab2f3d6dc6b50b1, type: 3}
   m_FillTexture: {fileID: 2800000, guid: 81a5d617bf9dfad4b96b0f67addf25b9, type: 3}
   m_CornerSprites:
   - m_CornerType: 0
     m_Sprites:
-    - {fileID: 0}
+    - {fileID: 992728304312703659, guid: efcb1d1724819ac49ab2f3d6dc6b50b1, type: 3}
   - m_CornerType: 1
     m_Sprites:
-    - {fileID: 0}
+    - {fileID: -2136464288153343608, guid: efcb1d1724819ac49ab2f3d6dc6b50b1, type: 3}
   - m_CornerType: 2
     m_Sprites:
     - {fileID: 0}

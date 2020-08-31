@@ -27,7 +27,8 @@ public class HeroController : MonoBehaviour
     private Animator Anim;
     private SpriteRenderer HeroSpriteRenderer;
     private Rigidbody2D HeroRigidBody2D;
-    private int CurrentCombo = 0;
+    private int CurrentCombo, CurrentComboTmp = 0;
+    ObjectController ObjControl;
 
     public enum Weapons//Vũ khí nhân vật có thể sử dụng
     {
@@ -47,15 +48,43 @@ public class HeroController : MonoBehaviour
 
     private bool IsAlowAtk = true;//Xác định cho phép thực hiện anim atk hay ko
     //private bool IsStay = false;
+    private Dictionary<string, List<GameObject>> EffectWeaponAttack;
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        EffectWeaponAttack = new Dictionary<string, List<GameObject>>();
+        ObjControl = new ObjectController();
         HeroSpriteRenderer = this.GetComponent<SpriteRenderer>();
         HeroRigidBody2D = this.GetComponent<Rigidbody2D>();
         HeroRigidBody2D.gravityScale = HeroWeight;
         Anim = this.GetComponent<Animator>();
+        GameSettings.CreateSkillsPosition();
+        CreateEffectWeapons(Weapons.Blade);
+        CreateEffectWeapons(Weapons.Staff);
+    }
+
+    /// <summary>
+    /// Khởi tạo các object hiệu ứng đòn đánh
+    /// </summary>
+    private void CreateEffectWeapons(Weapons wp)
+    {
+        switch (wp)
+        {
+            case Weapons.Blade:
+                EffectWeaponAttack.Add("BladeAtk1", ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.Euler(70f, 0, 50f)));
+                EffectWeaponAttack.Add("BladeAtk2", ObjControl.CreateListSkillObject("BladeAtk2", 1, Quaternion.Euler(80f, 0, 0)));
+                EffectWeaponAttack.Add("BladeAtk3", ObjControl.CreateListSkillObject("BladeAtk3", 1, Quaternion.Euler(0, 0, -153f)));
+                break;
+            case Weapons.Staff:
+                //EffectWeaponAttack.Add("BladeAtk1", ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.Euler(70f, 0, 50f)));
+                EffectWeaponAttack.Add("StaffAtk2", ObjControl.CreateListSkillObject("StaffAtk2", 1, Quaternion.Euler(0, 0, 190f)));
+                EffectWeaponAttack.Add("StaffAtk3", ObjControl.CreateListSkillObject("StaffAtk3", 1, Quaternion.Euler(0, 0, 190f)));
+                break;
+            default: break;
+        }
+        //ObjControl.CheckExistAndCreateEffectExtension(new Vector3(0, 0, 0), EffectWeaponAttack[0][Weapons.Blade], EffectWeaponAttack[0][Weapons.Blade][0].transform.rotation, IsViewLeft);
     }
 
     #region Functions
@@ -168,8 +197,8 @@ public class HeroController : MonoBehaviour
             if (IsPressAtk)
             {
                 IsAtking = true;
-                Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo+1).ToString());
-                HeroRigidBody2D.AddForce(new Vector2(IsViewLeft?-40f:40f, 0f), ForceMode2D.Impulse);
+                Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
+                HeroRigidBody2D.AddForce(new Vector2(IsViewLeft ? -40f : 40f, 0f), ForceMode2D.Impulse);
                 CurrentAction = action;
                 IsAlowAtk = false;
             }
@@ -204,15 +233,35 @@ public class HeroController : MonoBehaviour
     }
 
     /// <summary>
+    /// Hàm này gọi từ animation
+    /// </summary>
+    public void ShowEffect(string effectName)
+    {
+        ObjControl.CheckExistAndCreateEffectExtension(GetPositionSkillEffect(effectName), EffectWeaponAttack[effectName], EffectWeaponAttack[effectName][0].transform.rotation, IsViewLeft);
+    }
+
+    /// <summary>
+    /// Trả về tọa độ để hiển thị skill effect
+    /// </summary>
+    /// <returns></returns>
+    private Vector3 GetPositionSkillEffect(string effectName)
+    {
+        if (IsViewLeft)
+            return new Vector3(this.transform.position.x - GameSettings.SkillsPosition[effectName].x, this.transform.position.y + GameSettings.SkillsPosition[effectName].y, GameSettings.PositionZDefaultInMap);
+        else
+            return new Vector3(this.transform.position.x + GameSettings.SkillsPosition[effectName].x, this.transform.position.y + GameSettings.SkillsPosition[effectName].y, GameSettings.PositionZDefaultInMap);
+    }
+
+    /// <summary>
     /// Kết thúc anim tấn công
     /// </summary>
     public void EndAtk()
     {
-                IsAtking = false;
+        IsAtking = false;
         IsAlowAtk = true;
         if (!IsPressAtk)
             SetAnimation(Actions.Idle);
-        if(IsMoving)
+        if (IsMoving)
             SetAnimation(Actions.Move);
 
     }
@@ -234,6 +283,7 @@ public class HeroController : MonoBehaviour
         {
             if (IsAlowAtk)
             {
+                CurrentComboTmp = CurrentCombo;
                 SetAnimation(Actions.Atk, true);
                 if (CurrentCombo >= GameSettings.MaxAtkCombo)
                     CurrentCombo = 0;
@@ -253,8 +303,9 @@ public class HeroController : MonoBehaviour
     {
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
+            if (IsJumping)
+                SetAnimation(Actions.Idle);
             IsJumping = false;
-            SetAnimation(Actions.Idle);
         }
     }
 

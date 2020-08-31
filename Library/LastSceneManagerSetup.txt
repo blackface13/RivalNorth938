@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/BattleSystem.unity
+- path: C:/Users/Admin/Desktop/unity-water-shader2d-master/Assets/Scene.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
