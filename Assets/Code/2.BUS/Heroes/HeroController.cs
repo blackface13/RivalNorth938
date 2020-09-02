@@ -8,12 +8,18 @@ using UnityEngine.EventSystems;
 public class HeroController : MonoBehaviour
 {
     #region Variables
+    [Title("JoyStick di chuyển")]
+    public Joystick JoystickController;
     [Title("Thời gian delay skill lướt")]
     public float SurfDelayTime;
     [Title("Lực nhảy")]
     public float JumpForce;
     [Title("Độ nặng của nhân vật")]
     public float HeroWeight;
+    [Title("Tốc độ di chuyển")]
+    public float MoveSpeed = 20.0f;
+    [Title("Nút di chuyển")]
+    public RectTransform JoystickHandle;
 
     [Title("Phần dưới này không cần bận tâm")]
     private float DelayTime2Atk = .3f;//Thời gian chờ đợi giữa combo atk khi ng chơi nghỉ nhấn
@@ -23,6 +29,7 @@ public class HeroController : MonoBehaviour
     public bool IsViewLeft = false;//Hướng nhìn
     public bool IsAtking = false;//Có đang thực hiện tấn công hay ko
     private bool IsPressAtk = false;//Có đang nhấn atk hay ko
+    private bool IsPressMove = false;//Có đang chạm nút di chuyển hay ko
 
     private Animator Anim;
     private SpriteRenderer HeroSpriteRenderer;
@@ -50,6 +57,10 @@ public class HeroController : MonoBehaviour
     //private bool IsStay = false;
     private Dictionary<string, List<GameObject>> EffectWeaponAttack;
     #endregion
+
+    private void Awake()
+    {
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -93,6 +104,32 @@ public class HeroController : MonoBehaviour
     {
         // print(IsStay);
         AttackActionController();
+        MoveController();
+    }
+
+
+    private void MoveController()
+    {
+        if (IsPressMove && JoystickHandle.localPosition.x != 0)
+        {
+            this.transform.Translate(new Vector2(JoystickController.Horizontal, 0) * MoveSpeed * Time.deltaTime);
+            if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
+            {
+                SetAnimation(HeroController.Actions.Move);
+                IsMoving = true;
+            }
+            if (JoystickHandle.localPosition.x < 0)
+            {
+                IsViewLeft = true;
+                SetView();
+            }
+            else
+            {
+                IsViewLeft = false;
+                SetView();
+            }
+        }
+        //HeroRigidBody2D.velocity = new Vector2(JoystickController.Horizontal * MoveSpeed, HeroRigidBody2D.velocity.y);
     }
 
     /// <summary>
@@ -144,11 +181,11 @@ public class HeroController : MonoBehaviour
     /// </summary>
     public void ActionSurf(BaseEventData eventData)
     {
-        if (!IsSurfing)
+        if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Jump))
+        //if (!IsSurfing)
         {
             HeroRigidBody2D.velocity = Vector3.zero;
             HeroRigidBody2D.gravityScale = 0;
-
             if (IsViewLeft)
                 HeroRigidBody2D.AddForce(new Vector2(0 - JumpForce, 0), ForceMode2D.Impulse);
             else
@@ -165,7 +202,8 @@ public class HeroController : MonoBehaviour
     {
         IsMoving = false;
         yield return new WaitForSeconds(.2f);
-        SetAnimation(Actions.Idle);
+        if (!IsAtking)
+            SetAnimation(Actions.Idle);
         IsJumping = false;
         HeroRigidBody2D.gravityScale = HeroWeight;
         //HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
@@ -178,7 +216,8 @@ public class HeroController : MonoBehaviour
     /// </summary>
     public void ActionJump(BaseEventData eventData)
     {
-        if (!IsJumping)
+        // if (!IsJumping && !IsAtking && !IsSurfing)
+        if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move))
         {
             IsJumping = true;
             IsMoving = false;
@@ -196,9 +235,12 @@ public class HeroController : MonoBehaviour
         {
             if (IsPressAtk)
             {
+                if (IsJumping)
+                    HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
                 IsAtking = true;
                 Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
-                HeroRigidBody2D.AddForce(new Vector2(IsViewLeft ? -40f : 40f, 0f), ForceMode2D.Impulse);
+                if (!IsJumping)
+                    HeroRigidBody2D.AddForce(new Vector2(IsViewLeft ? -40f : 40f, 0f), ForceMode2D.Impulse);
                 CurrentAction = action;
                 IsAlowAtk = false;
             }
@@ -253,16 +295,27 @@ public class HeroController : MonoBehaviour
     }
 
     /// <summary>
+    /// Không freeze tọa độ Y với nhân vật nữa(hàm này gọi trong animation)
+    /// </summary>
+    public void DisableFreezeY()
+    {
+        HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        HeroRigidBody2D.AddForce(new Vector2(.001f, 0), ForceMode2D.Impulse);
+    }
+
+    /// <summary>
     /// Kết thúc anim tấn công
     /// </summary>
     public void EndAtk()
     {
         IsAtking = false;
         IsAlowAtk = true;
-        if (!IsPressAtk)
+        if (!IsPressAtk && !IsPressMove)
             SetAnimation(Actions.Idle);
-        if (IsMoving)
+        if (IsPressMove && !IsPressAtk)
             SetAnimation(Actions.Move);
+        HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        HeroRigidBody2D.AddForce(new Vector2(.001f, 0), ForceMode2D.Impulse);
 
     }
 
@@ -272,6 +325,8 @@ public class HeroController : MonoBehaviour
     public void CanNextAnim()
     {
         IsAlowAtk = true;
+        HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        HeroRigidBody2D.AddForce(new Vector2(.001f, 0), ForceMode2D.Impulse);
     }
 
     /// <summary>
@@ -283,6 +338,8 @@ public class HeroController : MonoBehaviour
         {
             if (IsAlowAtk)
             {
+                HeroRigidBody2D.velocity = Vector3.zero;
+                HeroRigidBody2D.angularVelocity = 0;
                 CurrentComboTmp = CurrentCombo;
                 SetAnimation(Actions.Atk, true);
                 if (CurrentCombo >= GameSettings.MaxAtkCombo)
@@ -303,7 +360,7 @@ public class HeroController : MonoBehaviour
     {
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
-            if (IsJumping)
+            if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
                 SetAnimation(Actions.Idle);
             IsJumping = false;
         }
@@ -335,6 +392,26 @@ public class HeroController : MonoBehaviour
     public void BtnAtkUp(BaseEventData eventData)
     {
         IsPressAtk = false;
+    }
+    public void BtnMoveDown(BaseEventData eventData)
+    {
+        IsPressMove = true;
+    }
+
+    public void BtnMoveUp(BaseEventData eventData)
+    {
+        IsPressMove = false;
+        if (CurrentAction.Equals(Actions.Move))
+        {
+            SetAnimation(Actions.Idle);
+            IsMoving = false;
+        }
+    }
+
+
+    public void Test(BaseEventData eventData)
+    {
+        print("OK");
     }
     #endregion
 }

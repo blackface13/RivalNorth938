@@ -16,7 +16,8 @@ public class MapController : MonoBehaviour
     public Vector3 BackgroundScale;
     [Title("List các object background")]
     public List<GameObject> BackgroundList;
-    [Title("")]
+    [Title("Player")]
+    public GameObject Player;
 
     #endregion
     // Start is called before the first frame update
@@ -28,7 +29,7 @@ public class MapController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        BackgroundController();
     }
 
     /// <summary>
