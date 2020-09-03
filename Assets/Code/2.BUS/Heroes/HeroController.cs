@@ -27,6 +27,7 @@ public class HeroController : MonoBehaviour
     public bool IsJumping = false;//Nhảy
     public bool IsSurfing = false;//Lướt
     public bool IsViewLeft = false;//Hướng nhìn
+    public bool IsViewingLeft = false;//Hướng đang nhìn (dành cho skill)
     public bool IsAtking = false;//Có đang thực hiện tấn công hay ko
     private bool IsPressAtk = false;//Có đang nhấn atk hay ko
     private bool IsPressMove = false;//Có đang chạm nút di chuyển hay ko
@@ -112,22 +113,27 @@ public class HeroController : MonoBehaviour
     {
         if (IsPressMove && JoystickHandle.localPosition.x != 0)
         {
-            this.transform.Translate(new Vector2(JoystickController.Horizontal, 0) * MoveSpeed * Time.deltaTime);
+            if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Jump))
+                this.transform.Translate(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
             if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
             {
                 SetAnimation(HeroController.Actions.Move);
                 IsMoving = true;
             }
+
             if (JoystickHandle.localPosition.x < 0)
             {
                 IsViewLeft = true;
-                SetView();
+                if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Jump))
+                    SetView();
             }
             else
             {
                 IsViewLeft = false;
-                SetView();
+                if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Jump))
+                    SetView();
             }
+
         }
         //HeroRigidBody2D.velocity = new Vector2(JoystickController.Horizontal * MoveSpeed, HeroRigidBody2D.velocity.y);
     }
@@ -169,10 +175,14 @@ public class HeroController : MonoBehaviour
         if (IsViewLeft && transform.localScale.x < 0)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            IsViewingLeft = IsViewLeft;
         }
         if (!IsViewLeft && transform.localScale.x > 0)
         {
-            { transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z); }
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                IsViewingLeft = IsViewLeft;
+            }
         }
     }
 
@@ -279,7 +289,7 @@ public class HeroController : MonoBehaviour
     /// </summary>
     public void ShowEffect(string effectName)
     {
-        ObjControl.CheckExistAndCreateEffectExtension(GetPositionSkillEffect(effectName), EffectWeaponAttack[effectName], EffectWeaponAttack[effectName][0].transform.rotation, IsViewLeft);
+        ObjControl.CheckExistAndCreateEffectExtension(GetPositionSkillEffect(effectName), EffectWeaponAttack[effectName], EffectWeaponAttack[effectName][0].transform.rotation, IsViewingLeft);
     }
 
     /// <summary>
@@ -288,7 +298,7 @@ public class HeroController : MonoBehaviour
     /// <returns></returns>
     private Vector3 GetPositionSkillEffect(string effectName)
     {
-        if (IsViewLeft)
+        if (IsViewingLeft)
             return new Vector3(this.transform.position.x - GameSettings.SkillsPosition[effectName].x, this.transform.position.y + GameSettings.SkillsPosition[effectName].y, GameSettings.PositionZDefaultInMap);
         else
             return new Vector3(this.transform.position.x + GameSettings.SkillsPosition[effectName].x, this.transform.position.y + GameSettings.SkillsPosition[effectName].y, GameSettings.PositionZDefaultInMap);
@@ -308,6 +318,7 @@ public class HeroController : MonoBehaviour
     /// </summary>
     public void EndAtk()
     {
+        SetView();
         IsAtking = false;
         IsAlowAtk = true;
         if (!IsPressAtk && !IsPressMove)
@@ -324,6 +335,7 @@ public class HeroController : MonoBehaviour
     /// </summary>
     public void CanNextAnim()
     {
+        SetView();
         IsAlowAtk = true;
         HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         HeroRigidBody2D.AddForce(new Vector2(.001f, 0), ForceMode2D.Impulse);
