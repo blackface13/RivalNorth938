@@ -18,19 +18,22 @@ public class MapController : MonoBehaviour
     public List<GameObject> BackgroundList;
     [Title("Player")]
     public GameObject Player;
+    [Title("Sương mù của Map")]
+    public GameObject ObjectFogBehind;
 
     #endregion
     // Start is called before the first frame update
     void Start()
     {
-        
+        ObjectFogBehind.transform.SetParent(Camera.main.transform, false);//Sương mù
+        //ObjectFogBehind.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y+2f, ObjectFogBehind.transform.position.z);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        BackgroundController();
-    }
+    //void Update()
+    //{
+    //    BackgroundController();
+    //}
 
     /// <summary>
     /// Điều khiển hoạt động của background

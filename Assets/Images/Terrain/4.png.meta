@@ -20,6 +20,12 @@ TextureImporter:
   - first:
       213: 21300010
     second: 4_5
+  - first:
+      213: -5933289837275991918
+    second: RockLeft
+  - first:
+      213: -1055780868267058655
+    second: RockRight
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -238,6 +244,48 @@ TextureImporter:
       bones: []
       spriteID: 1cfd86877a9a65e4280a421f6989380d
       internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockLeft
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 812
+        width: 114
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 290bab33458b8ada0800000000000000
+      internalID: -5933289837275991918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RockRight
+      rect:
+        serializedVersion: 2
+        x: 914
+        y: 812
+        width: 99
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12ad942e4ec1951f0800000000000000
+      internalID: -1055780868267058655
       vertices: []
       indices: 
       edges: []

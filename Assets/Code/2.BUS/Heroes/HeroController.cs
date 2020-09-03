@@ -17,7 +17,7 @@ public class HeroController : MonoBehaviour
     [Title("Độ nặng của nhân vật")]
     public float HeroWeight;
     [Title("Tốc độ di chuyển")]
-    public float MoveSpeed = 20.0f;
+    public float MoveSpeed;
     [Title("Nút di chuyển")]
     public RectTransform JoystickHandle;
 
@@ -31,6 +31,7 @@ public class HeroController : MonoBehaviour
     public bool IsAtking = false;//Có đang thực hiện tấn công hay ko
     private bool IsPressAtk = false;//Có đang nhấn atk hay ko
     private bool IsPressMove = false;//Có đang chạm nút di chuyển hay ko
+    private float[] ControlTimeComboNormalAtk; //Điều khiển thời gian combo
 
     private Animator Anim;
     private SpriteRenderer HeroSpriteRenderer;
@@ -61,6 +62,7 @@ public class HeroController : MonoBehaviour
 
     private void Awake()
     {
+        ControlTimeComboNormalAtk = new float[2];
     }
 
     // Start is called before the first frame update
@@ -105,6 +107,7 @@ public class HeroController : MonoBehaviour
     {
         // print(IsStay);
         AttackActionController();
+        ComboAttackController();
         MoveController();
     }
 
@@ -115,6 +118,7 @@ public class HeroController : MonoBehaviour
         {
             if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Jump))
                 this.transform.Translate(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
+            //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
             if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
             {
                 SetAnimation(HeroController.Actions.Move);
@@ -245,6 +249,8 @@ public class HeroController : MonoBehaviour
         {
             if (IsPressAtk)
             {
+
+                ControlTimeComboNormalAtk[0] = ControlTimeComboNormalAtk[1];
                 if (IsJumping)
                     HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
                 IsAtking = true;
@@ -358,6 +364,21 @@ public class HeroController : MonoBehaviour
                     CurrentCombo = 0;
                 else CurrentCombo++;
             }
+        }
+    }
+
+    /// <summary>
+    /// Điều khiển combo của normal atk, ngắt combo sau 1 giây
+    /// </summary>
+    public void ComboAttackController()
+    {
+        if (CurrentCombo > GameSettings.MaxAtkCombo)
+            CurrentCombo = 0;
+        ControlTimeComboNormalAtk[1] += 1 * Time.deltaTime;
+        if (CurrentCombo > 0)
+        {
+            if (ControlTimeComboNormalAtk[1] - ControlTimeComboNormalAtk[0] >= GameSettings.TimeDelayComboNormalAtk)
+                CurrentCombo = 0;
         }
     }
     #endregion
