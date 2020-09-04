@@ -14,6 +14,10 @@ public class HeroController : MonoBehaviour
     public float SurfDelayTime;
     [Title("Lực nhảy")]
     public float JumpForce;
+    [Title("Lực lướt")]
+    public float SurfForce;
+    [Title("Lực lướt khi atk")]
+    public float AtkForce;
     [Title("Độ nặng của nhân vật")]
     public float HeroWeight;
     [Title("Tốc độ di chuyển")]
@@ -201,9 +205,11 @@ public class HeroController : MonoBehaviour
             HeroRigidBody2D.velocity = Vector3.zero;
             HeroRigidBody2D.gravityScale = 0;
             if (IsViewLeft)
-                HeroRigidBody2D.AddForce(new Vector2(0 - JumpForce, 0), ForceMode2D.Impulse);
+               // this.transform.Translate(new Vector2(0- SurfForce, 0) * MoveSpeed * Time.deltaTime);
+                HeroRigidBody2D.AddForce(new Vector2(0 - SurfForce, 0), ForceMode2D.Impulse);
             else
-                HeroRigidBody2D.AddForce(new Vector2(JumpForce, 0), ForceMode2D.Impulse);
+               // this.transform.Translate(new Vector2(SurfForce, 0) * MoveSpeed * Time.deltaTime);
+                HeroRigidBody2D.AddForce(new Vector2(SurfForce, 0), ForceMode2D.Impulse);
             //HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
             IsSurfing = true;
             IsJumping = true;
@@ -219,6 +225,7 @@ public class HeroController : MonoBehaviour
         if (!IsAtking)
             SetAnimation(Actions.Idle);
         IsJumping = false;
+            HeroRigidBody2D.velocity = Vector3.zero;
         HeroRigidBody2D.gravityScale = HeroWeight;
         //HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
         yield return new WaitForSeconds(SurfDelayTime - .2f);
@@ -235,7 +242,7 @@ public class HeroController : MonoBehaviour
         {
             IsJumping = true;
             IsMoving = false;
-            HeroRigidBody2D.AddForce(new Vector2(0f, 100f), ForceMode2D.Impulse);
+            HeroRigidBody2D.AddForce(new Vector2(0f, JumpForce), ForceMode2D.Impulse);
             SetAnimation(Actions.Jump);
         }
     }
@@ -256,7 +263,7 @@ public class HeroController : MonoBehaviour
                 IsAtking = true;
                 Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
                 if (!IsJumping)
-                    HeroRigidBody2D.AddForce(new Vector2(IsViewLeft ? -40f : 40f, 0f), ForceMode2D.Impulse);
+                    HeroRigidBody2D.AddForce(new Vector2(IsViewLeft ? 0- AtkForce : AtkForce, 0f), ForceMode2D.Impulse);
                 CurrentAction = action;
                 IsAlowAtk = false;
             }
@@ -316,7 +323,7 @@ public class HeroController : MonoBehaviour
     public void DisableFreezeY()
     {
         HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
-        HeroRigidBody2D.AddForce(new Vector2(.001f, 0), ForceMode2D.Impulse);
+        HeroRigidBody2D.AddForce(new Vector2(.001f, IsJumping? -30f:0), ForceMode2D.Impulse);
     }
 
     /// <summary>
