@@ -16,17 +16,34 @@ public class MapController : MonoBehaviour
     public Vector3 BackgroundScale;
     [Title("List các object background")]
     public List<GameObject> BackgroundList;
-    [Title("Player")]
-    public GameObject Player;
     [Title("Sương mù của Map")]
     public GameObject ObjectFogBehind;
-
+    [Title("Màu background main Camera")]
+    public Color MainCameraBackgroundColor;
+    private GameObject Player;
     #endregion
     // Start is called before the first frame update
     void Start()
     {
-        ObjectFogBehind.transform.SetParent(Camera.main.transform, false);//Sương mù
         //ObjectFogBehind.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y+2f, ObjectFogBehind.transform.position.z);
+    }
+    private void OnEnable()
+    {
+        if (ObjectFogBehind != null)
+        {
+            ObjectFogBehind.SetActive(true);
+            ObjectFogBehind.transform.SetParent(Camera.main.transform, false);//Sương mù
+        }
+        Player = GameObject.FindGameObjectWithTag("Player");
+        Camera.main.backgroundColor = MainCameraBackgroundColor;
+    }
+
+    private void OnDisable()
+    {
+        if (ObjectFogBehind != null)
+        {
+            ObjectFogBehind.SetActive(false);
+        }
     }
 
     // Update is called once per frame

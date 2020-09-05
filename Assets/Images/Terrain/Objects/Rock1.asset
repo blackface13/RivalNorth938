@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Rock1
   m_EditorClassIdentifier: 
   m_Angles:
-  - m_Start: -45
-    m_End: 45
+  - m_Start: -175
+    m_End: 185
     m_Order: 0
     m_Sprites:
     - {fileID: 21300018, guid: 2becb2bd184c50b44a67398559ad50f5, type: 3}

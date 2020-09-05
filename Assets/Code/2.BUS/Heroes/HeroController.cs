@@ -2,6 +2,7 @@
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -24,6 +25,10 @@ public class HeroController : MonoBehaviour
     public float MoveSpeed;
     [Title("Nút di chuyển")]
     public RectTransform JoystickHandle;
+    public List<GameObject> Light;
+    public List<GameObject> Torch;
+    public List<GameObject> Shader;
+    public List<GameObject> Map;
 
     [Title("Phần dưới này không cần bận tâm")]
     private float DelayTime2Atk = .3f;//Thời gian chờ đợi giữa combo atk khi ng chơi nghỉ nhấn
@@ -205,14 +210,14 @@ public class HeroController : MonoBehaviour
             HeroRigidBody2D.velocity = Vector3.zero;
             HeroRigidBody2D.gravityScale = 0;
             if (IsViewLeft)
-               // this.transform.Translate(new Vector2(0- SurfForce, 0) * MoveSpeed * Time.deltaTime);
+                // this.transform.Translate(new Vector2(0- SurfForce, 0) * MoveSpeed * Time.deltaTime);
                 HeroRigidBody2D.AddForce(new Vector2(0 - SurfForce, 0), ForceMode2D.Impulse);
             else
-               // this.transform.Translate(new Vector2(SurfForce, 0) * MoveSpeed * Time.deltaTime);
+                // this.transform.Translate(new Vector2(SurfForce, 0) * MoveSpeed * Time.deltaTime);
                 HeroRigidBody2D.AddForce(new Vector2(SurfForce, 0), ForceMode2D.Impulse);
             //HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
             IsSurfing = true;
-            IsJumping = true;
+            //IsJumping = true;
             SetAnimation(Actions.Surf);
             StartCoroutine(WaitSurf());
         }
@@ -223,9 +228,14 @@ public class HeroController : MonoBehaviour
         IsMoving = false;
         yield return new WaitForSeconds(.2f);
         if (!IsAtking)
-            SetAnimation(Actions.Idle);
+        {
+            if (IsJumping)
+                SetAnimation(Actions.Jump);
+            else
+                SetAnimation(Actions.Idle);
+        }
         IsJumping = false;
-            HeroRigidBody2D.velocity = Vector3.zero;
+        HeroRigidBody2D.velocity = Vector3.zero;
         HeroRigidBody2D.gravityScale = HeroWeight;
         //HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
         yield return new WaitForSeconds(SurfDelayTime - .2f);
@@ -263,7 +273,7 @@ public class HeroController : MonoBehaviour
                 IsAtking = true;
                 Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
                 if (!IsJumping)
-                    HeroRigidBody2D.AddForce(new Vector2(IsViewLeft ? 0- AtkForce : AtkForce, 0f), ForceMode2D.Impulse);
+                    HeroRigidBody2D.AddForce(new Vector2(IsViewLeft ? 0 - AtkForce : AtkForce, 0f), ForceMode2D.Impulse);
                 CurrentAction = action;
                 IsAlowAtk = false;
             }
@@ -323,7 +333,7 @@ public class HeroController : MonoBehaviour
     public void DisableFreezeY()
     {
         HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
-        HeroRigidBody2D.AddForce(new Vector2(.001f, IsJumping? -30f:0), ForceMode2D.Impulse);
+        HeroRigidBody2D.AddForce(new Vector2(.001f, IsJumping ? -30f : 0), ForceMode2D.Impulse);
     }
 
     /// <summary>
@@ -334,10 +344,12 @@ public class HeroController : MonoBehaviour
         SetView();
         IsAtking = false;
         IsAlowAtk = true;
-        if (!IsPressAtk && !IsPressMove)
+        if (!IsPressAtk && !IsPressMove && !IsJumping)
             SetAnimation(Actions.Idle);
-        if (IsPressMove && !IsPressAtk)
+       else if (IsPressMove && !IsPressAtk && !IsJumping)
             SetAnimation(Actions.Move);
+        else if (IsJumping)
+            SetAnimation(Actions.Jump);
         HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         HeroRigidBody2D.AddForce(new Vector2(.001f, 0), ForceMode2D.Impulse);
 
@@ -449,9 +461,78 @@ public class HeroController : MonoBehaviour
     }
 
 
-    public void Test(BaseEventData eventData)
+    public void DisableTest1()
     {
-        print("OK");
+        try
+        {
+            var count = Light.Count;
+            var boolset = Light[0].activeSelf;
+            for (int i = 0; i < count; i++)
+            {
+                Light[i].SetActive(!boolset);
+            }
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+    }
+    public void DisableTest2()
+    {
+        try
+        {
+            var count = Torch.Count;
+            var boolset = Torch[0].activeSelf;
+            for (int i = 0; i < count; i++)
+            {
+                Torch[i].SetActive(!boolset);
+            }
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+    }
+    public void DisableTest3()
+    {
+        try
+        {
+            var count = Shader.Count;
+            var boolset = Shader[0].activeSelf;
+            for (int i = 0; i < count; i++)
+            {
+                Shader[i].SetActive(!boolset);
+            }
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+    }
+    public void DisableTest4()
+    {
+        try
+        {
+            gameObject.transform.position = new Vector3(0, 0, gameObject.transform.position.z);
+            if (Map[0].activeSelf)
+            {
+                Map[0].SetActive(false);
+                Map[1].SetActive(true);
+            }
+            else
+            {
+                Map[1].SetActive(false);
+                Map[0].SetActive(true);
+            }
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
     }
     #endregion
 }
