@@ -44,7 +44,7 @@ public class HeroController : MonoBehaviour
 
     private Animator Anim;
     private SpriteRenderer HeroSpriteRenderer;
-    private Rigidbody2D HeroRigidBody2D;
+    public Rigidbody2D HeroRigidBody2D;
     private int CurrentCombo, CurrentComboTmp = 0;
     ObjectController ObjControl;
 
@@ -117,8 +117,7 @@ public class HeroController : MonoBehaviour
         // print(IsStay);
         AttackActionController();
         ComboAttackController();
-        MoveController();
-    }
+        MoveController();    }
 
 
     private void MoveController()
@@ -413,8 +412,23 @@ public class HeroController : MonoBehaviour
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
             if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
-                SetAnimation(Actions.Idle);
+               SetAnimation(Actions.Idle);
             IsJumping = false;
+        }
+    }
+
+    /// <summary>
+    /// Va chạm không xuyên qua
+    /// </summary>
+    /// <param name="col"></param>
+    public void OnCollisionExit2D(Collision2D col)
+    {
+        //Đổi animation khi rơi từ map xuống
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+        {
+            if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move))
+                SetAnimation(Actions.Jump);
+            IsJumping = true;
         }
     }
 

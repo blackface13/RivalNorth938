@@ -90,12 +90,15 @@
     <Compile Include="Assets\Code\2.BUS\FunctionsController\AnimationObjectControl.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MainCameraController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MapController.cs" />
+    <Compile Include="Assets\Code\2.BUS\FunctionsController\MapObjectBehindController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MapObjectController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\ObjectController.cs" />
+    <Compile Include="Assets\Code\2.BUS\FunctionsController\ObjectJumpSupport.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\SkillController.cs" />
     <Compile Include="Assets\Code\2.BUS\Heroes\HeroController.cs" />
     <Compile Include="Assets\Code\2.BUS\Heroes\InputController.cs" />
     <Compile Include="Assets\Code\4.CORE\GameSettings.cs" />
+    <Compile Include="Assets\Code\5.PLUGINS\Gradient.cs" />
     <Compile Include="Assets\Joystick Pack\Examples\JoystickPlayerExample.cs" />
     <Compile Include="Assets\Joystick Pack\Examples\JoystickSetterExample.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Base\Joystick.cs" />

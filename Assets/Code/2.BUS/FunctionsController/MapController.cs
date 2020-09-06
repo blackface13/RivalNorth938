@@ -10,8 +10,10 @@ public class MapController : MonoBehaviour
     public int MapID;
     [Title("Số lượng Background tối thiểu được fill")]
     public int BackgroundQuantity;
-    [Title("Độ dài mỗi background")]
-    public Vector2 PositionBG2;//Tọa độ của hình background thứ 2, dựa vào đây sẽ tính toán tọa độ cho các bg khác, x = khoảng cách, y = tọa độ được set
+    [Title("Độ rộng mỗi background")]
+    public float BackgroundXSize;
+    [Title("Tọa độ Y của background")]
+    public float BackgroundPositionY;
     [Title("Background Scale")]
     public Vector3 BackgroundScale;
     [Title("List các object background")]
@@ -22,6 +24,34 @@ public class MapController : MonoBehaviour
     public Color MainCameraBackgroundColor;
     private GameObject Player;
     #endregion
+
+    private void Awake()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
+        //CreateBackground();
+    }
+
+    /// <summary>
+    /// Khởi tạo background cho map
+    /// </summary>
+    private void CreateBackground()
+    {
+        if (BackgroundList.Count > 0)
+        {
+            BackgroundList[0].transform.position = new Vector3(Player.transform.position.x - BackgroundXSize, BackgroundPositionY, BackgroundList[0].transform.position.z);
+            for (int i = 0; i < BackgroundQuantity - 1; i++)
+            {
+                BackgroundList.Add(Instantiate(BackgroundList[0], new Vector3(BackgroundList[0].transform.position.x + ((i + 1) * BackgroundXSize), BackgroundPositionY, BackgroundList[0].transform.position.z), Quaternion.identity));
+            }
+
+            //Set parent và sửa lại tọa độ
+            foreach(var item in BackgroundList)
+            {
+                item.transform.SetParent(BackgroundList[0].transform.parent, false);
+                item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y, BackgroundList[0].transform.position.z);
+            }
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -47,16 +77,23 @@ public class MapController : MonoBehaviour
     }
 
     // Update is called once per frame
-    //void Update()
-    //{
-    //    BackgroundController();
-    //}
+    void Update()
+    {
+        //BackgroundController();
+    }
 
     /// <summary>
     /// Điều khiển hoạt động của background
     /// </summary>
     private void BackgroundController()
     {
-
+        if(BackgroundQuantity > 0)
+        {
+            foreach (var item in BackgroundList)
+            {
+                item.transform.SetParent(BackgroundList[0].transform.parent, false);
+                item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y, BackgroundList[0].transform.position.z);
+            }
+        }
     }
 }

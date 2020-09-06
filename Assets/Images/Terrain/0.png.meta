@@ -16,13 +16,19 @@ TextureImporter:
     second: 0_3
   - first:
       213: 21300008
-    second: 0_4
+    second: GrassLeft
   - first:
       213: 21300010
     second: 0_5
   - first:
       213: 21300012
     second: 0_6
+  - first:
+      213: 2590185811940133651
+    second: GrassLeft
+  - first:
+      213: -2440355450126123017
+    second: GrassRight
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -204,33 +210,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 0_4
-      rect:
-        serializedVersion: 2
-        x: 7
-        y: 263
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dcabdac3159fb3a4ea2c245a88b7de3b
-      internalID: 21300008
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: 0_5
       rect:
         serializedVersion: 2
-        x: 10
+        x: 66
         y: 232
-        width: 1010
+        width: 893
         height: 178
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -262,6 +247,48 @@ TextureImporter:
       bones: []
       spriteID: bc2deaab807e7cb45bad82e7537b2b93
       internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GrassLeft
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 232
+        width: 61
+        height: 178
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31bc2f6c54032f320800000000000000
+      internalID: 2590185811940133651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GrassRight
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 232
+        width: 64
+        height: 178
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ff3b8dc5ad122ed0800000000000000
+      internalID: -2440355450126123017
       vertices: []
       indices: 
       edges: []
