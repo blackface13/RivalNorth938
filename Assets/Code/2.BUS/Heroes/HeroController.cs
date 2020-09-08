@@ -409,6 +409,7 @@ public class HeroController : MonoBehaviour
     /// <param name="col"></param>
     public void OnCollisionEnter2D(Collision2D col)
     {
+        //Va chạm với mặt đất
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
             if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
@@ -424,12 +425,15 @@ public class HeroController : MonoBehaviour
     public void OnCollisionExit2D(Collision2D col)
     {
         //Đổi animation khi rơi từ map xuống
-        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
-        {
-            if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move))
-                SetAnimation(Actions.Jump);
-            IsJumping = true;
-        }
+        //if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+        //{
+        //    if (!CurrentAction.Equals(Actions.Atk) && !CurrentAction.Equals(Actions.Surf))
+        //    {
+        //        if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move))
+        //            SetAnimation(Actions.Jump);
+        //        IsJumping = true;
+        //    }
+        //}
     }
 
     /// <summary>
