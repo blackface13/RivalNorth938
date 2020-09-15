@@ -10,48 +10,23 @@ public class MapController : MonoBehaviour
     public int MapID;
     [Title("Số lượng Background tối thiểu được fill")]
     public int BackgroundQuantity;
-    [Title("Độ rộng mỗi background")]
-    public float BackgroundXSize;
-    [Title("Tọa độ Y của background")]
-    public float BackgroundPositionY;
-    [Title("Background Scale")]
-    public Vector3 BackgroundScale;
-    [Title("List các object background")]
-    public List<GameObject> BackgroundList;
     [Title("Sương mù của Map")]
     public GameObject ObjectFogBehind;
     [Title("Màu background main Camera")]
     public Color MainCameraBackgroundColor;
+    [Title("Object background")]
+    public GameObject BackgroundObject;
+    private Vector3 BackgroundPositionOriginal;
     private GameObject Player;
     #endregion
 
     private void Awake()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-        //CreateBackground();
+        if (BackgroundObject != null)
+            BackgroundPositionOriginal = BackgroundObject.transform.localPosition;
     }
 
-    /// <summary>
-    /// Khởi tạo background cho map
-    /// </summary>
-    private void CreateBackground()
-    {
-        if (BackgroundList.Count > 0)
-        {
-            BackgroundList[0].transform.position = new Vector3(Player.transform.position.x - BackgroundXSize, BackgroundPositionY, BackgroundList[0].transform.position.z);
-            for (int i = 0; i < BackgroundQuantity - 1; i++)
-            {
-                BackgroundList.Add(Instantiate(BackgroundList[0], new Vector3(BackgroundList[0].transform.position.x + ((i + 1) * BackgroundXSize), BackgroundPositionY, BackgroundList[0].transform.position.z), Quaternion.identity));
-            }
-
-            //Set parent và sửa lại tọa độ
-            foreach(var item in BackgroundList)
-            {
-                item.transform.SetParent(BackgroundList[0].transform.parent, false);
-                item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y, BackgroundList[0].transform.position.z);
-            }
-        }
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -80,6 +55,7 @@ public class MapController : MonoBehaviour
     void Update()
     {
         //BackgroundController();
+        BackgroundController();
     }
 
     /// <summary>
@@ -87,13 +63,9 @@ public class MapController : MonoBehaviour
     /// </summary>
     private void BackgroundController()
     {
-        if(BackgroundQuantity > 0)
+        if (BackgroundObject != null)
         {
-            foreach (var item in BackgroundList)
-            {
-                item.transform.SetParent(BackgroundList[0].transform.parent, false);
-                item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y, BackgroundList[0].transform.position.z);
-            }
+            BackgroundObject.transform.localPosition = new Vector3(Camera.main.transform.position.x * -0.005f, BackgroundPositionOriginal.y, BackgroundPositionOriginal.z);
         }
     }
 }

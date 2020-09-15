@@ -25,6 +25,8 @@ namespace Assets.Code._4.CORE
         public static string PathSkillObjects = "Prefabs/Skills/";
         public static Vector3 DefaultPositionObjectSkill = new Vector3(-1000, -1000, 20);
         public static float PositionZDefaultInMap = 20f;
+        public static GameObject Player;//Main player
+        public static HeroController PlayerController;//Main player controller
 
         #region Tọa độ các object skill
         public static Dictionary<string, Vector3> SkillsPosition;

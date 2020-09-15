@@ -9,42 +9,68 @@ using UnityEngine.EventSystems;
 public class HeroController : MonoBehaviour
 {
     #region Variables
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("JoyStick di chuyển")]
     public Joystick JoystickController;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Thời gian delay skill lướt")]
     public float SurfDelayTime;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Lực nhảy")]
     public float JumpForce;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Lực lướt")]
     public float SurfForce;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Lực lướt khi atk")]
     public float AtkForce;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Độ nặng của nhân vật")]
     public float HeroWeight;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Tốc độ di chuyển")]
     public float MoveSpeed;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Nút di chuyển")]
     public RectTransform JoystickHandle;
+    [TabGroup("Cấu hình thuộc tính")]
     public List<GameObject> Light;
+    [TabGroup("Cấu hình thuộc tính")]
     public List<GameObject> Torch;
+    [TabGroup("Cấu hình thuộc tính")]
     public List<GameObject> Shader;
+    [TabGroup("Cấu hình thuộc tính")]
     public List<GameObject> Map;
 
-    [Title("Phần dưới này không cần bận tâm")]
+    [TabGroup("Misc")]
     private float DelayTime2Atk = .3f;//Thời gian chờ đợi giữa combo atk khi ng chơi nghỉ nhấn
+    [TabGroup("Misc")]
     public bool IsMoving = false;//Di chuyển
+    [TabGroup("Misc")]
     public bool IsJumping = false;//Nhảy
+    [TabGroup("Misc")]
     public bool IsSurfing = false;//Lướt
+    [TabGroup("Misc")]
     public bool IsViewLeft = false;//Hướng nhìn
+    [TabGroup("Misc")]
     public bool IsViewingLeft = false;//Hướng đang nhìn (dành cho skill)
+    [TabGroup("Misc")]
     public bool IsAtking = false;//Có đang thực hiện tấn công hay ko
+    [TabGroup("Misc")]
     private bool IsPressAtk = false;//Có đang nhấn atk hay ko
+    [TabGroup("Misc")]
     private bool IsPressMove = false;//Có đang chạm nút di chuyển hay ko
-    private float[] ControlTimeComboNormalAtk; //Điều khiển thời gian combo
+    [TabGroup("Misc")]
+    public Rigidbody2D HeroRigidBody2D;
+    [TabGroup("Misc")]
+    public Weapons CurrentWeapon = Weapons.Blade;
+    [TabGroup("Misc")]
+    public Actions CurrentAction = Actions.Idle;
 
+
+    private float[] ControlTimeComboNormalAtk; //Điều khiển thời gian combo
     private Animator Anim;
     private SpriteRenderer HeroSpriteRenderer;
-    public Rigidbody2D HeroRigidBody2D;
     private int CurrentCombo, CurrentComboTmp = 0;
     ObjectController ObjControl;
 
@@ -53,7 +79,6 @@ public class HeroController : MonoBehaviour
         Blade,
         Staff
     }
-    public Weapons CurrentWeapon = Weapons.Blade;
     public enum Actions//Hành động hiện tại
     {
         Idle,
@@ -62,7 +87,6 @@ public class HeroController : MonoBehaviour
         Surf,
         Atk
     }
-    public Actions CurrentAction = Actions.Idle;
 
     private bool IsAlowAtk = true;//Xác định cho phép thực hiện anim atk hay ko
     //private bool IsStay = false;
@@ -271,7 +295,7 @@ public class HeroController : MonoBehaviour
                     HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
                 IsAtking = true;
                 Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
-                if (!IsJumping)
+                if (!IsJumping && IsPressMove)
                     HeroRigidBody2D.AddForce(new Vector2(IsViewLeft ? 0 - AtkForce : AtkForce, 0f), ForceMode2D.Impulse);
                 CurrentAction = action;
                 IsAlowAtk = false;
@@ -351,7 +375,6 @@ public class HeroController : MonoBehaviour
             SetAnimation(Actions.Jump);
         HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         HeroRigidBody2D.AddForce(new Vector2(.001f, 0), ForceMode2D.Impulse);
-
     }
 
     /// <summary>
