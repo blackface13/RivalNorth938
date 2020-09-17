@@ -21,8 +21,8 @@ TagManager:
   - MapObject
   - MainCamera
   - MapObjectBehind
-  - 
-  - 
+  - SkillPlayer
+  - SkillEnemy
   - 
   - 
   - 

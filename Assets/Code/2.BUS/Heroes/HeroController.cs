@@ -66,13 +66,15 @@ public class HeroController : MonoBehaviour
     public Weapons CurrentWeapon = Weapons.Blade;
     [TabGroup("Misc")]
     public Actions CurrentAction = Actions.Idle;
+    [TabGroup("Misc")]
+    public bool IsAlowAtk = true;//Xác định cho phép thực hiện anim atk hay ko
 
 
     private float[] ControlTimeComboNormalAtk; //Điều khiển thời gian combo
     private Animator Anim;
     private SpriteRenderer HeroSpriteRenderer;
     private int CurrentCombo, CurrentComboTmp = 0;
-    ObjectController ObjControl;
+    private bool IsKeyboardPress;
 
     public enum Weapons//Vũ khí nhân vật có thể sử dụng
     {
@@ -88,7 +90,6 @@ public class HeroController : MonoBehaviour
         Atk
     }
 
-    private bool IsAlowAtk = true;//Xác định cho phép thực hiện anim atk hay ko
     //private bool IsStay = false;
     private Dictionary<string, List<GameObject>> EffectWeaponAttack;
     #endregion
@@ -102,7 +103,7 @@ public class HeroController : MonoBehaviour
     void Start()
     {
         EffectWeaponAttack = new Dictionary<string, List<GameObject>>();
-        ObjControl = new ObjectController();
+        GameSettings.ObjControl = new ObjectController();
         HeroSpriteRenderer = this.GetComponent<SpriteRenderer>();
         HeroRigidBody2D = this.GetComponent<Rigidbody2D>();
         HeroRigidBody2D.gravityScale = HeroWeight;
@@ -120,18 +121,18 @@ public class HeroController : MonoBehaviour
         switch (wp)
         {
             case Weapons.Blade:
-                EffectWeaponAttack.Add("BladeAtk1", ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.Euler(70f, 0, 50f)));
-                EffectWeaponAttack.Add("BladeAtk2", ObjControl.CreateListSkillObject("BladeAtk2", 1, Quaternion.Euler(80f, 0, 0)));
-                EffectWeaponAttack.Add("BladeAtk3", ObjControl.CreateListSkillObject("BladeAtk3", 1, Quaternion.Euler(0, 0, -153f)));
+                EffectWeaponAttack.Add("BladeAtk1", GameSettings.ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.Euler(70f, 0, 50f)));
+                EffectWeaponAttack.Add("BladeAtk2", GameSettings.ObjControl.CreateListSkillObject("BladeAtk2", 1, Quaternion.Euler(80f, 0, 0)));
+                EffectWeaponAttack.Add("BladeAtk3", GameSettings.ObjControl.CreateListSkillObject("BladeAtk3", 1, Quaternion.Euler(0, 0, -153f)));
                 break;
             case Weapons.Staff:
-                //EffectWeaponAttack.Add("BladeAtk1", ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.Euler(70f, 0, 50f)));
-                EffectWeaponAttack.Add("StaffAtk2", ObjControl.CreateListSkillObject("StaffAtk2", 1, Quaternion.Euler(0, 0, 190f)));
-                EffectWeaponAttack.Add("StaffAtk3", ObjControl.CreateListSkillObject("StaffAtk3", 1, Quaternion.Euler(0, 0, 190f)));
+                //EffectWeaponAttack.Add("BladeAtk1", GameSettings.ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.Euler(70f, 0, 50f)));
+                EffectWeaponAttack.Add("StaffAtk2", GameSettings.ObjControl.CreateListSkillObject("StaffAtk2", 1, Quaternion.Euler(0, 0, 190f)));
+                EffectWeaponAttack.Add("StaffAtk3", GameSettings.ObjControl.CreateListSkillObject("StaffAtk3", 1, Quaternion.Euler(0, 0, 190f)));
                 break;
             default: break;
         }
-        //ObjControl.CheckExistAndCreateEffectExtension(new Vector3(0, 0, 0), EffectWeaponAttack[0][Weapons.Blade], EffectWeaponAttack[0][Weapons.Blade][0].transform.rotation, IsViewLeft);
+        //GameSettings.ObjControl.CheckExistAndCreateEffectExtension(new Vector3(0, 0, 0), EffectWeaponAttack[0][Weapons.Blade], EffectWeaponAttack[0][Weapons.Blade][0].transform.rotation, IsViewLeft);
     }
 
     #region Functions
@@ -141,7 +142,9 @@ public class HeroController : MonoBehaviour
         // print(IsStay);
         AttackActionController();
         ComboAttackController();
-        MoveController();    }
+        MoveController();
+        KeyPressController();
+    }
 
 
     private void MoveController()
@@ -335,7 +338,7 @@ public class HeroController : MonoBehaviour
     /// </summary>
     public void ShowEffect(string effectName)
     {
-        ObjControl.CheckExistAndCreateEffectExtension(GetPositionSkillEffect(effectName), EffectWeaponAttack[effectName], EffectWeaponAttack[effectName][0].transform.rotation, IsViewingLeft);
+        GameSettings.ObjControl.CheckExistAndCreateEffectExtension(GetPositionSkillEffect(effectName), EffectWeaponAttack[effectName], EffectWeaponAttack[effectName][0].transform.rotation, IsViewingLeft);
     }
 
     /// <summary>
@@ -369,7 +372,7 @@ public class HeroController : MonoBehaviour
         IsAlowAtk = true;
         if (!IsPressAtk && !IsPressMove && !IsJumping)
             SetAnimation(Actions.Idle);
-       else if (IsPressMove && !IsPressAtk && !IsJumping)
+        else if (IsPressMove && !IsPressAtk && !IsJumping)
             SetAnimation(Actions.Move);
         else if (IsJumping)
             SetAnimation(Actions.Jump);
@@ -436,8 +439,9 @@ public class HeroController : MonoBehaviour
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
             if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
-               SetAnimation(Actions.Idle);
+                SetAnimation(Actions.Idle);
             IsJumping = false;
+            IsAlowAtk = true;
         }
     }
 
@@ -573,6 +577,79 @@ public class HeroController : MonoBehaviour
         {
 
             throw;
+        }
+    }
+    #endregion
+
+    #region Input
+
+
+    /// <summary>
+    /// Điều khiển nhân vật với bàn phím
+    /// </summary>
+    private void KeyPressController()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            IsViewLeft = IsKeyboardPress = true;
+            SetView();
+            //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
+            if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
+            {
+                SetAnimation(HeroController.Actions.Move);
+                IsMoving = true;
+                IsPressMove = true;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            IsViewLeft  = false;
+            IsKeyboardPress = true;
+            SetView();
+            //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
+            if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
+            {
+                SetAnimation(HeroController.Actions.Move);
+                IsMoving = true;
+                IsPressMove = true;
+            }
+        }
+        if (IsPressMove && IsKeyboardPress)
+            this.transform.Translate(new Vector2(IsViewLeft ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
+
+        //Nhảy
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ActionJump(null);
+        }
+
+        //Lướt
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            ActionSurf(null);
+        }
+
+        //Nhả phím
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            if (!Input.GetKey(KeyCode.D))
+            {
+                IsPressMove = IsKeyboardPress = false;
+
+                if (IsMoving && !IsAtking)
+                    SetAnimation(HeroController.Actions.Idle);
+                IsMoving = false;
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            if (!Input.GetKey(KeyCode.A))
+            {
+                IsPressMove = IsKeyboardPress = false;
+                if (IsMoving && !IsAtking)
+                    SetAnimation(HeroController.Actions.Idle);
+                IsMoving = false;
+            }
         }
     }
     #endregion

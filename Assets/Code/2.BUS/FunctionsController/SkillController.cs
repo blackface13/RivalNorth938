@@ -1,33 +1,36 @@
-﻿using System.Collections;
+﻿using Assets.Code._4.CORE;
+using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillController : MonoBehaviour
 {
+    [TabGroup("Cấu hình")]
+    [Title("Hướng sang trái khi khởi tạo")]
     public bool IsViewLeft;
-
+    [TabGroup("Cấu hình")]
+    [Title("Tự động ẩn")]
     public bool IsAutoHide = true;
+    [TabGroup("Cấu hình")]
+    [Title("Tự động ẩn sau khoảng thời gian")]
     public float DelayTimeHide;
-    private float OriginalScaleX;//Scale ban đầu của object
+    [TabGroup("Cấu hình")]
+    [Title("Lực đẩy đối phương về sau")]
+    public float ForceToVictim;
+    [TabGroup("Cấu hình")]
 
-    private void Awake()
+    [TabGroup("Misc")]
+
+    private float OriginalScaleX;//Scale ban đầu của object
+    #region Initialize
+
+    public virtual void Awake()
     {
         OriginalScaleX = this.transform.localScale.x;
     }
 
-    // Start is called before the first frame update
-    //void Start()
-    //{
-
-    //}
-
-    // Update is called once per frame
-    //void Update()
-    //{
-
-    //}
-
-    private void OnEnable()
+    public virtual void OnEnable()
     {
         if (IsViewLeft)
             this.transform.localScale = new Vector3(-OriginalScaleX, this.transform.localScale.y, this.transform.localScale.z);
@@ -37,7 +40,9 @@ public class SkillController : MonoBehaviour
         if (IsAutoHide)
             StartCoroutine(AutoHide(DelayTimeHide));
     }
+    #endregion
 
+    #region Functions
 
     /// <summary>
     /// Tự động ẩn Object sau 1 khoảng time
@@ -45,9 +50,63 @@ public class SkillController : MonoBehaviour
     /// <param name="obj"></param>
     /// <param name="delayTime"></param>
     /// <returns></returns>
-    public IEnumerator AutoHide(float delayTime)
+    public virtual IEnumerator AutoHide(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
         gameObject.SetActive(false);
     }
+    #endregion
+
+    #region Physics
+
+    /// <summary>
+    /// Va chạm không xuyên qua
+    /// </summary>
+    /// <param name="col"></param>
+    //public void OnCollisionEnter2D(Collision2D col)
+    //{
+    //    //Va chạm với mặt đất
+    //    //if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+    //    //{
+    //    //    if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
+    //    //        SetAnimation(Actions.Idle);
+    //    //    IsJumping = false;
+    //    //    IsAlowAtk = true;
+    //    //}
+    //}
+
+    /// <summary>
+    /// Va chạm không xuyên qua
+    /// </summary>
+    /// <param name="col"></param>
+    //public void OnCollisionExit2D(Collision2D col)
+    //{
+    //    //Đổi animation khi rơi từ map xuống
+    //    //if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+    //    //{
+    //    //    if (!CurrentAction.Equals(Actions.Atk) && !CurrentAction.Equals(Actions.Surf))
+    //    //    {
+    //    //        if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move))
+    //    //            SetAnimation(Actions.Jump);
+    //    //        IsJumping = true;
+    //    //    }
+    //    //}
+    //}
+
+    /// <summary>
+    /// Va chạm xuyên qua
+    /// </summary>
+    /// <param name="col"></param>
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        if ((col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
+            || (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Hero) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillEnemy)))
+        {
+            var victimRigid = col.gameObject.GetComponent<Rigidbody2D>();
+
+            victimRigid.velocity = Vector3.zero;
+            victimRigid.AddForce(new Vector2(gameObject.transform.position.x < col.gameObject.transform.position.x ? ForceToVictim : -ForceToVictim, 0) * Time.deltaTime, ForceMode2D.Impulse);
+        }
+    }
+    #endregion
 }

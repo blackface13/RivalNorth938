@@ -16,6 +16,9 @@ namespace Assets.Code._4.CORE
             Enemy = 10,
             MapObject = 11,
             MainCamera = 12,
+            MapObjectBehind = 13,
+            SkillPlayer = 14,
+            SkillEnemy = 15,
         }
 
         //Battle
@@ -25,8 +28,11 @@ namespace Assets.Code._4.CORE
         public static string PathSkillObjects = "Prefabs/Skills/";
         public static Vector3 DefaultPositionObjectSkill = new Vector3(-1000, -1000, 20);
         public static float PositionZDefaultInMap = 20f;
+
+        //Các biến sử dụng trong quá trình chơi
         public static GameObject Player;//Main player
         public static HeroController PlayerController;//Main player controller
+        public static ObjectController ObjControl = new ObjectController();
 
         #region Tọa độ các object skill
         public static Dictionary<string, Vector3> SkillsPosition;

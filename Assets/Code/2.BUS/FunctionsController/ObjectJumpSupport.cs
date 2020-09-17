@@ -32,11 +32,16 @@ public class ObjectJumpSupport : MonoBehaviour
             Anim.enabled = true;
             Anim.SetTrigger(AnimName);
             var hero = col.GetComponent<HeroController>();
+            if(hero.IsAtking)
+            {
+                hero.IsAtking = false;
+                hero.IsAlowAtk = true;
+            }
+            hero.SetAnimation(HeroController.Actions.Jump);
             hero.IsJumping = true;
             hero.IsMoving = false;
             hero.HeroRigidBody2D.velocity = Vector3.zero;
             hero.HeroRigidBody2D.AddForce(JumpForce, ForceMode2D.Impulse);
-            hero.SetAnimation(HeroController.Actions.Jump);
         }
     }
 }
