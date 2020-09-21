@@ -23,6 +23,9 @@ public class EnemyController : MonoBehaviour
     [Title("Khoảng cách tấn công")]
     public float AttackRange;
     [TabGroup("Cấu hình thuộc tính")]
+    [Title("Cân nặng")]
+    public float Weight;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Bao nhiêu đòn đánh thường")]
     public float TotalAtkAnim;
 
@@ -34,6 +37,10 @@ public class EnemyController : MonoBehaviour
     public bool IsMoving;//Di chuyển
     [TabGroup("Misc")]
     public bool IsAtking;
+    [TabGroup("Misc")]
+    public bool IsHited;
+    [TabGroup("Misc")]
+    public Rigidbody2D ThisRigid2D;
 
     private Animator Anim;
     private bool IsActive;
@@ -43,7 +50,8 @@ public class EnemyController : MonoBehaviour
         Move,
         Jump,
         Surf,
-        Atk
+        Atk,
+        Hited
     }
     private GameObject ThisBody;
     private bool IsViewingLeft;//Hướng đang nhìn (dành cho skill)
@@ -55,6 +63,8 @@ public class EnemyController : MonoBehaviour
     {
         ThisBody = this.transform.GetChild(0).gameObject;
         Anim = GetComponent<Animator>();
+        ThisRigid2D = GetComponent<Rigidbody2D>();
+        ThisRigid2D.gravityScale = Weight;
     }
 
     // Start is called before the first frame update
@@ -170,6 +180,8 @@ public class EnemyController : MonoBehaviour
             IsMoving = true;
         if (action.Equals(Actions.Atk))
             IsAtking = true;
+        if (action.Equals(Actions.Hited))
+            IsHited = true;
         Anim.SetTrigger(action.ToString() + (action.Equals(Actions.Atk) ? ((int)Random.Range(1, TotalAtkAnim + 1)).ToString() : ""));
         CurrentAction = action;
     }
@@ -185,6 +197,7 @@ public class EnemyController : MonoBehaviour
             IsViewLeft = true;
         SetView();
         IsAtking = false;
+        IsHited = false;
         SetAnimation(Actions.Idle);
     }
 

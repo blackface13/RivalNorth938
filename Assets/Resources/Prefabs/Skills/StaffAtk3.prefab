@@ -4843,7 +4843,7 @@ MonoBehaviour:
   DelayTimeHide: 0.5
   HitWhenShow: 0
   DelayTimeHitWhenShow: 0.2
-  ForceToVictim: 1000
+  ForceToVictim: 500
 --- !u!61 &-6164703975692746186
 BoxCollider2D:
   m_ObjectHideFlags: 0

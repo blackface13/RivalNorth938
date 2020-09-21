@@ -6,10 +6,10 @@ using UnityEngine;
 public class DamageTextController : MonoBehaviour
 {
     #region Variables
-    public int DamageNumber = 0;
+    public string DamageValue = "0";
     public TextMeshPro TextMesh;
     private Rigidbody2D Rigid;
-    private float AutoHideDelayTime = 1.6f;
+    private float AutoHideDelayTime = 1f;
     public int DmgType;//Kiểu dmg, 0 = vật lý, 1 = phép thuật
     #endregion
 
@@ -31,8 +31,8 @@ public class DamageTextController : MonoBehaviour
             TextMesh = this.GetComponent<TextMeshPro>();
         if (Rigid == null)
             Rigid = this.GetComponent<Rigidbody2D>();
-        TextMesh.text = DamageNumber.ToString();
-        Rigid.AddForce(transform.up * Random.Range(450f, 500f) * Time.deltaTime, ForceMode2D.Impulse);
+        TextMesh.text = DamageValue;
+        Rigid.AddForce(transform.up * Random.Range(1300f, 1500f) * Time.deltaTime, ForceMode2D.Impulse);
         StartCoroutine(AutoHide(AutoHideDelayTime));
     }
 

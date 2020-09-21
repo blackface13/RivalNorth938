@@ -33,6 +33,7 @@ namespace Assets.Code._4.CORE
         public static GameObject Player;//Main player
         public static HeroController PlayerController;//Main player controller
         public static ObjectController ObjControl = new ObjectController();
+        public static BattleController BattleControl;
 
         #region Tọa độ các object skill
         public static Dictionary<string, Vector3> SkillsPosition;

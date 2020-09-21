@@ -18,7 +18,6 @@ public class BattleController : MonoBehaviour
     [TabGroup("Misc")]
 
     private List<GameObject> DamageText;
-    private List<DamageTextController> DamageTextControl;
     #endregion
 
     #region Initialize
@@ -32,6 +31,7 @@ public class BattleController : MonoBehaviour
     {
         SetupPlayer();
         CreateDmgText();
+        GameSettings.BattleControl = this;
     }
 
     /// <summary>
@@ -53,19 +53,43 @@ public class BattleController : MonoBehaviour
     {
         //DamageText = new List<GameObject>();
         DamageText = GameSettings.ObjControl.CreateListObject("Prefabs/UI/DamageText", NumberObjectDmgTextCreate, GameSettings.DefaultPositionObjectSkill, Quaternion.identity);
-        DamageTextControl = new List<DamageTextController>();
-        for (int i = 0; i < NumberObjectDmgTextCreate; i++)
-        {
-            DamageTextControl.Add(DamageText[i].GetComponent<DamageTextController>());
-        }
     }
 
     /// <summary>
     /// Hiển thị damage lên đối tượng trúng đòn
     /// </summary>
-    public void ShowDmgText(Vector3 pos, string dmgText)
+    public void ShowDmgText(Vector3 pos, string dmgValue)
     {
-        GameSettings.ObjControl.CheckExistAndCreateObject<DamageTextController>(pos, DamageText, Quaternion.identity, DamageTextControl);
+        var obj = GameSettings.ObjControl.GetObjectNonActive(DamageText);
+        if (obj == null)
+        {
+            DamageText.Add(Instantiate(DamageText[0], new Vector3(pos.x, pos.y, pos.z), Quaternion.identity));
+            var tmp = DamageText[DamageText.Count - 1].GetComponent<DamageTextController>();
+            tmp.DamageValue = dmgValue;
+        }
+        else
+        {
+            var tmp = DamageText[DamageText.Count - 1].GetComponent<DamageTextController>();
+            tmp.DamageValue = dmgValue;
+            GameSettings.ObjControl.ShowObject(obj, new Vector3(pos.x, pos.y, pos.z), Quaternion.identity);
+        }
+    }
+    #endregion
+
+    #region Functions
+
+
+    /// <summary>
+    /// Đẩy lùi đối phương
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator RepelVictim(Rigidbody2D victimRigid2D, Vector3 skillPos, Vector3 victimPos, float forceVictim, float originalGravity)
+    {
+        victimRigid2D.velocity = Vector3.zero;
+        victimRigid2D.gravityScale = 0;
+        victimRigid2D.AddForce(new Vector2(skillPos.x < victimPos.x ? forceVictim : -forceVictim, 0) * Time.deltaTime, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(.05f);
+        victimRigid2D.gravityScale = originalGravity;
     }
     #endregion
 

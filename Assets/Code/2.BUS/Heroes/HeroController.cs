@@ -143,7 +143,7 @@ public class HeroController : MonoBehaviour
         AttackActionController();
         ComboAttackController();
         MoveController();
-        KeyPressController();
+        //KeyPressController();
     }
 
 
@@ -338,7 +338,7 @@ public class HeroController : MonoBehaviour
     /// </summary>
     public void ShowEffect(string effectName)
     {
-        GameSettings.ObjControl.CheckExistAndCreateEffectExtension(GetPositionSkillEffect(effectName), EffectWeaponAttack[effectName], EffectWeaponAttack[effectName][0].transform.rotation, IsViewingLeft);
+        GameSettings.ObjControl.CheckExistAndCreateEffectExtension(GetPositionSkillEffect(effectName), EffectWeaponAttack[effectName], EffectWeaponAttack[effectName][0].transform.rotation, IsViewingLeft, IsMoving);
     }
 
     /// <summary>

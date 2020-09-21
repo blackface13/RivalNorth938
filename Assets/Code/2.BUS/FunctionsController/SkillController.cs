@@ -25,6 +25,9 @@ public class SkillController : MonoBehaviour
     [Title("Lực đẩy đối phương về sau")]
     public float ForceToVictim;
     [TabGroup("Cấu hình")]
+    [Title("Lực đẩy đối phương cộng thêm (dành cho di chuyển + đánh)")]
+    public float ForceToVictimBonus;
+    [TabGroup("Cấu hình")]
 
     [TabGroup("Misc")]
     private Collider2D ThisCollider;
@@ -133,10 +136,14 @@ public class SkillController : MonoBehaviour
         if ((col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
             || (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Hero) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillEnemy)))
         {
-            var victimRigid = col.gameObject.GetComponent<Rigidbody2D>();
+            if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy))
+            {
+                var enemy = col.GetComponent<EnemyController>();
+                StartCoroutine(GameSettings.BattleControl.RepelVictim(enemy.ThisRigid2D, this.transform.position, col.gameObject.transform.position, (ForceToVictim + ForceToVictimBonus), enemy.Weight));
+                GameSettings.BattleControl.ShowDmgText(col.transform.position, Random.Range(0001, 5000).ToString());
 
-            victimRigid.velocity = Vector3.zero;
-            victimRigid.AddForce(new Vector2(gameObject.transform.position.x < col.gameObject.transform.position.x ? ForceToVictim : -ForceToVictim, 0) * Time.deltaTime, ForceMode2D.Impulse);
+                enemy.SetAnimation(EnemyController.Actions.Hited);
+            }
         }
     }
     #endregion

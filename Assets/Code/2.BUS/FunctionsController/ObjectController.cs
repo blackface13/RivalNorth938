@@ -60,17 +60,24 @@ public class ObjectController : MonoBehaviour
     /// Check khởi tạo và hiển thị hiệu ứng trúng đòn lên đối phương
     /// </summary>
     /// <param name="col"></param>
-    public bool CheckExistAndCreateEffectExtension(Vector3 col, List<GameObject> gobject, Quaternion quater, bool isViewLeft)
+    public bool CheckExistAndCreateEffectExtension(Vector3 col, List<GameObject> gobject, Quaternion quater, bool isViewLeft, bool isMoving)
     {
         var a = GetObjectNonActive(gobject);
         if (a == null)
         {
             gobject.Add(Instantiate(gobject[0], new Vector3(col.x, col.y, col.z), quater));
-            gobject[gobject.Count - 1].GetComponent<SkillController>().IsViewLeft = isViewLeft;
+            var controller = gobject[gobject.Count - 1].GetComponent<SkillController>();
+            controller.IsViewLeft = isViewLeft;
+            controller.ForceToVictimBonus = isMoving ? 500 : 0;
             return true;
         }
         else
+        {
+            var controller = a.GetComponent<SkillController>();
+            controller.IsViewLeft = isViewLeft;
+            controller.ForceToVictimBonus = isMoving ? 1000 : 0;
             ShowSkill(a, new Vector3(col.x, col.y, col.z), quater, isViewLeft);
+        }
         return false;
     }
     #endregion

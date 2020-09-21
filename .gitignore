@@ -21,6 +21,7 @@ Library/PlayerDataCache/
 Library/ShaderCache/
 Library/StateCache/
 Library/AtlasCache/
+Library/metadata/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
