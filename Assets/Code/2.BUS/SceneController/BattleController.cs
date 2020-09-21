@@ -51,14 +51,21 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void CreateDmgText()
     {
-        DamageText = new List<GameObject>();
+        //DamageText = new List<GameObject>();
+        DamageText = GameSettings.ObjControl.CreateListObject("Prefabs/UI/DamageText", NumberObjectDmgTextCreate, GameSettings.DefaultPositionObjectSkill, Quaternion.identity);
         DamageTextControl = new List<DamageTextController>();
         for (int i = 0; i < NumberObjectDmgTextCreate; i++)
         {
-            DamageText.Add((GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/UI/DamageText"), new Vector3(-1000, -1000, 0), Quaternion.identity));
             DamageTextControl.Add(DamageText[i].GetComponent<DamageTextController>());
-            DamageText[i].SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// Hiển thị damage lên đối tượng trúng đòn
+    /// </summary>
+    public void ShowDmgText(Vector3 pos, string dmgText)
+    {
+        GameSettings.ObjControl.CheckExistAndCreateObject<DamageTextController>(pos, DamageText, Quaternion.identity, DamageTextControl);
     }
     #endregion
 

@@ -16,27 +16,47 @@ public class SkillController : MonoBehaviour
     [Title("Tự động ẩn sau khoảng thời gian")]
     public float DelayTimeHide;
     [TabGroup("Cấu hình")]
+    [Title("Gây sát thương ngay khi hiển thị")]
+    public bool HitWhenShow;
+    [TabGroup("Cấu hình")]
+    [Title("Thời gian delay trước khi gây sát thương")]
+    public float DelayTimeHitWhenShow;
+    [TabGroup("Cấu hình")]
     [Title("Lực đẩy đối phương về sau")]
     public float ForceToVictim;
     [TabGroup("Cấu hình")]
 
     [TabGroup("Misc")]
+    private Collider2D ThisCollider;
 
     private float OriginalScaleX;//Scale ban đầu của object
+
     #region Initialize
 
     public virtual void Awake()
     {
         OriginalScaleX = this.transform.localScale.x;
+        ThisCollider = this.GetComponent<Collider2D>();
     }
 
     public virtual void OnEnable()
     {
+        //Gây sát thương khi hiển thị skill
+        if (HitWhenShow)
+            ThisCollider.enabled = true;
+        else
+        {
+            StartCoroutine(AutoEnableCollider());
+            ThisCollider.enabled = false;
+        }
+
+        //Hướng skill
         if (IsViewLeft)
             this.transform.localScale = new Vector3(-OriginalScaleX, this.transform.localScale.y, this.transform.localScale.z);
         else
             this.transform.localScale = new Vector3(OriginalScaleX, this.transform.localScale.y, this.transform.localScale.z);
 
+        //Tự động ẩn sau 1 khoảng time
         if (IsAutoHide)
             StartCoroutine(AutoHide(DelayTimeHide));
     }
@@ -55,6 +75,17 @@ public class SkillController : MonoBehaviour
         yield return new WaitForSeconds(delayTime);
         gameObject.SetActive(false);
     }
+
+    /// <summary>
+    /// Tự động enable collider sau 1 khoảng time
+    /// </summary>
+    /// <returns></returns>
+    public virtual IEnumerator AutoEnableCollider()
+    {
+        yield return new WaitForSeconds(DelayTimeHitWhenShow);
+        ThisCollider.enabled = true;
+    }
+
     #endregion
 
     #region Physics
@@ -97,7 +128,7 @@ public class SkillController : MonoBehaviour
     /// Va chạm xuyên qua
     /// </summary>
     /// <param name="col"></param>
-    public void OnTriggerEnter2D(Collider2D col)
+    public virtual void OnTriggerEnter2D(Collider2D col)
     {
         if ((col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
             || (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Hero) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillEnemy)))

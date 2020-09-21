@@ -4841,6 +4841,8 @@ MonoBehaviour:
   IsViewLeft: 0
   IsAutoHide: 1
   DelayTimeHide: 0.5
+  HitWhenShow: 0
+  DelayTimeHitWhenShow: 0.2
   ForceToVictim: 1000
 --- !u!61 &6068569820720849254
 BoxCollider2D:
