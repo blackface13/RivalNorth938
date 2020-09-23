@@ -83,11 +83,12 @@ public class BattleController : MonoBehaviour
     /// Đẩy lùi đối phương
     /// </summary>
     /// <returns></returns>
-    public IEnumerator RepelVictim(Rigidbody2D victimRigid2D, Vector3 skillPos, Vector3 victimPos, float forceVictim, float originalGravity)
+    public IEnumerator RepelVictim(Rigidbody2D victimRigid2D, Vector3 skillPos, Vector3 victimPos, float forceVictim, float originalGravity, bool repelLeft)
     {
         victimRigid2D.velocity = Vector3.zero;
         victimRigid2D.gravityScale = 0;
-        victimRigid2D.AddForce(new Vector2(skillPos.x < victimPos.x ? forceVictim : -forceVictim, 0) * Time.deltaTime, ForceMode2D.Impulse);
+        victimRigid2D.velocity += (repelLeft ? Vector2.left : Vector2.right) * forceVictim;
+        //victimRigid2D.AddForce(new Vector2(skillPos.x < victimPos.x ? forceVictim : -forceVictim, 0) * Time.deltaTime, ForceMode2D.Impulse);
         yield return new WaitForSeconds(.05f);
         victimRigid2D.gravityScale = originalGravity;
     }

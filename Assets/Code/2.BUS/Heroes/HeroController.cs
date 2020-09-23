@@ -68,6 +68,8 @@ public class HeroController : MonoBehaviour
     public Actions CurrentAction = Actions.Idle;
     [TabGroup("Misc")]
     public bool IsAlowAtk = true;//Xác định cho phép thực hiện anim atk hay ko
+    [TabGroup("Misc")]
+    public bool IsAutoJumping;//Nhảy bị động bởi các object hỗ trợ
 
 
     private float[] ControlTimeComboNormalAtk; //Điều khiển thời gian combo
@@ -139,7 +141,6 @@ public class HeroController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // print(IsStay);
         AttackActionController();
         ComboAttackController();
         MoveController();
@@ -152,7 +153,8 @@ public class HeroController : MonoBehaviour
         if (IsPressMove && JoystickHandle.localPosition.x != 0)
         {
             if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Jump))
-                this.transform.Translate(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
+                HeroRigidBody2D.velocity = new Vector2((JoystickController.Horizontal < 0 ? -1 : 1) * (isTouchingWall ? 0 : MoveSpeed), HeroRigidBody2D.velocity.y);
+            //this.transform.Translate(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
             //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
             if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
             {
@@ -235,12 +237,7 @@ public class HeroController : MonoBehaviour
         {
             HeroRigidBody2D.velocity = Vector3.zero;
             HeroRigidBody2D.gravityScale = 0;
-            if (IsViewLeft)
-                // this.transform.Translate(new Vector2(0- SurfForce, 0) * MoveSpeed * Time.deltaTime);
-                HeroRigidBody2D.AddForce(new Vector2(0 - SurfForce, 0), ForceMode2D.Impulse);
-            else
-                // this.transform.Translate(new Vector2(SurfForce, 0) * MoveSpeed * Time.deltaTime);
-                HeroRigidBody2D.AddForce(new Vector2(SurfForce, 0), ForceMode2D.Impulse);
+            HeroRigidBody2D.velocity += (IsViewLeft ? Vector2.left : Vector2.right) * SurfForce;
             //HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
             IsSurfing = true;
             //IsJumping = true;
@@ -278,7 +275,8 @@ public class HeroController : MonoBehaviour
         {
             IsJumping = true;
             IsMoving = false;
-            HeroRigidBody2D.AddForce(new Vector2(0f, JumpForce), ForceMode2D.Impulse);
+            HeroRigidBody2D.velocity += Vector2.up * JumpForce;
+            //HeroRigidBody2D.AddForce(new Vector2(0f, JumpForce), ForceMode2D.Impulse);
             SetAnimation(Actions.Jump);
         }
     }
@@ -299,7 +297,10 @@ public class HeroController : MonoBehaviour
                 IsAtking = true;
                 Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
                 if (!IsJumping && IsPressMove)
-                    HeroRigidBody2D.AddForce(new Vector2(IsViewLeft ? 0 - AtkForce : AtkForce, 0f), ForceMode2D.Impulse);
+                {
+                    HeroRigidBody2D.velocity = Vector3.zero;
+                    HeroRigidBody2D.velocity += (IsViewLeft ? Vector2.left : Vector2.right) * AtkForce;
+                }
                 CurrentAction = action;
                 IsAlowAtk = false;
             }
@@ -311,26 +312,6 @@ public class HeroController : MonoBehaviour
             CurrentAction = action;
         }
     End: { }
-        //switch (action)
-        //{
-        //    case Actions.Move:
-        //        Anim.SetTrigger(CurrentWeapon + "Move");
-        //        CurrentAction = action;
-        //        break;
-        //    case Actions.Idle:
-        //        Anim.SetTrigger(CurrentWeapon + "Idle");
-        //        CurrentAction = action;
-        //        break;
-        //    case Actions.Jump:
-        //        Anim.SetTrigger(CurrentWeapon + "Jump");
-        //        CurrentAction = action;
-        //        break;
-        //    case Actions.Surf:
-        //        Anim.SetTrigger(CurrentWeapon + "Surf");
-        //        CurrentAction = action;
-        //        break;
-        //    default: break;
-        //}
     }
 
     /// <summary>
@@ -400,8 +381,7 @@ public class HeroController : MonoBehaviour
         {
             if (IsAlowAtk)
             {
-                HeroRigidBody2D.velocity = Vector3.zero;
-                HeroRigidBody2D.angularVelocity = 0;
+                //HeroRigidBody2D.velocity = Vector3.zero;
                 CurrentComboTmp = CurrentCombo;
                 SetAnimation(Actions.Atk, true);
                 if (CurrentCombo >= GameSettings.MaxAtkCombo)
@@ -439,9 +419,13 @@ public class HeroController : MonoBehaviour
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
             if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
-                SetAnimation(Actions.Idle);
+                    SetAnimation(Actions.Idle);
             IsJumping = false;
-            IsAlowAtk = true;
+            if (IsAutoJumping)
+            {
+                IsAlowAtk = true;
+                IsAutoJumping = false;
+            }
         }
     }
 
@@ -452,15 +436,17 @@ public class HeroController : MonoBehaviour
     public void OnCollisionExit2D(Collision2D col)
     {
         //Đổi animation khi rơi từ map xuống
-        //if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
-        //{
-        //    if (!CurrentAction.Equals(Actions.Atk) && !CurrentAction.Equals(Actions.Surf))
-        //    {
-        //        if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move))
-        //            SetAnimation(Actions.Jump);
-        //        IsJumping = true;
-        //    }
-        //}
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+        {
+            if (!CurrentAction.Equals(Actions.Atk) && !CurrentAction.Equals(Actions.Surf))
+            {
+                if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move))
+                    SetAnimation(Actions.Jump);
+                IsJumping = true;
+            }
+            isTouchingWall = false;
+
+        }
     }
 
     /// <summary>
@@ -469,6 +455,35 @@ public class HeroController : MonoBehaviour
     /// <param name="col"></param>
     public void OnTriggerEnter2D(Collider2D col)
     {
+    }
+
+
+    ContactPoint2D[] points = new ContactPoint2D[20];
+    Vector3 wallNormal; //this will store the vector that points out from the wall
+    bool isTouchingWall;
+    public void OnCollisionStay2D(Collision2D col)
+    {
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+        {
+            int pointsAmount = col.GetContacts(points);
+            isTouchingWall = false; //don't know if we're near a wall yet
+            for (int i = 0; i < pointsAmount; i++)
+            {
+                //if angle between the touched surface and the plane ground is more than 80 degrees, than it means this surface is kind of a wall
+                if (Vector3.Angle(points[i].normal, Vector3.up) > -10 && Vector3.Angle(points[i].normal, Vector3.up) < 10)
+                {
+                    isTouchingWall = false;
+                    break;
+                }
+                else if (Vector3.Angle(points[i].normal, Vector3.up) > 80f)
+                {
+                    wallNormal = points[i].normal;
+                    wallNormal.y = 0f; // eliminate all possible slopes of the wall touched so the vector will be ideally horizontal.
+                    isTouchingWall = true;
+                    break; //quit the iteration as we already got some wall
+                }
+            }
+        }
     }
     #endregion
 
@@ -603,7 +618,7 @@ public class HeroController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            IsViewLeft  = false;
+            IsViewLeft = false;
             IsKeyboardPress = true;
             SetView();
             //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
