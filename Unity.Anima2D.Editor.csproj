@@ -644,11 +644,11 @@
     <Reference Include="Unity.2D.Sprite.Editor">
       <HintPath>H:/Projects/GameDevelop/RivalNorth938/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>H:/Projects/GameDevelop/RivalNorth938/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>H:/Projects/GameDevelop/RivalNorth938/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>H:/Projects/GameDevelop/RivalNorth938/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
       <HintPath>H:/Projects/GameDevelop/RivalNorth938/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>

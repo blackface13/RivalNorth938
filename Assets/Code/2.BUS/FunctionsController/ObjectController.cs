@@ -68,14 +68,14 @@ public class ObjectController : MonoBehaviour
             gobject.Add(Instantiate(gobject[0], new Vector3(col.x, col.y, col.z), quater));
             var controller = gobject[gobject.Count - 1].GetComponent<SkillController>();
             controller.IsViewLeft = isViewLeft;
-            controller.ForceToVictimBonus = isMoving ? 500 : 0;
+            controller.ForceToVictimBonus = isMoving ? 15 : 0;
             return true;
         }
         else
         {
             var controller = a.GetComponent<SkillController>();
             controller.IsViewLeft = isViewLeft;
-            controller.ForceToVictimBonus = isMoving ? 1000 : 0;
+            controller.ForceToVictimBonus = isMoving ? 15 : 0;
             ShowSkill(a, new Vector3(col.x, col.y, col.z), quater, isViewLeft);
         }
         return false;

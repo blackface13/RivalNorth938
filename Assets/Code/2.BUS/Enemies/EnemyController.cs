@@ -72,6 +72,11 @@ public class EnemyController : MonoBehaviour
     {
 
     }
+
+    private void OnEnable()
+    {
+        IsActive = true;
+    }
     #endregion
 
     #region Functions
@@ -83,6 +88,7 @@ public class EnemyController : MonoBehaviour
         {
             MoveController();
         }
+        //print(CurrentAction);
     }
 
     /// <summary>
@@ -114,6 +120,7 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     private void MoveController()
     {
+        //Trong vùng di chuyển
         if (DistanceToPlayer < DetectRange && DistanceToPlayer > AttackRange)
         {
             if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Idle))
@@ -128,20 +135,26 @@ public class EnemyController : MonoBehaviour
                     IsViewLeft = true;
                     SetView();
                 }
-                if (!CurrentAction.Equals(Actions.Move))
-                    SetAnimation(Actions.Move);
 
-                this.transform.Translate(new Vector2(IsViewLeft ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
+                if ((transform.position.x < GameSettings.Player.transform.position.x && GameSettings.Player.transform.position.x - transform.position.x > 1f) ||
+                    (transform.position.x > GameSettings.Player.transform.position.x && transform.position.x - GameSettings.Player.transform.position.x > 1f))
+                {
+                    ThisRigid2D.velocity = new Vector2((IsViewLeft ? -1 : 1) * MoveSpeed, ThisRigid2D.velocity.y);
+                    if (!CurrentAction.Equals(Actions.Move))
+                        SetAnimation(Actions.Move);
+                }
+                //this.transform.Translate(new Vector2(IsViewLeft ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
             }
         }
         else
         {
+            //Trong phạm vi tấn công
             if (DistanceToPlayer <= AttackRange)
             {
                 if (!CurrentAction.Equals(Actions.Atk))
                     SetAnimation(Actions.Atk);
             }
-            else
+            else //Ngoài phạm vi phát hiện player
             {
                 if (!CurrentAction.Equals(Actions.Idle))
                 {

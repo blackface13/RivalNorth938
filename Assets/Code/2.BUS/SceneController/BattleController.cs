@@ -69,7 +69,7 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            var tmp = DamageText[DamageText.Count - 1].GetComponent<DamageTextController>();
+            var tmp = obj.GetComponent<DamageTextController>();
             tmp.DamageValue = dmgValue;
             GameSettings.ObjControl.ShowObject(obj, new Vector3(pos.x, pos.y, pos.z), Quaternion.identity);
         }
@@ -83,14 +83,12 @@ public class BattleController : MonoBehaviour
     /// Đẩy lùi đối phương
     /// </summary>
     /// <returns></returns>
-    public IEnumerator RepelVictim(Rigidbody2D victimRigid2D, Vector3 skillPos, Vector3 victimPos, float forceVictim, float originalGravity, bool repelLeft)
+    public IEnumerator RepelVictim(Rigidbody2D victimRigid2D, Vector3 skillPos, Vector3 victimPos, float forceVictim, bool repelLeft)
     {
         victimRigid2D.velocity = Vector3.zero;
-        victimRigid2D.gravityScale = 0;
-        victimRigid2D.velocity += (repelLeft ? Vector2.left : Vector2.right) * forceVictim;
+        victimRigid2D.velocity += (repelLeft ? Vector2.right : Vector2.left) * forceVictim;
         //victimRigid2D.AddForce(new Vector2(skillPos.x < victimPos.x ? forceVictim : -forceVictim, 0) * Time.deltaTime, ForceMode2D.Impulse);
         yield return new WaitForSeconds(.05f);
-        victimRigid2D.gravityScale = originalGravity;
     }
     #endregion
 

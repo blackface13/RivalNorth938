@@ -71,6 +71,11 @@ public class HeroController : MonoBehaviour
     [TabGroup("Misc")]
     public bool IsAutoJumping;//Nhảy bị động bởi các object hỗ trợ
 
+    ContactPoint2D[] points = new ContactPoint2D[20];
+    Vector3 wallNormal; //this will store the vector that points out from the wall
+    bool IsTouchingWall;//Chạm tường
+    bool IsTouchingLane;//Chạm đất
+
 
     private float[] ControlTimeComboNormalAtk; //Điều khiển thời gian combo
     private Animator Anim;
@@ -144,7 +149,7 @@ public class HeroController : MonoBehaviour
         AttackActionController();
         ComboAttackController();
         MoveController();
-        //KeyPressController();
+        KeyPressController();
     }
 
 
@@ -153,7 +158,7 @@ public class HeroController : MonoBehaviour
         if (IsPressMove && JoystickHandle.localPosition.x != 0)
         {
             if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Jump))
-                HeroRigidBody2D.velocity = new Vector2((JoystickController.Horizontal < 0 ? -1 : 1) * (isTouchingWall ? 0 : MoveSpeed), HeroRigidBody2D.velocity.y);
+                HeroRigidBody2D.velocity = new Vector2((JoystickController.Horizontal < 0 ? -1 : 1) * (IsTouchingWall ? 0 : MoveSpeed), HeroRigidBody2D.velocity.y);
             //this.transform.Translate(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
             //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
             if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
@@ -252,7 +257,9 @@ public class HeroController : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         if (!IsAtking)
         {
-            if (IsJumping)
+            if (IsTouchingLane)
+                SetAnimation(Actions.Idle);
+            else if (IsJumping)
                 SetAnimation(Actions.Jump);
             else
                 SetAnimation(Actions.Idle);
@@ -263,6 +270,7 @@ public class HeroController : MonoBehaviour
         //HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
         yield return new WaitForSeconds(SurfDelayTime - .2f);
         IsSurfing = false;
+        SetView();
     }
 
     /// <summary>
@@ -293,7 +301,10 @@ public class HeroController : MonoBehaviour
 
                 ControlTimeComboNormalAtk[0] = ControlTimeComboNormalAtk[1];
                 if (IsJumping)
+                {
+                    HeroRigidBody2D.velocity = Vector3.zero;
                     HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                }
                 IsAtking = true;
                 Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
                 if (!IsJumping && IsPressMove)
@@ -381,7 +392,8 @@ public class HeroController : MonoBehaviour
         {
             if (IsAlowAtk)
             {
-                //HeroRigidBody2D.velocity = Vector3.zero;
+                //if (IsJumping)
+                //    HeroRigidBody2D.velocity = Vector3.zero;
                 CurrentComboTmp = CurrentCombo;
                 SetAnimation(Actions.Atk, true);
                 if (CurrentCombo >= GameSettings.MaxAtkCombo)
@@ -419,7 +431,7 @@ public class HeroController : MonoBehaviour
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
             if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
-                    SetAnimation(Actions.Idle);
+                SetAnimation(Actions.Idle);
             IsJumping = false;
             if (IsAutoJumping)
             {
@@ -444,8 +456,8 @@ public class HeroController : MonoBehaviour
                     SetAnimation(Actions.Jump);
                 IsJumping = true;
             }
-            isTouchingWall = false;
-
+            IsTouchingWall = false;
+            IsTouchingLane = false;
         }
     }
 
@@ -457,29 +469,26 @@ public class HeroController : MonoBehaviour
     {
     }
 
-
-    ContactPoint2D[] points = new ContactPoint2D[20];
-    Vector3 wallNormal; //this will store the vector that points out from the wall
-    bool isTouchingWall;
     public void OnCollisionStay2D(Collision2D col)
     {
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
             int pointsAmount = col.GetContacts(points);
-            isTouchingWall = false; //don't know if we're near a wall yet
+            IsTouchingWall = false; //don't know if we're near a wall yet
             for (int i = 0; i < pointsAmount; i++)
             {
                 //if angle between the touched surface and the plane ground is more than 80 degrees, than it means this surface is kind of a wall
                 if (Vector3.Angle(points[i].normal, Vector3.up) > -10 && Vector3.Angle(points[i].normal, Vector3.up) < 10)
                 {
-                    isTouchingWall = false;
+                    IsTouchingWall = false;
+                    IsTouchingLane = true;
                     break;
                 }
                 else if (Vector3.Angle(points[i].normal, Vector3.up) > 80f)
                 {
                     wallNormal = points[i].normal;
                     wallNormal.y = 0f; // eliminate all possible slopes of the wall touched so the vector will be ideally horizontal.
-                    isTouchingWall = true;
+                    IsTouchingWall = true;
                     break; //quit the iteration as we already got some wall
                 }
             }
@@ -505,6 +514,7 @@ public class HeroController : MonoBehaviour
     {
         IsPressAtk = false;
     }
+
     public void BtnMoveDown(BaseEventData eventData)
     {
         IsPressMove = true;
@@ -630,7 +640,8 @@ public class HeroController : MonoBehaviour
             }
         }
         if (IsPressMove && IsKeyboardPress)
-            this.transform.Translate(new Vector2(IsViewLeft ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
+            HeroRigidBody2D.velocity = new Vector2((JoystickController.Horizontal < 0 ? -1 : 1) * (IsTouchingWall ? 0 : MoveSpeed), HeroRigidBody2D.velocity.y);
+        //this.transform.Translate(new Vector2(IsViewLeft ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
 
         //Nhảy
         if (Input.GetKeyDown(KeyCode.Space))
