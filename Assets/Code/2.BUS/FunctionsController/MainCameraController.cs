@@ -17,7 +17,7 @@ public class MainCameraController : MonoBehaviour
     //}
     public void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.MapObject))
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.MapObject) && col.gameObject.tag.Equals("Untagged"))
         {
             col.transform.GetChild(0).gameObject.SetActive(true);
         }
@@ -25,7 +25,7 @@ public class MainCameraController : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.MapObject))
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.MapObject) && col.gameObject.tag.Equals("Untagged"))
         {
             col.transform.GetChild(0).gameObject.SetActive(false);
         }

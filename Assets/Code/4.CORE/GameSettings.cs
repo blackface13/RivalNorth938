@@ -28,6 +28,7 @@ namespace Assets.Code._4.CORE
         public static string PathSkillObjects = "Prefabs/Skills/";
         public static Vector3 DefaultPositionObjectSkill = new Vector3(-1000, -1000, 20);
         public static float PositionZDefaultInMap = 20f;
+        public static bool IsAllowActions = false;//Cho phép ng chơi thao tác hay ko
 
         //Các biến sử dụng trong quá trình chơi
         public static GameObject Player;//Main player

@@ -92,6 +92,7 @@
     <Compile Include="Assets\Code\2.BUS\FunctionsController\DamageTextController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MainCameraController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MapController.cs" />
+    <Compile Include="Assets\Code\2.BUS\FunctionsController\MapMove.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MapObjectBehindController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MapObjectController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\ObjectController.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Assets\Code\2.BUS\Heroes\HeroSkill.cs" />
     <Compile Include="Assets\Code\2.BUS\Heroes\InputController.cs" />
     <Compile Include="Assets\Code\2.BUS\SceneController\BattleController.cs" />
+    <Compile Include="Assets\Code\2.BUS\Systems\GameSystems.cs" />
     <Compile Include="Assets\Code\4.CORE\GameSettings.cs" />
     <Compile Include="Assets\Code\5.PLUGINS\Gradient.cs" />
     <Compile Include="Assets\Joystick Pack\Examples\JoystickPlayerExample.cs" />

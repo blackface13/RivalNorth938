@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleController : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class BattleController : MonoBehaviour
     [TabGroup("Cấu hình")]
     [Title("Số lượng object damage text khởi tạo ban đầu")]
     public int NumberObjectDmgTextCreate;
+    [TabGroup("Cấu hình")]
+    [Title("Hình ảnh làm tối khi chuyển cảnh")]
+    public Image ImgTranslate;
 
 
     [TabGroup("Misc")]
@@ -23,13 +27,14 @@ public class BattleController : MonoBehaviour
     #region Initialize
     private void Awake()
     {
-
+        SetupPlayer();
+        GameSystems.ImgTranslateColor = ImgTranslate.color;
+       StartCoroutine( GameSystems.LoadMap(2, new Vector2(0, 0)));
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        SetupPlayer();
         CreateDmgText();
         GameSettings.BattleControl = this;
     }

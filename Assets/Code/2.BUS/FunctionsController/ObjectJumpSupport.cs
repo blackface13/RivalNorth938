@@ -35,12 +35,12 @@ public class ObjectJumpSupport : MonoBehaviour
             if(hero.IsAtking)
             {
                 hero.IsAtking = false;
-                hero.IsAlowAtk = true;
+                hero.IsAllowAtk = true;
             }
             hero.SetAnimation(HeroController.Actions.Jump);
             hero.IsJumping = true;
             hero.IsMoving = false;
-            hero.IsAlowAtk = false;
+            hero.IsAllowAtk = false;
             hero.IsAutoJumping = true;
             hero.HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             hero.HeroRigidBody2D.velocity = Vector3.zero;
