@@ -7,6 +7,7 @@ TagManager:
   - Skill
   - Enemy
   - ObjectMapMove
+  - GameControl
   layers:
   - Default
   - TransparentFX

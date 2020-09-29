@@ -4841,8 +4841,8 @@ MonoBehaviour:
   IsViewLeft: 0
   IsAutoHide: 1
   DelayTimeHide: 0.5
-  HitWhenShow: 1
-  DelayTimeHitWhenShow: 0
+  HitWhenShow: 0
+  DelayTimeHitWhenShow: 0.1
   ForceToVictim: 15
   ForceToVictimBonus: 0
 --- !u!61 &-1554222536951837711

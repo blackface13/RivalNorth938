@@ -27,9 +27,11 @@ public class BattleController : MonoBehaviour
     #region Initialize
     private void Awake()
     {
+        GameSystems.GameControl = GameObject.FindGameObjectWithTag("GameControl").GetComponent<GameController>();
         SetupPlayer();
-        GameSystems.ImgTranslateColor = ImgTranslate.color;
-       StartCoroutine( GameSystems.LoadMap(2, new Vector2(0, 0)));
+        GameSystems.ImgTranslate = ImgTranslate;
+        GameSystems.GameControl.LoadMap(2, new Vector2(0, 0));
+        //StartCoroutine( GameSystems.LoadMap(2, new Vector2(0, 0)));
     }
 
     // Start is called before the first frame update
