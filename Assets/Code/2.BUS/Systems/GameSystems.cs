@@ -19,6 +19,7 @@ public class GameSystems : MonoBehaviour
 
     public static IEnumerator LoadMap(int mapID, Vector2 movePos)
     {
+        ImgTranslate.gameObject.SetActive(true);
         GameSettings.IsAllowActions = false;
 
         //Giữ player nguyên vị trí Y
