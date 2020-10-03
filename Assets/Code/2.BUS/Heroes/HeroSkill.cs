@@ -42,6 +42,11 @@ namespace Assets.Code._2.BUS.Heroes
         {
             base.OnTriggerEnter2D(col);
 
+            if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
+            {
+                GameSettings.BattleControl.ComboCount++;
+                GameSettings.BattleControl.ShowCombo();
+            }
             //Stop motion (Nhìn chưa đc ưng lắm, để làm sau)
             //if ((col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
             //    || (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Hero) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillEnemy)))

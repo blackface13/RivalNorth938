@@ -17,10 +17,18 @@ public class BattleController : MonoBehaviour
     [TabGroup("Cấu hình")]
     [Title("Hình ảnh làm tối khi chuyển cảnh")]
     public Image ImgTranslate;
+    [TabGroup("Cấu hình")]
+    [Title("Object combo text")]
+    public Text ComboText;
+    [TabGroup("Cấu hình")]
+    [Title("Object combo text")]
+    public AnimationCurve MoveAnim;
 
 
     [TabGroup("Misc")]
-
+    public bool IsShowCombo;
+    [TabGroup("Misc")]
+    public int ComboCount;
     private List<GameObject> DamageText;
     #endregion
 
@@ -30,7 +38,7 @@ public class BattleController : MonoBehaviour
         GameSystems.GameControl = GameObject.FindGameObjectWithTag("GameControl").GetComponent<GameController>();
         SetupPlayer();
         GameSystems.ImgTranslate = ImgTranslate;
-        GameSystems.GameControl.LoadMap(2, new Vector2(0, 0));
+        GameSystems.GameControl.LoadMap(1, new Vector2(0, 0));
         //StartCoroutine( GameSystems.LoadMap(2, new Vector2(0, 0)));
     }
 
@@ -96,6 +104,20 @@ public class BattleController : MonoBehaviour
         victimRigid2D.velocity += (repelLeft ? Vector2.right : Vector2.left) * forceVictim;
         //victimRigid2D.AddForce(new Vector2(skillPos.x < victimPos.x ? forceVictim : -forceVictim, 0) * Time.deltaTime, ForceMode2D.Impulse);
         yield return new WaitForSeconds(.05f);
+    }
+
+    /// <summary>
+    /// Show combo khi đánh liên tục
+    /// </summary>
+    public void ShowCombo()
+    {
+        if (!IsShowCombo)
+        {
+            IsShowCombo = true;
+            StartCoroutine(GameSettings.ObjControl.MoveObjectCurve(true, ComboText.gameObject, ComboText.gameObject.transform.localPosition, new Vector2(-885.61f, ComboText.gameObject.transform.localPosition.y), .5f, MoveAnim));
+        }
+        else
+            ComboText.text = string.Format("Combo {0}", ComboCount);
     }
     #endregion
 

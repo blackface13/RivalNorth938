@@ -1,4 +1,5 @@
 ﻿using Assets.Code._4.CORE;
+using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,7 +44,9 @@ public class EnemyController : MonoBehaviour
     public Rigidbody2D ThisRigid2D;
 
     private Animator Anim;
+    private bool AllowMove = true;//Cho phép nhân vật di chuyển hay ko
     private bool IsActive;
+    private int HitedCount;//Bộ đếm số lần bị đánh
     public enum Actions//Hành động hiện tại
     {
         Idle,
@@ -121,44 +124,47 @@ public class EnemyController : MonoBehaviour
     private void MoveController()
     {
         //Trong vùng di chuyển
-        if (DistanceToPlayer < DetectRange && DistanceToPlayer > AttackRange)
+        if (AllowMove)
         {
-            if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Idle))
+            if (DistanceToPlayer < DetectRange && DistanceToPlayer > AttackRange)
             {
-                if (transform.position.x < GameSettings.Player.transform.position.x)
+                if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Idle))
                 {
-                    IsViewLeft = false;
-                    SetView();
-                }
-                else
-                {
-                    IsViewLeft = true;
-                    SetView();
-                }
+                    if (transform.position.x < GameSettings.Player.transform.position.x)
+                    {
+                        IsViewLeft = false;
+                        SetView();
+                    }
+                    else
+                    {
+                        IsViewLeft = true;
+                        SetView();
+                    }
 
-                if ((transform.position.x < GameSettings.Player.transform.position.x && GameSettings.Player.transform.position.x - transform.position.x > 1f) ||
-                    (transform.position.x > GameSettings.Player.transform.position.x && transform.position.x - GameSettings.Player.transform.position.x > 1f))
-                {
-                    ThisRigid2D.velocity = new Vector2((IsViewLeft ? -1 : 1) * MoveSpeed, ThisRigid2D.velocity.y);
-                    if (!CurrentAction.Equals(Actions.Move))
-                        SetAnimation(Actions.Move);
+                    if ((transform.position.x < GameSettings.Player.transform.position.x && GameSettings.Player.transform.position.x - transform.position.x > 1f) ||
+                        (transform.position.x > GameSettings.Player.transform.position.x && transform.position.x - GameSettings.Player.transform.position.x > 1f))
+                    {
+                        ThisRigid2D.velocity = new Vector2((IsViewLeft ? -1 : 1) * MoveSpeed, ThisRigid2D.velocity.y);
+                        if (!CurrentAction.Equals(Actions.Move))
+                            SetAnimation(Actions.Move);
+                    }
+                    //this.transform.Translate(new Vector2(IsViewLeft ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
                 }
-                //this.transform.Translate(new Vector2(IsViewLeft ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
             }
-        }
-        else
-        {
-            //Trong phạm vi tấn công
-            if (DistanceToPlayer <= AttackRange)
+            else
             {
-                if (!CurrentAction.Equals(Actions.Atk))
-                    SetAnimation(Actions.Atk);
-            }
-            else //Ngoài phạm vi phát hiện player
-            {
-                if (!CurrentAction.Equals(Actions.Idle))
+                //Trong phạm vi tấn công
+                if (DistanceToPlayer <= AttackRange)
                 {
-                    SetAnimation(Actions.Idle);
+                    if (!CurrentAction.Equals(Actions.Atk))
+                        SetAnimation(Actions.Atk);
+                }
+                else //Ngoài phạm vi phát hiện player
+                {
+                    if (!CurrentAction.Equals(Actions.Idle))
+                    {
+                        SetAnimation(Actions.Idle);
+                    }
                 }
             }
         }
@@ -204,6 +210,7 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     public void EndAtk()
     {
+        AllowMove = false;
         if (transform.position.x < GameSettings.Player.transform.position.x)
             IsViewLeft = false;
         else
@@ -212,7 +219,34 @@ public class EnemyController : MonoBehaviour
         IsAtking = false;
         IsHited = false;
         SetAnimation(Actions.Idle);
+        StartCoroutine(WaitForEndHited(HitedCount));
     }
 
+    /// <summary>
+    /// Khoảng thời gian bị choáng sau khi bị đánh trúng
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator WaitForEndHited(int hitedCount)
+    {
+        yield return new WaitForSeconds(Random.Range(.1f, 1.5f));
+        if (hitedCount.Equals(HitedCount))
+            AllowMove = true;
+    }
+
+    #endregion
+
+    #region Physics
+
+    /// <summary>
+    /// Va chạm xuyên qua
+    /// </summary>
+    /// <param name="col"></param>
+    public virtual void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
+        {
+            HitedCount++;
+        }
+    }
     #endregion
 }

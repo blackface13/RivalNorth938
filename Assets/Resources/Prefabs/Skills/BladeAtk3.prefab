@@ -4843,7 +4843,7 @@ MonoBehaviour:
   DelayTimeHide: 0.5
   HitWhenShow: 0
   DelayTimeHitWhenShow: 0.1
-  ForceToVictim: 15
+  ForceToVictim: {x: 10, y: 15}
   ForceToVictimBonus: 0
 --- !u!61 &-1554222536951837711
 BoxCollider2D:
@@ -4858,7 +4858,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.26060247, y: 0.081311226}
+  m_Offset: {x: 1.1136773, y: 0.3876977}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4869,5 +4869,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.78946, y: 6.442213}
+  m_Size: {x: 4.0833106, y: 5.82944}
   m_EdgeRadius: 0

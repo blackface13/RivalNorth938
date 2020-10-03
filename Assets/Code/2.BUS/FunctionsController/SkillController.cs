@@ -23,7 +23,7 @@ public class SkillController : MonoBehaviour
     public float DelayTimeHitWhenShow;
     [TabGroup("Cấu hình")]
     [Title("Lực đẩy đối phương về sau")]
-    public float ForceToVictim;
+    public Vector2 ForceToVictim;
     [TabGroup("Cấu hình")]
     [Title("Lực đẩy đối phương cộng thêm (dành cho di chuyển + đánh)")]
     public float ForceToVictimBonus;
@@ -139,7 +139,7 @@ public class SkillController : MonoBehaviour
             if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy))
             {
                 var enemy = col.GetComponent<EnemyController>();
-                StartCoroutine(GameSettings.BattleControl.RepelVictim(enemy.ThisRigid2D, this.transform.position, col.gameObject.transform.position, (ForceToVictim + ForceToVictimBonus), enemy.IsViewLeft));
+                StartCoroutine(GameSettings.BattleControl.RepelVictim(enemy.ThisRigid2D, this.transform.position, col.gameObject.transform.position, (Random.Range(ForceToVictim.x, ForceToVictim.y) + ForceToVictimBonus), enemy.IsViewLeft));
                 GameSettings.BattleControl.ShowDmgText(col.transform.position, Random.Range(0001, 5000).ToString());
 
                 enemy.SetAnimation(EnemyController.Actions.Hited);

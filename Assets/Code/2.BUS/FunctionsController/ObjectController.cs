@@ -165,5 +165,39 @@ public class ObjectController : MonoBehaviour
         obj.transform.rotation = quater;
         obj.SetActive(true);
     }
+
+
+    /// <summary>
+    /// Di chuyển object tới vị trí trong khoảng time.
+    /// Lưu ý, nếu type là rect, thì startPos và targetPos phải là anchorPosition, còn ko là position
+    /// </summary>
+    /// <param name="isRect">true = rectransform, false = transform</param>
+    /// <param name="obj">object sẽ move</param>
+    /// <param name="startPos">tọa độ bắt đầu</param>
+    /// <param name="targetPos">tọa độ kết thúc</param>
+    /// <param name="duration">thời gian move</param>
+    /// <param name="animCurve">đường cong move</param>
+    /// <returns></returns>
+    public IEnumerator MoveObjectCurve(bool isRect, GameObject obj, Vector2 startPos, Vector2 targetPos, float duration, AnimationCurve animCurve)
+    {
+        var rect = isRect ? obj.GetComponent<RectTransform>() : null;
+        var rect2 = isRect ? null : obj.GetComponent<Transform>();
+        float time = 0;
+        float rate = 1 / duration;
+        while (time < 1)
+        {
+            time += rate * Time.deltaTime;
+            if (isRect)
+                rect.localPosition = Vector2.Lerp(startPos, targetPos, animCurve.Evaluate(time));
+            else
+                rect2.position = Vector2.Lerp(startPos, targetPos, animCurve.Evaluate(time));
+            yield return null;
+        }
+        //Gán lại tọa độ sau khi move xong
+        if (isRect)
+            rect.localPosition = targetPos;
+        else
+            rect2.position = targetPos;
+    }
     #endregion
 }
