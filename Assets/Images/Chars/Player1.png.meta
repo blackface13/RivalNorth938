@@ -197,6 +197,9 @@ TextureImporter:
   - first:
       213: -8409804523254666561
     second: Mat2
+  - first:
+      213: 8621061917008103043
+    second: KatanaOut
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -444,12 +447,12 @@ TextureImporter:
       name: Player1_8
       rect:
         serializedVersion: 2
-        x: 864
-        y: 621
-        width: 114.99994
-        height: 679
+        x: 862.8519
+        y: 619
+        width: 116
+        height: 681
       alignment: 9
-      pivot: {x: 0.50000024, y: 0.5022091}
+      pivot: {x: 0.5055868, y: 0.50367105}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1007,6 +1010,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: KatanaOut
+      rect:
+        serializedVersion: 2
+        x: 1094
+        y: 627
+        width: 83
+        height: 669
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3868aed132a24a770800000000000000
+      internalID: 8621061917008103043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1020,6 +1044,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: 637400217462478527
+  userData: 637400217521423119
   assetBundleName: 
   assetBundleVariant: 
