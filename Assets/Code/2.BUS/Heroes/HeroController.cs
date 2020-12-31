@@ -93,7 +93,8 @@ public class HeroController : MonoBehaviour
     public enum Weapons//Vũ khí nhân vật có thể sử dụng
     {
         Blade,
-        Staff
+        Staff,
+        Katana
     }
     public enum Actions//Hành động hiện tại
     {
@@ -187,6 +188,9 @@ public class HeroController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Nhân vật di chuyển
+    /// </summary>
     private void MoveController()
     {
         if (IsPressMove && JoystickHandle.localPosition.x != 0)
@@ -243,7 +247,7 @@ public class HeroController : MonoBehaviour
 
     public void ChangeWeaponTmp(BaseEventData eventData)
     {
-        CurrentWeapon = CurrentWeapon.Equals(Weapons.Blade) ? Weapons.Staff : Weapons.Blade;
+        CurrentWeapon = CurrentWeapon.Equals(Weapons.Blade) ? Weapons.Staff : CurrentWeapon.Equals(Weapons.Staff) ? Weapons.Katana : Weapons.Blade;
         SetAnimation(CurrentAction);
     }
 
