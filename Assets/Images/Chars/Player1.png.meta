@@ -200,6 +200,9 @@ TextureImporter:
   - first:
       213: 8621061917008103043
     second: KatanaOut
+  - first:
+      213: -210977214386217018
+    second: WP_Sword
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1014,12 +1017,12 @@ TextureImporter:
       name: KatanaOut
       rect:
         serializedVersion: 2
-        x: 1094
-        y: 627
-        width: 83
-        height: 669
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1089
+        y: 623
+        width: 93
+        height: 677
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1027,6 +1030,27 @@ TextureImporter:
       bones: []
       spriteID: 3868aed132a24a770800000000000000
       internalID: 8621061917008103043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WP_Sword
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 484
+        width: 77
+        height: 816
+      alignment: 9
+      pivot: {x: 0.5, y: 0.50183827}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cfdec06755721df0800000000000000
+      internalID: -210977214386217018
       vertices: []
       indices: 
       edges: []
@@ -1044,6 +1068,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: 637400217521423119
+  userData: 637452038498036058
   assetBundleName: 
   assetBundleVariant: 

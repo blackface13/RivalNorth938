@@ -94,7 +94,8 @@ public class HeroController : MonoBehaviour
     {
         Blade,
         Staff,
-        Katana
+        Katana,
+        Sword
     }
     public enum Actions//Hành động hiện tại
     {
@@ -247,7 +248,7 @@ public class HeroController : MonoBehaviour
 
     public void ChangeWeaponTmp(BaseEventData eventData)
     {
-        CurrentWeapon = CurrentWeapon.Equals(Weapons.Blade) ? Weapons.Staff : CurrentWeapon.Equals(Weapons.Staff) ? Weapons.Katana : Weapons.Blade;
+        CurrentWeapon = CurrentWeapon.Equals(Weapons.Blade) ? Weapons.Staff : CurrentWeapon.Equals(Weapons.Staff) ? Weapons.Katana : CurrentWeapon.Equals(Weapons.Katana) ? Weapons.Sword : Weapons.Blade;
         SetAnimation(CurrentAction);
     }
 
