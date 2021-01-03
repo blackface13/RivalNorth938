@@ -1,5 +1,6 @@
 ﻿using Assets.Code._4.CORE;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -129,6 +130,8 @@ public class HeroController : MonoBehaviour
         GameSettings.CreateSkillsPosition();
         CreateEffectWeapons(Weapons.Blade);
         CreateEffectWeapons(Weapons.Staff);
+        CreateEffectWeapons(Weapons.Katana);
+        ChangeWeaponTmp(null);
     }
 
     /// <summary>
@@ -147,6 +150,13 @@ public class HeroController : MonoBehaviour
                 //EffectWeaponAttack.Add("BladeAtk1", GameSettings.ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.Euler(70f, 0, 50f)));
                 EffectWeaponAttack.Add("StaffAtk2", GameSettings.ObjControl.CreateListSkillObject("StaffAtk2", 1, Quaternion.Euler(0, 0, 190f)));
                 EffectWeaponAttack.Add("StaffAtk3", GameSettings.ObjControl.CreateListSkillObject("StaffAtk3", 1, Quaternion.Euler(0, 0, 190f)));
+                break;
+            case Weapons.Katana:
+                EffectWeaponAttack.Add("KatanaAtk1", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk1", 1, Quaternion.Euler(70f, 0, 70f)));
+                EffectWeaponAttack.Add("KatanaAtk2", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk2", 1, Quaternion.Euler(130f, 0, 130f)));
+                EffectWeaponAttack.Add("KatanaAtk3", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk3", 1, Quaternion.Euler(0, 0, 0)));
+                //EffectWeaponAttack.Add("StaffAtk2", GameSettings.ObjControl.CreateListSkillObject("StaffAtk2", 1, Quaternion.Euler(0, 0, 190f)));
+                //EffectWeaponAttack.Add("StaffAtk3", GameSettings.ObjControl.CreateListSkillObject("StaffAtk3", 1, Quaternion.Euler(0, 0, 190f)));
                 break;
             default: break;
         }
@@ -350,40 +360,50 @@ public class HeroController : MonoBehaviour
     /// </summary>
     public void SetAnimation(Actions action, bool isAtk = false)
     {
-        if (isAtk)
+        if (Anim == null)
+            Anim = this.GetComponent<Animator>();
+        try
         {
-            if (IsPressAtk)
+            if (isAtk)
             {
-
-                ControlTimeComboNormalAtk[0] = ControlTimeComboNormalAtk[1];
-
-                //Ko chạm đất => khóa Y
-                if (!IsTouchingLane)
+                if (IsPressAtk && CurrentWeapon != Weapons.Sword)
                 {
-                    HeroRigidBody2D.velocity = Vector3.zero;
-                    HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+
+                    ControlTimeComboNormalAtk[0] = ControlTimeComboNormalAtk[1];
+
+                    //Ko chạm đất => khóa Y
+                    if (!IsTouchingLane)
+                    {
+                        HeroRigidBody2D.velocity = Vector3.zero;
+                        HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                    }
+                    IsAtking = true;
+                    Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
+                    if (!IsJumping && IsPressMove)
+                    {
+                        HeroRigidBody2D.velocity = Vector3.zero;
+                        HeroRigidBody2D.velocity += (IsViewLeft ? Vector2.left : Vector2.right) * AtkForce;
+                        IsAtkMoving = true;
+                    }
+                    else
+                        IsAtkMoving = false;
+                    CurrentAction = action;
+                    IsAllowAtk = false;
                 }
-                IsAtking = true;
-                Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
-                if (!IsJumping && IsPressMove)
-                {
-                    HeroRigidBody2D.velocity = Vector3.zero;
-                    HeroRigidBody2D.velocity += (IsViewLeft ? Vector2.left : Vector2.right) * AtkForce;
-                    IsAtkMoving = true;
-                }
-                else
-                    IsAtkMoving = false;
-                CurrentAction = action;
-                IsAllowAtk = false;
+                else goto End;
             }
-            else goto End;
+        Begin:
+            {
+                //if (Anim != null)
+                {
+                    Anim.SetTrigger(CurrentWeapon + action.ToString());
+                    CurrentAction = action;
+                }
+            }
+        End: { }
         }
-    Begin:
-        {
-            Anim.SetTrigger(CurrentWeapon + action.ToString());
-            CurrentAction = action;
-        }
-    End: { }
+        catch (Exception ex) { print(ex.Message.ToString()); }
+
     }
 
     /// <summary>
@@ -401,9 +421,9 @@ public class HeroController : MonoBehaviour
     private Vector3 GetPositionSkillEffect(string effectName)
     {
         if (IsViewingLeft)
-            return new Vector3(this.transform.position.x - GameSettings.SkillsPosition[effectName].x, this.transform.position.y + GameSettings.SkillsPosition[effectName].y, GameSettings.PositionZDefaultInMap);
+            return new Vector3(this.transform.position.x - GameSettings.SkillsPosition[effectName].x - (IsAtkMoving ? 3f : 0), this.transform.position.y + GameSettings.SkillsPosition[effectName].y, GameSettings.PositionZDefaultInMap);
         else
-            return new Vector3(this.transform.position.x + GameSettings.SkillsPosition[effectName].x, this.transform.position.y + GameSettings.SkillsPosition[effectName].y, GameSettings.PositionZDefaultInMap);
+            return new Vector3(this.transform.position.x + GameSettings.SkillsPosition[effectName].x + (IsAtkMoving ? 3f : 0), this.transform.position.y + GameSettings.SkillsPosition[effectName].y, GameSettings.PositionZDefaultInMap);
     }
 
     /// <summary>

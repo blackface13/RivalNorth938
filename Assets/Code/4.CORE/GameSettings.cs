@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Code._2.BUS.Languages;
+using Assets.Code._2.BUS.PlayerController;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +24,6 @@ namespace Assets.Code._4.CORE
         }
 
         //Battle 
-        public static readonly float[] BattleSpeed = new float[] { 1f, 1.5f, 2f, 3f };//Tốc độ trận đấu
         public static int MaxAtkCombo = 2;//Tối da combo atk của player
         public static float TimeDelayComboNormalAtk = .5f;//Thời gian xóa combo atk
         public static string PathSkillObjects = "Prefabs/Skills/";
@@ -35,6 +36,7 @@ namespace Assets.Code._4.CORE
         public static HeroController PlayerController;//Main player controller
         public static ObjectController ObjControl = new ObjectController();
         public static BattleController BattleControl;
+        public static Dictionary<string, string> Language;
 
         #region Tọa độ các object skill
         public static Dictionary<string, Vector3> SkillsPosition;
@@ -45,12 +47,25 @@ namespace Assets.Code._4.CORE
         public static void CreateSkillsPosition()
         {
             SkillsPosition = new Dictionary<string, Vector3>();
-            SkillsPosition.Add("BladeAtk1", new Vector3(5, 0, PositionZDefaultInMap));
-            SkillsPosition.Add("BladeAtk2", new Vector3(5, 0, PositionZDefaultInMap));
-            SkillsPosition.Add("BladeAtk3", new Vector3(3, 0, PositionZDefaultInMap));
+            //Blade
+            SkillsPosition.Add("BladeAtk1", new Vector3(2, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("BladeAtk2", new Vector3(2, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("BladeAtk3", new Vector3(1, 0, PositionZDefaultInMap));
+            //Staff
+            SkillsPosition.Add("StaffAtk2", new Vector3(2, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("StaffAtk3", new Vector3(1, 0, PositionZDefaultInMap));
+            //Katana
+            SkillsPosition.Add("KatanaAtk1", new Vector3(2, 0.5f, PositionZDefaultInMap));
+            SkillsPosition.Add("KatanaAtk2", new Vector3(3, 0.5f, PositionZDefaultInMap));
+            SkillsPosition.Add("KatanaAtk3", new Vector3(0, 0, PositionZDefaultInMap));
+        }
 
-            SkillsPosition.Add("StaffAtk2", new Vector3(5, 0, PositionZDefaultInMap));
-            SkillsPosition.Add("StaffAtk3", new Vector3(3, 0, PositionZDefaultInMap));
+        /// <summary>
+        /// Khởi tạo ngôn ngữ
+        /// </summary>
+        public static void InitializeLanguage()
+        {
+            Language = PlayerSystems.DataPlayer.LanguageID.Equals(0) ? new Vietnamese().CreateLanguage() : new English().CreateLanguage();
         }
         #endregion
     }

@@ -13,6 +13,9 @@ public class SkillController : MonoBehaviour
     [Title("Tự động ẩn")]
     public bool IsAutoHide = true;
     [TabGroup("Cấu hình")]
+    [Title("Là object con")]
+    public bool IsChild;
+    [TabGroup("Cấu hình")]
     [Title("Tự động ẩn sau khoảng thời gian")]
     public float DelayTimeHide;
     [TabGroup("Cấu hình")]
@@ -31,6 +34,8 @@ public class SkillController : MonoBehaviour
 
     [TabGroup("Misc")]
     private Collider2D ThisCollider;
+    private GameObject ObjectParent;
+    private SkillController ControlParent;
 
     private float OriginalScaleX;//Scale ban đầu của object
 
@@ -38,7 +43,12 @@ public class SkillController : MonoBehaviour
 
     public virtual void Awake()
     {
-        OriginalScaleX = this.transform.localScale.x;
+        if (IsChild)
+        {
+            ObjectParent = this.transform.parent.gameObject;
+            ControlParent = ObjectParent.GetComponent<SkillController>();
+        }
+        OriginalScaleX = IsChild ? ObjectParent.transform.localScale.x : this.transform.localScale.x;
         ThisCollider = this.GetComponent<Collider2D>();
     }
 
@@ -53,11 +63,23 @@ public class SkillController : MonoBehaviour
             ThisCollider.enabled = false;
         }
 
+        //IsViewLeft = IsChild ? ControlParent.IsViewLeft : IsViewLeft;
+
         //Hướng skill
-        if (IsViewLeft)
-            this.transform.localScale = new Vector3(-OriginalScaleX, this.transform.localScale.y, this.transform.localScale.z);
+        if (IsChild)
+        {
+            if (ControlParent.IsViewLeft)
+                ObjectParent.transform.localScale = new Vector3(-OriginalScaleX, ObjectParent.transform.localScale.y, ObjectParent.transform.localScale.z);
+            else
+                ObjectParent.transform.localScale = new Vector3(OriginalScaleX, ObjectParent.transform.localScale.y, ObjectParent.transform.localScale.z);
+        }
         else
-            this.transform.localScale = new Vector3(OriginalScaleX, this.transform.localScale.y, this.transform.localScale.z);
+        {
+            if (IsViewLeft)
+                this.transform.localScale = new Vector3(-OriginalScaleX, this.transform.localScale.y, this.transform.localScale.z);
+            else
+                this.transform.localScale = new Vector3(OriginalScaleX, this.transform.localScale.y, this.transform.localScale.z);
+        }
 
         //Tự động ẩn sau 1 khoảng time
         if (IsAutoHide)
