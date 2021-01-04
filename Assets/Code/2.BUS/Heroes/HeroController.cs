@@ -131,6 +131,7 @@ public class HeroController : MonoBehaviour
         CreateEffectWeapons(Weapons.Blade);
         CreateEffectWeapons(Weapons.Staff);
         CreateEffectWeapons(Weapons.Katana);
+        CreateEffectWeapons(Weapons.Sword);
         ChangeWeaponTmp(null);
     }
 
@@ -154,7 +155,12 @@ public class HeroController : MonoBehaviour
             case Weapons.Katana:
                 EffectWeaponAttack.Add("KatanaAtk1", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk1", 1, Quaternion.Euler(70f, 0, 70f)));
                 EffectWeaponAttack.Add("KatanaAtk2", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk2", 1, Quaternion.Euler(130f, 0, 130f)));
-                EffectWeaponAttack.Add("KatanaAtk3", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk3", 1, Quaternion.Euler(0, 0, 0)));
+                EffectWeaponAttack.Add("KatanaAtk3_1", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk3_1", 1, Quaternion.Euler(0, 0, 100f)));
+                EffectWeaponAttack.Add("KatanaAtk3_2", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk3_2", 1, Quaternion.Euler(180f, 0, 30f)));
+                break;
+            case Weapons.Sword:
+                EffectWeaponAttack.Add("SwordAtk2", GameSettings.ObjControl.CreateListSkillObject("SwordAtk2", 1, Quaternion.Euler(0, 0, 100)));
+                EffectWeaponAttack.Add("SwordAtk3", GameSettings.ObjControl.CreateListSkillObject("SwordAtk3", 1, Quaternion.Euler(180, 0, 122)));
                 //EffectWeaponAttack.Add("StaffAtk2", GameSettings.ObjControl.CreateListSkillObject("StaffAtk2", 1, Quaternion.Euler(0, 0, 190f)));
                 //EffectWeaponAttack.Add("StaffAtk3", GameSettings.ObjControl.CreateListSkillObject("StaffAtk3", 1, Quaternion.Euler(0, 0, 190f)));
                 break;
@@ -366,7 +372,7 @@ public class HeroController : MonoBehaviour
         {
             if (isAtk)
             {
-                if (IsPressAtk && CurrentWeapon != Weapons.Sword)
+                if (IsPressAtk)
                 {
 
                     ControlTimeComboNormalAtk[0] = ControlTimeComboNormalAtk[1];

@@ -14190,7 +14190,7 @@ AnimationClip:
   m_Events:
   - time: 0.016666668
     functionName: ShowEffect
-    data: KatanaAtk3
+    data: KatanaAtk3_1
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
@@ -14198,6 +14198,13 @@ AnimationClip:
   - time: 0.083333336
     functionName: DisableFreezeY
     data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.16666667
+    functionName: ShowEffect
+    data: KatanaAtk3_2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

@@ -225,7 +225,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9704029, g: 0.5990566, b: 1, a: 1}
+      maxColor: {r: 0.61960787, g: 0.8923258, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4840,6 +4840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsViewLeft: 0
   IsAutoHide: 1
+  IsChild: 0
   DelayTimeHide: 0.5
   HitWhenShow: 1
   DelayTimeHitWhenShow: 0
