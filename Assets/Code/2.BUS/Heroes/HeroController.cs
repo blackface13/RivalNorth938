@@ -1,4 +1,5 @@
-﻿using Assets.Code._4.CORE;
+﻿using Assets.Code._2.BUS.NPCs;
+using Assets.Code._4.CORE;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
@@ -558,6 +559,27 @@ public class HeroController : MonoBehaviour
     /// <param name="col"></param>
     public void OnTriggerEnter2D(Collider2D col)
     {
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.NPC))
+        {
+            var npcController = col.gameObject.GetComponent<NPCBase>();
+            if (npcController.Choices != null)
+            {
+                GameSystems.GameControl.BtnActionNPC.SetActive(true);
+                GameSystems.GameControl.CurrentNPC = npcController;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Va chạm xuyên qua
+    /// </summary>
+    /// <param name="col"></param>
+    public void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.NPC))
+        {
+            GameSystems.GameControl.BtnActionNPC.SetActive(false);
+        }
     }
 
     public void OnCollisionStay2D(Collision2D col)

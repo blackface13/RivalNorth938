@@ -21,6 +21,7 @@ namespace Assets.Code._4.CORE
             MapObjectBehind = 13,
             SkillPlayer = 14,
             SkillEnemy = 15,
+            NPC = 31
         }
 
         //Battle 
@@ -63,14 +64,6 @@ namespace Assets.Code._4.CORE
             //SkillsPosition.Add("SwordAtk1", new Vector3(2, 0.5f, PositionZDefaultInMap));
             SkillsPosition.Add("SwordAtk2", new Vector3(1.5f, 1f, PositionZDefaultInMap));
             SkillsPosition.Add("SwordAtk3", new Vector3(2.3f, 2f, PositionZDefaultInMap));
-        }
-
-        /// <summary>
-        /// Khởi tạo ngôn ngữ
-        /// </summary>
-        public static void InitializeLanguage()
-        {
-            Language = PlayerSystems.DataPlayer.LanguageID.Equals(0) ? new Vietnamese().CreateLanguage() : new English().CreateLanguage();
         }
         #endregion
     }

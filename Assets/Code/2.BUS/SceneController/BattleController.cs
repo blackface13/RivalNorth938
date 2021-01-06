@@ -20,9 +20,6 @@ public class BattleController : MonoBehaviour
     [TabGroup("Cấu hình")]
     [Title("Object combo text")]
     public Text ComboText;
-    [TabGroup("Cấu hình")]
-    [Title("Object combo text")]
-    public AnimationCurve MoveAnim;
 
 
     [TabGroup("Misc")]
@@ -114,7 +111,7 @@ public class BattleController : MonoBehaviour
         if (!IsShowCombo)
         {
             IsShowCombo = true;
-            StartCoroutine(GameSettings.ObjControl.MoveObjectCurve(true, ComboText.gameObject, ComboText.gameObject.transform.localPosition, new Vector2(-885.61f, ComboText.gameObject.transform.localPosition.y), .5f, MoveAnim));
+            StartCoroutine(GameSettings.ObjControl.MoveObjectCurve(true, ComboText.gameObject, ComboText.gameObject.transform.localPosition, new Vector2(-885.61f, ComboText.gameObject.transform.localPosition.y), .5f, GameSystems.GameControl.MoveAnim));
         }
         else
             ComboText.text = string.Format("Combo {0}", ComboCount);

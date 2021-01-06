@@ -92,6 +92,7 @@
     <Compile Include="Assets\Code\2.BUS\FunctionsController\AnimationObjectControl.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\DamageTextController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MainCameraController.cs" />
+    <Compile Include="Assets\Code\2.BUS\FunctionsController\MessageController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\ObjectController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\ObjectJumpSupport.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\SkillController.cs" />
@@ -106,13 +107,19 @@
     <Compile Include="Assets\Code\2.BUS\Maps\MapMove.cs" />
     <Compile Include="Assets\Code\2.BUS\Maps\MapObjectBehindController.cs" />
     <Compile Include="Assets\Code\2.BUS\Maps\MapObjectController.cs" />
+    <Compile Include="Assets\Code\2.BUS\NPCs\NPC1.cs" />
+    <Compile Include="Assets\Code\2.BUS\NPCs\NPCBase.cs" />
+    <Compile Include="Assets\Code\2.BUS\NPCs\NPCInterface.cs" />
     <Compile Include="Assets\Code\2.BUS\PlayerController\DefaultData.cs" />
     <Compile Include="Assets\Code\2.BUS\PlayerController\PlayerModel.cs" />
     <Compile Include="Assets\Code\2.BUS\PlayerController\PlayerSystems.cs" />
     <Compile Include="Assets\Code\2.BUS\SceneController\BattleController.cs" />
+    <Compile Include="Assets\Code\2.BUS\Stories\MainStory.cs" />
     <Compile Include="Assets\Code\2.BUS\Systems\GameController.cs" />
     <Compile Include="Assets\Code\2.BUS\Systems\GameSystems.cs" />
+    <Compile Include="Assets\Code\4.CORE\Enum\EnumNPCType.cs" />
     <Compile Include="Assets\Code\4.CORE\GameSettings.cs" />
+    <Compile Include="Assets\Code\4.CORE\MessageContent.cs" />
     <Compile Include="Assets\Code\4.CORE\ObjectAutoHide.cs" />
     <Compile Include="Assets\Code\5.PLUGINS\Gradient.cs" />
     <Compile Include="Assets\Code\Test.cs" />
