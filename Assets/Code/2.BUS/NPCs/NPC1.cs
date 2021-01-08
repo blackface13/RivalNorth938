@@ -17,7 +17,7 @@ namespace Assets.Code._2.BUS.NPCs
         {
             base.Start();
         }
-        public override void Initialize()
+        public override void InitData()
         {
             Choices = new List<string>();
             Choices.Add(GameSystems.Language["f70adc32fa2c6"]);
@@ -29,5 +29,7 @@ namespace Assets.Code._2.BUS.NPCs
             Content1.Add(new MessageContent { Title = "f70adc32fa2c6", Content = "f9fd7ef19e7ba" });
             Content1.Add(new MessageContent { Title = "f70adc32fa2c6", Content = "c522ca716cb74" });
         }
+
+
     }
 }

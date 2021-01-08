@@ -19,6 +19,7 @@ namespace Assets.Code._2.BUS.Languages
             Language = new Dictionary<string, string>();
             Language.Add("a7216e687cd8c", "Hãy nhập tên bạn muốn");
 
+            //Cốt truyện
             Language.Add("f70adc32fa2c6", "Năm 905");
             Language.Add("952ae1104f048", "Tĩnh Hải quân - Việt Nam thời bấy giờ vẫn đang bị đàn áp và đô hộ bởi thực dân phương Bắc.");
             Language.Add("c5301ef0eeab3", "Độc Cô Tổn - tướng của triều đại nhà Đường, thời bấy giờ đang nắm quyền trên đất nước Tĩnh Hải quân");
@@ -26,6 +27,9 @@ namespace Assets.Code._2.BUS.Languages
             Language.Add("c522ca716cb74", "Nội chính nhà Đường đang lung lay, Tĩnh Hải quân không có người cai quản.");
 
 
+
+            //Tên npc
+            Language.Add("882e003a7e4c3", "Thợ rèn");
             return Language;
         }
     }
