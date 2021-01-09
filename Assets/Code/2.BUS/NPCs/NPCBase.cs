@@ -27,11 +27,11 @@ namespace Assets.Code._2.BUS.NPCs
         public List<MessageContent> Content5 { get; set; }//Đoạn hội thoại 5
 
 
-        private string NpcName = "882e003a7e4c3";//Tên NPC, lấy mã trong file language
+        public string NpcName { get; set; }//Tên NPC, lấy mã trong file language
         public virtual void Initialize()
         {
-            TextMessTitle.text = GameSystems.Language[NpcName];
             InitData();
+            TextMessTitle.text = GameSystems.Language[NpcName];
         }
 
         /// <summary>

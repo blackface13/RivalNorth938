@@ -99,6 +99,7 @@
      <Compile Include="Assets\Code\2.BUS\Maps\MapObjectBehindController.cs" />
      <Compile Include="Assets\Code\2.BUS\Maps\MapObjectController.cs" />
      <Compile Include="Assets\Code\2.BUS\NPCs\NPC1.cs" />
+     <Compile Include="Assets\Code\2.BUS\NPCs\NPC2.cs" />
      <Compile Include="Assets\Code\2.BUS\NPCs\NPCBase.cs" />
      <Compile Include="Assets\Code\2.BUS\NPCs\NPCInterface.cs" />
      <Compile Include="Assets\Code\2.BUS\PlayerController\DefaultData.cs" />

@@ -19,6 +19,7 @@ namespace Assets.Code._2.BUS.NPCs
         }
         public override void InitData()
         {
+            NpcName = "882e003a7e4c3";
             Choices = new List<string>();
             Choices.Add(GameSystems.Language["f70adc32fa2c6"]);
             Choices.Add(GameSystems.Language["f70adc32fa2c6"]);

@@ -1,0 +1,716 @@
+fileFormatVersion: 2
+guid: a3c40e983513564438e896f27020b319
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 173802172858786993
+    second: Toc1
+  - first:
+      213: -7645936951654643254
+    second: Toc2
+  - first:
+      213: 7099541816828198325
+    second: Toc3
+  - first:
+      213: -3940812951529900644
+    second: Toc4
+  - first:
+      213: -2055825128153670654
+    second: Toc5
+  - first:
+      213: -488955131890536820
+    second: Toc6
+  - first:
+      213: -2920128325096282905
+    second: Head2
+  - first:
+      213: -274456361981696407
+    second: Body
+  - first:
+      213: -7405707468650188910
+    second: Dai1
+  - first:
+      213: -5077783805414623249
+    second: Dai4
+  - first:
+      213: 3197899714254842973
+    second: Chanphai1
+  - first:
+      213: 2686151937154100144
+    second: Taytrai1
+  - first:
+      213: -6297155416632405438
+    second: Taytrai2
+  - first:
+      213: 3869456050850132690
+    second: Dai2
+  - first:
+      213: 5561436998153445336
+    second: Dai3
+  - first:
+      213: -6770814792789375863
+    second: Head1
+  - first:
+      213: 4179157583549067487
+    second: Tayphai1
+  - first:
+      213: -3323644119787508804
+    second: Tayphai2
+  - first:
+      213: -2543750457119634966
+    second: Chantrai3
+  - first:
+      213: 6823188788434981566
+    second: Chantrai4
+  - first:
+      213: -3369876133328868037
+    second: Chantrai1
+  - first:
+      213: -8882526480129970660
+    second: Chanphai3
+  - first:
+      213: 8226248192024168103
+    second: Chantrai2
+  - first:
+      213: 3173735964166550142
+    second: Chanphai2
+  - first:
+      213: -9164224706044977811
+    second: Chanphai4
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Toc1
+      rect:
+        serializedVersion: 2
+        x: 0.5356903
+        y: 483.35834
+        width: 267
+        height: 228.64166
+      alignment: 9
+      pivot: {x: 0.50173897, y: 0.49921638}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b46076c728796200800000000000000
+      internalID: 173802172858786993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Toc2
+      rect:
+        serializedVersion: 2
+        x: 257.89587
+        y: 524
+        width: 81
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5012855, y: 0.49197862}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac987953adc24e590800000000000000
+      internalID: -7645936951654643254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Toc3
+      rect:
+        serializedVersion: 2
+        x: 328.60458
+        y: 498.3605
+        width: 91
+        height: 213.6395
+      alignment: 9
+      pivot: {x: 0.49885073, y: 0.4921351}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bd731cdaa3a68260800000000000000
+      internalID: 7099541816828198325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Toc4
+      rect:
+        serializedVersion: 2
+        x: 409.84518
+        y: 521
+        width: 101
+        height: 190
+      alignment: 9
+      pivot: {x: 0.5064833, y: 0.49473685}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c953dc9ff7b6f49c0800000000000000
+      internalID: -3940812951529900644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Toc5
+      rect:
+        serializedVersion: 2
+        x: 501.49762
+        y: 530
+        width: 140
+        height: 181
+      alignment: 9
+      pivot: {x: 0.48930272, y: 0.49447516}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20c141c20fd3873e0800000000000000
+      internalID: -2055825128153670654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Toc6
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 451.00003
+        width: 188
+        height: 41.99997
+      alignment: 9
+      pivot: {x: 0.49999997, y: 0.49999964}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8e6f8ce5e1e639f0800000000000000
+      internalID: -488955131890536820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Head2
+      rect:
+        serializedVersion: 2
+        x: 190.36325
+        y: 377
+        width: 155.38745
+        height: 123.15808
+      alignment: 9
+      pivot: {x: 0.49641556, y: 0.45470014}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e4641482ce9977d0800000000000000
+      internalID: -2920128325096282905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Taytrai1
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 366.00003
+        width: 106.00003
+        height: 137.99997
+      alignment: 9
+      pivot: {x: 0.49999985, y: 0.49999988}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0bb2cca74f0274520800000000000000
+      internalID: 2686151937154100144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Taytrai2
+      rect:
+        serializedVersion: 2
+        x: 438.53784
+        y: 354.5826
+        width: 85.35449
+        height: 168.02579
+      alignment: 9
+      pivot: {x: 0.49162215, y: 0.4905044}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 242d23823820c98a0800000000000000
+      internalID: -6297155416632405438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dai2
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 377.18692
+        width: 72
+        height: 155.99997
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49880192}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d278e8e6c113b530800000000000000
+      internalID: 3869456050850132690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dai3
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 384
+        width: 71
+        height: 149
+      alignment: 9
+      pivot: {x: 0.5070422, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8df96abeb713e2d40800000000000000
+      internalID: 5561436998153445336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Head1
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 226.00002
+        width: 203.00002
+        height: 231.99998
+      alignment: 9
+      pivot: {x: 0.49999994, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98444dbb1db3902a0800000000000000
+      internalID: -6770814792789375863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tayphai1
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 235
+        width: 93
+        height: 138
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd072db1ea95ff930800000000000000
+      internalID: 4179157583549067487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tayphai2
+      rect:
+        serializedVersion: 2
+        x: 411.50598
+        y: 223.25302
+        width: 81.38037
+        height: 144.1015
+      alignment: 9
+      pivot: {x: 0.52830946, y: 0.5013617}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbbef30584b00e1d0800000000000000
+      internalID: -3323644119787508804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chantrai3
+      rect:
+        serializedVersion: 2
+        x: 482.3178
+        y: 206.49998
+        width: 105
+        height: 156.00002
+      alignment: 9
+      pivot: {x: 0.49221134, y: 0.4935898}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae98526cf68c2bcd0800000000000000
+      internalID: -2543750457119634966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chantrai4
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 313
+        width: 94
+        height: 73
+      alignment: 9
+      pivot: {x: 0.49999997, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb258126d06d0be50800000000000000
+      internalID: 6823188788434981566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chantrai1
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 43
+        width: 108
+        height: 195.00002
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49999997}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3dadd7d28bcb31d0800000000000000
+      internalID: -3369876133328868037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chanphai3
+      rect:
+        serializedVersion: 2
+        x: 374.86063
+        y: 30
+        width: 174.99997
+        height: 183
+      alignment: 9
+      pivot: {x: 0.5065108, y: 0.5027322}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1e2adb5a3deab480800000000000000
+      internalID: -8882526480129970660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chantrai2
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 169
+        width: 92
+        height: 147
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a6ccc76521892270800000000000000
+      internalID: 8226248192024168103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chanphai2
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 169
+        width: 75
+        height: 146
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7277035b006b0c20800000000000000
+      internalID: 3173735964166550142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chanphai4
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 41.499996
+        width: 167
+        height: 121
+      alignment: 9
+      pivot: {x: 0.497006, y: 0.4834711}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6d945a1f2222d080800000000000000
+      internalID: -9164224706044977811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Body
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 0
+        width: 157
+        height: 229
+      alignment: 9
+      pivot: {x: 0.50955415, y: 0.49563318}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9662cb5946fe03cf0800000000000000
+      internalID: -274456361981696407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dai1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 349
+        width: 136
+        height: 34
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29fe5ac5b44a93990800000000000000
+      internalID: -7405707468650188910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dai4
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 293
+        width: 43
+        height: 50
+      alignment: 9
+      pivot: {x: 0.5116279, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe7b70048861889b0800000000000000
+      internalID: -5077783805414623249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chanphai1
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 44
+        width: 119
+        height: 197
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49492386}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5cab7fc8d8316c20800000000000000
+      internalID: 3197899714254842973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 637458087147359577
+  assetBundleName: 
+  assetBundleVariant: 
