@@ -62,6 +62,8 @@ public class GameController : MonoBehaviour
     /// <param name="eventData"></param>
     public void ActionNPCEvent(BaseEventData eventData)
     {
+        GameSettings.PlayerController.BtnAtkUp(null);
+        GameSettings.PlayerController.BtnMoveUp(null);
         ObjectUIHideForShowMessage.SetActive(false);
         MessageContentObject.SetActive(true);
     }
