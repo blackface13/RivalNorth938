@@ -31,6 +31,7 @@ namespace Assets.Code._2.BUS.Languages
             //Tên npc
             Language.Add("882e003a7e4c3", "Thợ rèn");
             Language.Add("377d761426c4f", "Tướng Ngô Quyền");
+            Language.Add("9bd6aaeab5f77", "Tiều phu");
             return Language;
         }
     }

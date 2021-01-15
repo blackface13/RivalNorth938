@@ -1,0 +1,500 @@
+fileFormatVersion: 2
+guid: 1c94d91f3faa5c543b055e07569a0ab8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4177412731531969908
+    second: Head0
+  - first:
+      213: -4485697582579331229
+    second: Head1
+  - first:
+      213: 5306855503973616845
+    second: Head2
+  - first:
+      213: 3198134603414205551
+    second: Tayp1
+  - first:
+      213: -1590026798483790883
+    second: Tayp2
+  - first:
+      213: 5365459768880285266
+    second: Body
+  - first:
+      213: -6930836323023654517
+    second: Tayt1
+  - first:
+      213: 6364427084027722500
+    second: Chant2
+  - first:
+      213: -7251196628104975031
+    second: Tayt2
+  - first:
+      213: 6772770667097199814
+    second: Dai2
+  - first:
+      213: -1074858121206834866
+    second: Chanp1
+  - first:
+      213: -1765302913527999417
+    second: Chanp2
+  - first:
+      213: 8503180796547701442
+    second: Chant1
+  - first:
+      213: -8756149076525340997
+    second: VK
+  - first:
+      213: 3972257632983096405
+    second: Dai0
+  - first:
+      213: 4450306316581622668
+    second: Dai1
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Head0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 340.99997
+        width: 228
+        height: 315.00003
+      alignment: 9
+      pivot: {x: 0.49561405, y: 0.50793654}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8ab7d8e049d606c0800000000000000
+      internalID: -4177412731531969908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Head1
+      rect:
+        serializedVersion: 2
+        x: 225.71747
+        y: 502
+        width: 110
+        height: 154
+      alignment: 9
+      pivot: {x: 0.50711393, y: 0.51623374}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36fc78c90d99fb1c0800000000000000
+      internalID: -4485697582579331229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Head2
+      rect:
+        serializedVersion: 2
+        x: 326.50116
+        y: 482.3857
+        width: 66
+        height: 173.61429
+      alignment: 9
+      pivot: {x: 0.48483092, y: 0.51040894}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcc8ca4c6fcb5a940800000000000000
+      internalID: 5306855503973616845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tayp1
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 527
+        width: 91
+        height: 129
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51937985}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6473643a7e026c20800000000000000
+      internalID: 3198134603414205551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tayp2
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 500
+        width: 101
+        height: 156
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51282054}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd3a5051d071fe9e0800000000000000
+      internalID: -1590026798483790883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Body
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 292
+        width: 156
+        height: 201
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25642cc7b31f57a40800000000000000
+      internalID: 5365459768880285266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tayt1
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 427.00003
+        width: 105
+        height: 99.99997
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49999988}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b81fcc9d519b0df90800000000000000
+      internalID: -6930836323023654517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chant2
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 367
+        width: 83
+        height: 142
+      alignment: 9
+      pivot: {x: 0.5301205, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40bf85676bcf25850800000000000000
+      internalID: 6364427084027722500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tayt2
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 333
+        width: 95
+        height: 101.99997
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5000002}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94dea41d5139e5b90800000000000000
+      internalID: -7251196628104975031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dai2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 180
+        width: 67
+        height: 123
+      alignment: 9
+      pivot: {x: 0.45522386, y: 0.49593493}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c4938db907bdfd50800000000000000
+      internalID: 6772770667097199814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chanp1
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 128
+        width: 161
+        height: 175
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e49d58dcb365511f0800000000000000
+      internalID: -1074858121206834866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chanp2
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 136
+        width: 86
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74493366a526087e0800000000000000
+      internalID: -1765302913527999417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chant1
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 109
+        width: 142
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49999997}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ca1627f1ed510670800000000000000
+      internalID: 8503180796547701442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VK
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 484
+        height: 118
+      alignment: 9
+      pivot: {x: 0.4969008, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb6a7559ec8eb7680800000000000000
+      internalID: -8756149076525340997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dai0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 295
+        width: 169
+        height: 54
+      alignment: 9
+      pivot: {x: 0.49112427, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55c9a42754b402730800000000000000
+      internalID: 3972257632983096405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dai1
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 299
+        width: 62
+        height: 50
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c835685240aa2cd30800000000000000
+      internalID: 4450306316581622668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 637463134805879092
+  assetBundleName: 
+  assetBundleVariant: 

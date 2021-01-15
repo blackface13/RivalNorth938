@@ -18,6 +18,9 @@ namespace Assets.Code._2.BUS.NPCs
         [TabGroup("Cấu hình thuộc tính")]
         [Title("Tên NPC")]
         public TextMeshPro TextMessTitle;
+        [TabGroup("Cấu hình thuộc tính")]
+        [Title("Các object khác")]
+        public List<GameObject> ListObject;
 
         public List<string> Choices { get; set; }//Các lựa chọn khi tap vào NPC
         public List<MessageContent> Content1 { get; set; }//Đoạn hội thoại 1
@@ -28,6 +31,13 @@ namespace Assets.Code._2.BUS.NPCs
 
 
         public string NpcName { get; set; }//Tên NPC, lấy mã trong file language
+    public Animator Anim { get; set; }
+
+        public virtual void Awake()
+        {
+            Anim = this.GetComponent<Animator>();
+        }
+
         public virtual void Initialize()
         {
             InitData();
