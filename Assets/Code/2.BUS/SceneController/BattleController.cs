@@ -35,7 +35,7 @@ public class BattleController : MonoBehaviour
         GameSystems.GameControl = GameObject.FindGameObjectWithTag("GameControl").GetComponent<GameController>();
         SetupPlayer();
         GameSystems.ImgTranslate = ImgTranslate;
-        GameSystems.GameControl.LoadMap(1, new Vector2(0, 0));
+        GameSystems.GameControl.LoadMap(3, new Vector2(0, 0));
         //StartCoroutine( GameSystems.LoadMap(2, new Vector2(0, 0)));
     }
 
