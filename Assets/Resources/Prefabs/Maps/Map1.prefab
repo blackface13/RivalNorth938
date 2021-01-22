@@ -63949,7 +63949,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveMapID: 3
-  MovePos: {x: 17, y: -8}
+  MovePos: {x: 200, y: 3}
 --- !u!61 &8779732070232445125
 BoxCollider2D:
   m_ObjectHideFlags: 0
