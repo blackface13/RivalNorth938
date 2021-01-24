@@ -19,6 +19,7 @@ public class MapController : MonoBehaviour
     private Vector3 BackgroundPositionOriginal;
     public GameObject Player;
     public float ObjectMoveSpeed = -0.005f;
+    public float ObjectMoveSpeedY;
     #endregion
 
     public virtual void Awake()
@@ -26,6 +27,29 @@ public class MapController : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
         if (BackgroundObject != null)
             BackgroundPositionOriginal = BackgroundObject.transform.localPosition;
+
+        //Clone background image
+        if (BackgroundQuantity > 1 && BackgroundObject.transform.childCount > 0)
+        {
+            var imgBG = BackgroundObject.transform.GetChild(0).gameObject;//Get first child
+            var size = imgBG.GetComponent<SpriteRenderer>().bounds.size;//Get size image
+
+            //Clone image
+            for (int i = 0; i < BackgroundQuantity - 1; i++)
+            {
+                Instantiate(imgBG, BackgroundObject.transform);
+            }
+
+            //Tạo và gán tọa độ của image đầu tiên
+            var firstImgPosX = (BackgroundQuantity % 2).Equals(0) ? -(BackgroundQuantity / 2 * size.x - size.x / 2) : -(BackgroundQuantity / 2 * size.x);
+            imgBG.transform.localPosition = new Vector3(firstImgPosX, imgBG.transform.localPosition.y, 0);
+            print(firstImgPosX);
+            //Các img tiếp theo set theo X của image đầu tiên
+            for (int i = 0; i < BackgroundQuantity; i++)
+            {
+                BackgroundObject.transform.GetChild(i).transform.localPosition = new Vector3((firstImgPosX + size.x * i), imgBG.transform.localPosition.y, 0);
+            }
+        }
     }
 
     // Start is called before the first frame update
@@ -66,7 +90,7 @@ public class MapController : MonoBehaviour
     {
         if (BackgroundObject != null)
         {
-            BackgroundObject.transform.localPosition = new Vector3(Camera.main.transform.position.x * ObjectMoveSpeed, BackgroundPositionOriginal.y, BackgroundPositionOriginal.z);
+            BackgroundObject.transform.localPosition = new Vector3(Camera.main.transform.position.x * ObjectMoveSpeed, ObjectMoveSpeedY != 0 ? Camera.main.transform.position.y * ObjectMoveSpeedY : BackgroundPositionOriginal.y, BackgroundPositionOriginal.z);
         }
     }
 }

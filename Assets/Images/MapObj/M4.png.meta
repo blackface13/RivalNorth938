@@ -10,7 +10,7 @@ TextureImporter:
     second: M4_Denlong
   - first:
       213: -8610673657946234531
-    second: M4_2
+    second: Sen3
   - first:
       213: 1091809194146230164
     second: M4_3
@@ -28,13 +28,13 @@ TextureImporter:
     second: M4_7
   - first:
       213: -6820048619135835214
-    second: M4_8
+    second: Sen1
   - first:
       213: -9151963587867322047
     second: M4_9
   - first:
       213: 5069657554794526665
-    second: M4_10
+    second: Sen2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -174,7 +174,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: M4_2
+      name: Sen3
       rect:
         serializedVersion: 2
         x: 451
@@ -220,9 +220,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 237
-        y: 898
+        y: 895
         width: 389
-        height: 102
+        height: 105
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -261,10 +261,10 @@ TextureImporter:
       name: M4_6
       rect:
         serializedVersion: 2
-        x: 282
-        y: 802
-        width: 67
-        height: 95
+        x: 287
+        y: 808
+        width: 60
+        height: 84
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -300,13 +300,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: M4_8
+      name: Sen1
       rect:
         serializedVersion: 2
         x: 455
-        y: 774
+        y: 779
         width: 175
-        height: 111
+        height: 115
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -342,7 +342,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: M4_10
+      name: Sen2
       rect:
         serializedVersion: 2
         x: 632
@@ -375,6 +375,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: 637469354934067887
+  userData: 637470469230876497
   assetBundleName: 
   assetBundleVariant: 
