@@ -43,7 +43,7 @@ public class MapController : MonoBehaviour
             //Tạo và gán tọa độ của image đầu tiên
             var firstImgPosX = (BackgroundQuantity % 2).Equals(0) ? -(BackgroundQuantity / 2 * size.x - size.x / 2) : -(BackgroundQuantity / 2 * size.x);
             imgBG.transform.localPosition = new Vector3(firstImgPosX, imgBG.transform.localPosition.y, 0);
-            print(firstImgPosX);
+            //print(firstImgPosX);
             //Các img tiếp theo set theo X của image đầu tiên
             for (int i = 0; i < BackgroundQuantity; i++)
             {
