@@ -6368,6 +6368,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &136318868
 Animator:
   serializedVersion: 3
@@ -8078,7 +8079,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 30
+  m_SortingOrder: 29
 --- !u!33 &179726046
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -18484,7 +18485,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 988617724}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -77399.24}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -443879.25}
 --- !u!114 &381760849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24395,6 +24396,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &502851814
 Animator:
   serializedVersion: 3
@@ -35856,6 +35858,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!1 &783280312
 GameObject:
   m_ObjectHideFlags: 0
@@ -51818,6 +51821,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &1123259389
 Animator:
   serializedVersion: 3
@@ -57633,6 +57637,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &1233788822
 Animator:
   serializedVersion: 3
@@ -58080,7 +58085,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1349582874}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -9375.007}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -9375.006}
 --- !u!114 &1240452203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65736,6 +65741,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &1395621851
 Animator:
   serializedVersion: 3
@@ -69086,6 +69092,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &1450031907
 Animator:
   serializedVersion: 3
@@ -78996,6 +79003,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &1649943433
 Animator:
   serializedVersion: 3
@@ -82853,6 +82861,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &1723777774
 Animator:
   serializedVersion: 3
@@ -82929,7 +82938,7 @@ Transform:
   - {fileID: 580773773}
   m_Father: {fileID: 1621319350}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4.52}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4.5210004}
 --- !u!114 &1724087967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91172,7 +91181,7 @@ SkinnedMeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 32
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -91645,6 +91654,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &1914469119
 Animator:
   serializedVersion: 3
@@ -93855,7 +93865,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 373833219}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -15491.21}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 355668.78}
 --- !u!114 &1958800444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99181,6 +99191,7 @@ MonoBehaviour:
   IsAllowAtk: 1
   IsAllowSurf: 1
   IsAutoJumping: 0
+  IsAtkPushUp: 0
 --- !u!95 &2064595835
 Animator:
   serializedVersion: 3

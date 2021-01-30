@@ -31,6 +31,7 @@ namespace Assets.Code._4.CORE
         public static Vector3 DefaultPositionObjectSkill = new Vector3(-1000, -1000, 20);
         public static float PositionZDefaultInMap = 20f;
         public static bool IsAllowActions = false;//Cho phép ng chơi thao tác hay ko
+        public static float JoystickPosYLimitDetect = 80f;//Tọa độ Y cho phép detect việc điều khiển lên trên hay xuống dưới
 
         //Các biến sử dụng trong quá trình chơi
         public static GameObject Player;//Main player
@@ -60,6 +61,7 @@ namespace Assets.Code._4.CORE
             SkillsPosition.Add("KatanaAtk2", new Vector3(3, 0.5f, PositionZDefaultInMap));
             SkillsPosition.Add("KatanaAtk3_1", new Vector3(1, 2.4f, PositionZDefaultInMap));
             SkillsPosition.Add("KatanaAtk3_2", new Vector3(1.8f, .5f, PositionZDefaultInMap));
+            SkillsPosition.Add("KatanaAtkPushUp", new Vector3(1, 8.4f, PositionZDefaultInMap));
             //Katana
             //SkillsPosition.Add("SwordAtk1", new Vector3(2, 0.5f, PositionZDefaultInMap));
             SkillsPosition.Add("SwordAtk2", new Vector3(1.5f, 1f, PositionZDefaultInMap));

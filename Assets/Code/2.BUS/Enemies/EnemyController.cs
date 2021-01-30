@@ -41,6 +41,12 @@ public class EnemyController : MonoBehaviour
     [TabGroup("Misc")]
     public bool IsHited;
     [TabGroup("Misc")]
+    public bool IsLaning;//Đang dưới mặt đất
+    [TabGroup("Misc")]
+    public bool IsRepelWhenTouchLane;//Sẽ bị đẩy lùi khi chạm đất
+    [TabGroup("Misc")]
+    public float ForceRepelWhenTouchLane;//Lực đẩy lùi khi chạm đất
+    [TabGroup("Misc")]
     public Rigidbody2D ThisRigid2D;
 
     private Animator Anim;
@@ -126,7 +132,7 @@ public class EnemyController : MonoBehaviour
         //Trong vùng di chuyển
         if (AllowMove)
         {
-            if (DistanceToPlayer < DetectRange && DistanceToPlayer > AttackRange)
+            if (DistanceToPlayer < DetectRange && DistanceToPlayer > AttackRange && IsLaning)
             {
                 if (CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Idle))
                 {
@@ -153,8 +159,8 @@ public class EnemyController : MonoBehaviour
             }
             else
             {
-                //Trong phạm vi tấn công
-                if (DistanceToPlayer <= AttackRange)
+                //Trong phạm vi tấn công và ở dưới đất, ko bị hất tung
+                if (DistanceToPlayer <= AttackRange && IsLaning)
                 {
                     if (!CurrentAction.Equals(Actions.Atk))
                         SetAnimation(Actions.Atk);
@@ -245,7 +251,45 @@ public class EnemyController : MonoBehaviour
     {
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
         {
+            //Hất tung lên khi dính skill hất
+            //var skillControl = col.gameObject.GetComponent<SkillController>();
+            //if(skillControl.IsPushUp)
+            //    ThisRigid2D.velocity += Vector2.up * skillControl.ForcePushUp;
+
             HitedCount++;
+        }
+    }
+
+    /// <summary>
+    /// Va chạm không xuyên qua
+    /// </summary>
+    /// <param name="col"></param>
+    public void OnCollisionEnter2D(Collision2D col)
+    {
+        //Va chạm với mặt đất
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+        {
+            IsLaning = true;
+
+            //Va chạm với mặt đất sẽ bị đẩy lùi
+            if (IsRepelWhenTouchLane)
+            {
+                ThisRigid2D.velocity += (IsViewingLeft ? Vector2.right : Vector2.left) * ForceRepelWhenTouchLane;
+                IsRepelWhenTouchLane = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Va chạm không xuyên qua
+    /// </summary>
+    /// <param name="col"></param>
+    public void OnCollisionExit2D(Collision2D col)
+    {
+        //Không chạm đất
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+        {
+            IsLaning = false;
         }
     }
     #endregion

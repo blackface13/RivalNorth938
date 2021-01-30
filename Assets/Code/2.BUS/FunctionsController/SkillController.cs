@@ -25,18 +25,48 @@ public class SkillController : MonoBehaviour
     [Title("Thời gian delay trước khi gây sát thương")]
     public float DelayTimeHitWhenShow;
     [TabGroup("Cấu hình")]
+    [Title("Disable sát thương sau 1 khoảng time")]
+    public bool DisableColliderRealTime;
+    [TabGroup("Cấu hình")]
+    [Title("Thời gian disable gây sát thương")]
+    public float DelayTimeDisableCollider;
+    [TabGroup("Cấu hình")]
     [Title("Lực đẩy đối phương về sau")]
     public Vector2 ForceToVictim;
     [TabGroup("Cấu hình")]
     [Title("Lực đẩy đối phương cộng thêm (dành cho di chuyển + đánh)")]
     public float ForceToVictimBonus;
     [TabGroup("Cấu hình")]
+    [Title("Hất tung đối thủ hay ko")]
+    public bool IsPushUp;
+    [TabGroup("Cấu hình")]
+    [Title("Lực hất tung")]
+    public float ForcePushUp;
+    [TabGroup("Cấu hình")]
+    [Title("Đẩy đối thủ trên xuống hay ko")]
+    public bool IsPushDown;
+    [TabGroup("Cấu hình")]
+    [Title("Lực đẩy trên xuống")]
+    public float ForcePushDown;
+    [TabGroup("Cấu hình")]
+    [Title("Đẩy đối thủ trên xuống khi Player đang nhảy hay ko")]
+    public bool IsPushDownOnJump;
+    [TabGroup("Cấu hình")]
+    [Title("Lực đẩy trên xuống khi đang nhảy")]
+    public float ForcePushDownOnJump;
+    [TabGroup("Cấu hình")]
+    [Title("Đẩy lùi đối thủ khi đạp đối thủ xuống chạm đất hay ko")]
+    public bool IsRepelWhenTouchLane;
+    [TabGroup("Cấu hình")]
+    [Title("Lực đẩy lùi đối thủ khi đạp đối thủ xuống chạm đất")]
+    public float ForceRepelWhenTouchLane;
 
+    [TabGroup("Misc")]
+    public float ForceKeepPushUp = 22f;//Lực đẩy vừa đủ giữ đối phương trên không
     [TabGroup("Misc")]
     private Collider2D ThisCollider;
     private GameObject ObjectParent;
     private SkillController ControlParent;
-
     private float OriginalScaleX;//Scale ban đầu của object
 
     #region Initialize
@@ -62,6 +92,10 @@ public class SkillController : MonoBehaviour
             StartCoroutine(AutoEnableCollider());
             ThisCollider.enabled = false;
         }
+
+        //Dừng gây sát thương sau 1 khoảng time
+        if(DisableColliderRealTime)
+            StartCoroutine(AutoDisableCollider());
 
         //IsViewLeft = IsChild ? ControlParent.IsViewLeft : IsViewLeft;
 
@@ -109,6 +143,16 @@ public class SkillController : MonoBehaviour
     {
         yield return new WaitForSeconds(DelayTimeHitWhenShow);
         ThisCollider.enabled = true;
+    }
+
+    /// <summary>
+    /// Tự động disable collider sau 1 khoảng time
+    /// </summary>
+    /// <returns></returns>
+    public virtual IEnumerator AutoDisableCollider()
+    {
+        yield return new WaitForSeconds(DelayTimeDisableCollider);
+        ThisCollider.enabled = false;
     }
 
     #endregion
@@ -161,7 +205,34 @@ public class SkillController : MonoBehaviour
             if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy))
             {
                 var enemy = col.GetComponent<EnemyController>();
-                StartCoroutine(GameSettings.BattleControl.RepelVictim(enemy.ThisRigid2D, this.transform.position, col.gameObject.transform.position, (Random.Range(ForceToVictim.x, ForceToVictim.y) + ForceToVictimBonus), enemy.IsViewLeft));
+
+                //Hất tung đối phương
+                if (IsPushUp)
+                {
+                    StartCoroutine(GameSettings.BattleControl.PushUpVictim(enemy.ThisRigid2D, ForcePushUp));
+                }
+                //Đẩy đối phương từ trên xuống
+                else if (IsPushDown || IsPushDownOnJump)
+                {
+                    StartCoroutine(GameSettings.BattleControl.PushDownVictim(enemy.ThisRigid2D, IsPushDown ? ForcePushDown : ForcePushDownOnJump));
+                    if(IsRepelWhenTouchLane)
+                    {
+                        enemy.IsRepelWhenTouchLane = true;
+                        enemy.ForceRepelWhenTouchLane = ForceRepelWhenTouchLane;
+                    }
+                }
+                //Giữ đối phương trên không
+                else if (!enemy.IsLaning)
+                {
+                    StartCoroutine(GameSettings.BattleControl.PushUpVictim(enemy.ThisRigid2D, ForceKeepPushUp));
+                }
+                //Đẩy lùi nếu trạng thái bình thường
+                else
+                {
+                    StartCoroutine(GameSettings.BattleControl.RepelVictim(enemy.ThisRigid2D, this.transform.position, col.gameObject.transform.position, (Random.Range(ForceToVictim.x, ForceToVictim.y) + ForceToVictimBonus), enemy.IsViewLeft));
+                }
+
+                //Show damage
                 GameSettings.BattleControl.ShowDmgText(col.transform.position, Random.Range(0001, 5000).ToString());
 
                 enemy.SetAnimation(EnemyController.Actions.Hited);

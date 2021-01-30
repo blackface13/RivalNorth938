@@ -78,6 +78,8 @@ public class HeroController : MonoBehaviour
     public bool IsAllowSurf = true;//Xác định cho phép thực hiện lướt hay ko
     [TabGroup("Misc")]
     public bool IsAutoJumping;//Nhảy bị động bởi các object hỗ trợ
+    [TabGroup("Misc")]
+    public bool IsAtkPushUp;//Đang thực hiện đòn đánh hất tung
 
     ContactPoint2D[] points = new ContactPoint2D[20];
     Vector3 wallNormal; //this will store the vector that points out from the wall
@@ -105,7 +107,9 @@ public class HeroController : MonoBehaviour
         Move,
         Jump,
         Surf,
-        Atk
+        Atk,
+        AtkPushUp,
+        AtkPushDown
     }
 
     //private bool IsStay = false;
@@ -158,6 +162,7 @@ public class HeroController : MonoBehaviour
                 EffectWeaponAttack.Add("KatanaAtk2", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk2", 1, Quaternion.Euler(130f, 0, 130f)));
                 EffectWeaponAttack.Add("KatanaAtk3_1", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk3_1", 1, Quaternion.Euler(0, 0, 100f)));
                 EffectWeaponAttack.Add("KatanaAtk3_2", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk3_2", 1, Quaternion.Euler(180f, 0, 30f)));
+                EffectWeaponAttack.Add("KatanaAtkPushUp", GameSettings.ObjControl.CreateListSkillObject("KatanaAtkPushUp", 1, Quaternion.Euler(0, 0, 90f)));
                 break;
             case Weapons.Sword:
                 EffectWeaponAttack.Add("SwordAtk2", GameSettings.ObjControl.CreateListSkillObject("SwordAtk2", 1, Quaternion.Euler(0, 0, 100)));
@@ -385,8 +390,11 @@ public class HeroController : MonoBehaviour
                         HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
                     }
                     IsAtking = true;
-                    Anim.SetTrigger(CurrentWeapon + action.ToString() + (CurrentCombo + 1).ToString());
-                    if (!IsJumping && IsPressMove)
+
+                    //Thực hiện animation
+                    Anim.SetTrigger(CurrentWeapon + action.ToString() + (IsAtkPushUp ? "" : (CurrentCombo + 1).ToString()));
+
+                    if (!IsJumping && IsPressMove && !IsAtkPushUp)
                     {
                         HeroRigidBody2D.velocity = Vector3.zero;
                         HeroRigidBody2D.velocity += (IsViewLeft ? Vector2.left : Vector2.right) * AtkForce;
@@ -396,6 +404,7 @@ public class HeroController : MonoBehaviour
                         IsAtkMoving = false;
                     CurrentAction = action;
                     IsAllowAtk = false;
+                    IsAtkPushUp = false;
                 }
                 else goto End;
             }
@@ -483,10 +492,20 @@ public class HeroController : MonoBehaviour
                 //if (IsJumping)
                 //    HeroRigidBody2D.velocity = Vector3.zero;
                 CurrentComboTmp = CurrentCombo;
-                SetAnimation(Actions.Atk, true);
-                if (CurrentCombo >= GameSettings.MaxAtkCombo)
+                if (JoystickHandle.localPosition.y > GameSettings.JoystickPosYLimitDetect && !IsJumping)
+                {
                     CurrentCombo = 0;
-                else CurrentCombo++;
+                    IsAtkPushUp = true;
+            HeroRigidBody2D.velocity += Vector2.up * JumpForce;
+                    SetAnimation(Actions.AtkPushUp, true);
+                }
+                else
+                {
+                    SetAnimation(Actions.Atk, true);
+                    if (CurrentCombo >= GameSettings.MaxAtkCombo)
+                        CurrentCombo = 0;
+                    else CurrentCombo++;
+                }
             }
         }
     }

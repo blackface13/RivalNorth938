@@ -4846,6 +4846,15 @@ MonoBehaviour:
   DelayTimeHitWhenShow: 0
   ForceToVictim: {x: 10, y: 15}
   ForceToVictimBonus: 0
+  IsPushUp: 0
+  ForcePushUp: 0
+  IsPushDown: 0
+  ForcePushDown: 0
+  IsPushDownOnJump: 1
+  ForcePushDownOnJump: 50
+  IsRepelWhenTouchLane: 1
+  ForceRepelWhenTouchLane: 30
+  ForceKeepPushUp: 21
 --- !u!61 &2280935632937940868
 BoxCollider2D:
   m_ObjectHideFlags: 0
