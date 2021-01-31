@@ -4840,11 +4840,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsViewLeft: 0
   IsAutoHide: 1
+  IsChild: 0
   DelayTimeHide: 0.5
   HitWhenShow: 1
   DelayTimeHitWhenShow: 0
+  DisableColliderRealTime: 1
+  DelayTimeDisableCollider: 2.5
   ForceToVictim: {x: 10, y: 15}
   ForceToVictimBonus: 0
+  IsPushUp: 0
+  ForcePushUp: 0
+  IsPushDown: 0
+  ForcePushDown: 0
+  IsPushDownOnJump: 0
+  ForcePushDownOnJump: 0
+  IsRepelWhenTouchLane: 0
+  ForceRepelWhenTouchLane: 0
+  ForceKeepPushUp: 22
 --- !u!61 &-7553057568195733977
 BoxCollider2D:
   m_ObjectHideFlags: 0

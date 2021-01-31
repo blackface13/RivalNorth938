@@ -50,23 +50,26 @@ namespace Assets.Code._4.CORE
         {
             SkillsPosition = new Dictionary<string, Vector3>();
             //Blade
-            SkillsPosition.Add("BladeAtk1", new Vector3(2, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("BladeAtk1", new Vector3(0, 0, PositionZDefaultInMap));
             SkillsPosition.Add("BladeAtk2", new Vector3(2, 0, PositionZDefaultInMap));
-            SkillsPosition.Add("BladeAtk3", new Vector3(1, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("BladeAtk3", new Vector3(0, 0, PositionZDefaultInMap));
             SkillsPosition.Add("BladeAtkPushUp", new Vector3(0, 0, PositionZDefaultInMap));
             //Staff
-            SkillsPosition.Add("StaffAtk2", new Vector3(2, 0, PositionZDefaultInMap));
-            SkillsPosition.Add("StaffAtk3", new Vector3(1, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("StaffAtk1", new Vector3(0, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("StaffAtk2", new Vector3(-2.5f, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("StaffAtk3", new Vector3(-2.5f, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("StaffAtkPushUp", new Vector3(0, 0, PositionZDefaultInMap));
             //Katana
-            SkillsPosition.Add("KatanaAtk1", new Vector3(2, 0.5f, PositionZDefaultInMap));
-            SkillsPosition.Add("KatanaAtk2", new Vector3(3, 0.5f, PositionZDefaultInMap));
-            SkillsPosition.Add("KatanaAtk3_1", new Vector3(1, 2.4f, PositionZDefaultInMap));
+            SkillsPosition.Add("KatanaAtk1", new Vector3(0, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("KatanaAtk2", new Vector3(0,0, PositionZDefaultInMap));
+            SkillsPosition.Add("KatanaAtk3_1", new Vector3(0,0, PositionZDefaultInMap));
             SkillsPosition.Add("KatanaAtk3_2", new Vector3(0, 0, PositionZDefaultInMap));
             SkillsPosition.Add("KatanaAtkPushUp", new Vector3(0, 0, PositionZDefaultInMap));
             //Katana
-            //SkillsPosition.Add("SwordAtk1", new Vector3(2, 0.5f, PositionZDefaultInMap));
-            SkillsPosition.Add("SwordAtk2", new Vector3(1.5f, 1f, PositionZDefaultInMap));
-            SkillsPosition.Add("SwordAtk3", new Vector3(2.3f, 2f, PositionZDefaultInMap));
+            SkillsPosition.Add("SwordAtk1", new Vector3(0, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("SwordAtk2", new Vector3(0, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("SwordAtk3", new Vector3(0, 0, PositionZDefaultInMap));
+            SkillsPosition.Add("SwordAtkPushUp", new Vector3(0, 0, PositionZDefaultInMap));
         }
         #endregion
     }

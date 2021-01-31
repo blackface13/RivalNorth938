@@ -148,26 +148,29 @@ public class HeroController : MonoBehaviour
         switch (wp)
         {
             case Weapons.Blade:
-                EffectWeaponAttack.Add("BladeAtk1", GameSettings.ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.Euler(70f, 0, 50f)));
+                EffectWeaponAttack.Add("BladeAtk1", GameSettings.ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.identity));
                 EffectWeaponAttack.Add("BladeAtk2", GameSettings.ObjControl.CreateListSkillObject("BladeAtk2", 1, Quaternion.Euler(80f, 0, 0)));
-                EffectWeaponAttack.Add("BladeAtk3", GameSettings.ObjControl.CreateListSkillObject("BladeAtk3", 1, Quaternion.Euler(0, 0, -153f)));
+                EffectWeaponAttack.Add("BladeAtk3", GameSettings.ObjControl.CreateListSkillObject("BladeAtk3", 1, Quaternion.identity));
                 EffectWeaponAttack.Add("BladeAtkPushUp", GameSettings.ObjControl.CreateListSkillObject("BladeAtkPushUp", 1, Quaternion.identity));
                 break;
             case Weapons.Staff:
-                //EffectWeaponAttack.Add("BladeAtk1", GameSettings.ObjControl.CreateListSkillObject("BladeAtk1", 1, Quaternion.Euler(70f, 0, 50f)));
-                EffectWeaponAttack.Add("StaffAtk2", GameSettings.ObjControl.CreateListSkillObject("StaffAtk2", 1, Quaternion.Euler(0, 0, 190f)));
-                EffectWeaponAttack.Add("StaffAtk3", GameSettings.ObjControl.CreateListSkillObject("StaffAtk3", 1, Quaternion.Euler(0, 0, 190f)));
+                EffectWeaponAttack.Add("StaffAtk1", GameSettings.ObjControl.CreateListSkillObject("StaffAtk1", 1, Quaternion.identity));
+                EffectWeaponAttack.Add("StaffAtk2", GameSettings.ObjControl.CreateListSkillObject("StaffAtk2", 1, Quaternion.identity));
+                EffectWeaponAttack.Add("StaffAtk3", GameSettings.ObjControl.CreateListSkillObject("StaffAtk3", 1, Quaternion.identity));
+                EffectWeaponAttack.Add("StaffAtkPushUp", GameSettings.ObjControl.CreateListSkillObject("StaffAtkPushUp", 1, Quaternion.identity));
                 break;
             case Weapons.Katana:
-                EffectWeaponAttack.Add("KatanaAtk1", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk1", 1, Quaternion.Euler(70f, 0, 70f)));
-                EffectWeaponAttack.Add("KatanaAtk2", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk2", 1, Quaternion.Euler(130f, 0, 130f)));
-                EffectWeaponAttack.Add("KatanaAtk3_1", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk3_1", 1, Quaternion.Euler(0, 0, 100f)));
+                EffectWeaponAttack.Add("KatanaAtk1", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk1", 1, Quaternion.identity));
+                EffectWeaponAttack.Add("KatanaAtk2", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk2", 1, Quaternion.identity));
+                EffectWeaponAttack.Add("KatanaAtk3_1", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk3_1", 1, Quaternion.identity));
                 EffectWeaponAttack.Add("KatanaAtk3_2", GameSettings.ObjControl.CreateListSkillObject("KatanaAtk3_2", 1, Quaternion.identity));
                 EffectWeaponAttack.Add("KatanaAtkPushUp", GameSettings.ObjControl.CreateListSkillObject("KatanaAtkPushUp", 1, Quaternion.identity));
                 break;
             case Weapons.Sword:
-                EffectWeaponAttack.Add("SwordAtk2", GameSettings.ObjControl.CreateListSkillObject("SwordAtk2", 1, Quaternion.Euler(0, 0, 100)));
-                EffectWeaponAttack.Add("SwordAtk3", GameSettings.ObjControl.CreateListSkillObject("SwordAtk3", 1, Quaternion.Euler(180, 0, 122)));
+                EffectWeaponAttack.Add("SwordAtk1", GameSettings.ObjControl.CreateListSkillObject("SwordAtk1", 1, Quaternion.identity));
+                EffectWeaponAttack.Add("SwordAtk2", GameSettings.ObjControl.CreateListSkillObject("SwordAtk2", 1, Quaternion.identity));
+                EffectWeaponAttack.Add("SwordAtk3", GameSettings.ObjControl.CreateListSkillObject("SwordAtk3", 1, Quaternion.identity));
+                EffectWeaponAttack.Add("SwordAtkPushUp", GameSettings.ObjControl.CreateListSkillObject("SwordAtkPushUp", 1, Quaternion.identity));
                 //EffectWeaponAttack.Add("StaffAtk2", GameSettings.ObjControl.CreateListSkillObject("StaffAtk2", 1, Quaternion.Euler(0, 0, 190f)));
                 //EffectWeaponAttack.Add("StaffAtk3", GameSettings.ObjControl.CreateListSkillObject("StaffAtk3", 1, Quaternion.Euler(0, 0, 190f)));
                 break;

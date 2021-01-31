@@ -91,6 +91,7 @@
     <Compile Include="Assets\Code\2.BUS\Heroes\HeroController.cs" />
     <Compile Include="Assets\Code\2.BUS\Heroes\HeroSkill.cs" />
     <Compile Include="Assets\Code\2.BUS\Heroes\InputController.cs" />
+    <Compile Include="Assets\Code\2.BUS\Heroes\Skill\StaffAtk3.cs" />
     <Compile Include="Assets\Code\2.BUS\Heroes\Skill\KatanaAtk3_2.cs" />
     <Compile Include="Assets\Code\2.BUS\ItemController\ItemModel.cs" />
     <Compile Include="Assets\Code\2.BUS\Languages\English.cs" />

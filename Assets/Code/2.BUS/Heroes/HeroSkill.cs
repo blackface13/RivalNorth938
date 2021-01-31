@@ -75,7 +75,6 @@ namespace Assets.Code._2.BUS.Heroes
                     //Đẩy lùi nếu trạng thái bình thường
                     else
                     {
-                        print("daylui");
                         StartCoroutine(GameSettings.BattleControl.RepelVictim(enemy.ThisRigid2D, this.transform.position, col.gameObject.transform.position, (Random.Range(ForceToVictim.x, ForceToVictim.y) + ForceToVictimBonus), enemy.IsViewLeft));
                     }
 
