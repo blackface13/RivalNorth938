@@ -60,12 +60,10 @@ public class SkillController : MonoBehaviour
     [TabGroup("Cấu hình")]
     [Title("Lực đẩy lùi đối thủ khi đạp đối thủ xuống chạm đất")]
     public float ForceRepelWhenTouchLane;
-
     [TabGroup("Misc")]
     public float ForceKeepPushUp = 22f;//Lực đẩy vừa đủ giữ đối phương trên không
     [TabGroup("Misc")]
     private Collider2D ThisCollider;
-    private GameObject ObjectParent;
     private SkillController ControlParent;
     private float OriginalScaleX;//Scale ban đầu của object
 
@@ -73,12 +71,7 @@ public class SkillController : MonoBehaviour
 
     public virtual void Awake()
     {
-        if (IsChild)
-        {
-            ObjectParent = this.transform.parent.gameObject;
-            ControlParent = ObjectParent.GetComponent<SkillController>();
-        }
-        OriginalScaleX = IsChild ? ObjectParent.transform.localScale.x : this.transform.localScale.x;
+        OriginalScaleX =  this.transform.localScale.x;
         ThisCollider = this.GetComponent<Collider2D>();
     }
 
@@ -100,20 +93,11 @@ public class SkillController : MonoBehaviour
         //IsViewLeft = IsChild ? ControlParent.IsViewLeft : IsViewLeft;
 
         //Hướng skill
-        if (IsChild)
-        {
-            if (ControlParent.IsViewLeft)
-                ObjectParent.transform.localScale = new Vector3(-OriginalScaleX, ObjectParent.transform.localScale.y, ObjectParent.transform.localScale.z);
-            else
-                ObjectParent.transform.localScale = new Vector3(OriginalScaleX, ObjectParent.transform.localScale.y, ObjectParent.transform.localScale.z);
-        }
-        else
-        {
             if (IsViewLeft)
                 this.transform.localScale = new Vector3(-OriginalScaleX, this.transform.localScale.y, this.transform.localScale.z);
             else
                 this.transform.localScale = new Vector3(OriginalScaleX, this.transform.localScale.y, this.transform.localScale.z);
-        }
+        
 
         //Tự động ẩn sau 1 khoảng time
         if (IsAutoHide)
@@ -199,45 +183,7 @@ public class SkillController : MonoBehaviour
     /// <param name="col"></param>
     public virtual void OnTriggerEnter2D(Collider2D col)
     {
-        if ((col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
-            || (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Hero) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillEnemy)))
-        {
-            if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy))
-            {
-                var enemy = col.GetComponent<EnemyController>();
-
-                //Hất tung đối phương
-                if (IsPushUp)
-                {
-                    StartCoroutine(GameSettings.BattleControl.PushUpVictim(enemy.ThisRigid2D, ForcePushUp));
-                }
-                //Đẩy đối phương từ trên xuống
-                else if (IsPushDown || IsPushDownOnJump)
-                {
-                    StartCoroutine(GameSettings.BattleControl.PushDownVictim(enemy.ThisRigid2D, IsPushDown ? ForcePushDown : ForcePushDownOnJump));
-                    if(IsRepelWhenTouchLane)
-                    {
-                        enemy.IsRepelWhenTouchLane = true;
-                        enemy.ForceRepelWhenTouchLane = ForceRepelWhenTouchLane;
-                    }
-                }
-                //Giữ đối phương trên không
-                else if (!enemy.IsLaning)
-                {
-                    StartCoroutine(GameSettings.BattleControl.PushUpVictim(enemy.ThisRigid2D, ForceKeepPushUp));
-                }
-                //Đẩy lùi nếu trạng thái bình thường
-                else
-                {
-                    StartCoroutine(GameSettings.BattleControl.RepelVictim(enemy.ThisRigid2D, this.transform.position, col.gameObject.transform.position, (Random.Range(ForceToVictim.x, ForceToVictim.y) + ForceToVictimBonus), enemy.IsViewLeft));
-                }
-
-                //Show damage
-                GameSettings.BattleControl.ShowDmgText(col.transform.position, Random.Range(0001, 5000).ToString());
-
-                enemy.SetAnimation(EnemyController.Actions.Hited);
-            }
-        }
+        
     }
     #endregion
 }

@@ -7037,7 +7037,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 605810709}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -69823.125}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -70543.125}
 --- !u!114 &152324919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9730,7 +9730,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1750416217}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -57604.758}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -60124.758}
 --- !u!114 &211436302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11899,7 +11899,7 @@ SkinnedMeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 30
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -18485,7 +18485,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 988617724}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -443879.25}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -492479.25}
 --- !u!114 &381760849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55245,7 +55245,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1496603139}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 47520.105}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 49680.105}
 --- !u!114 &1197005991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58085,7 +58085,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1349582874}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -9375.006}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -10815.006}
 --- !u!114 &1240452203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91181,7 +91181,7 @@ SkinnedMeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 32
+  m_SortingOrder: 1
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -93865,7 +93865,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 373833219}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 355668.78}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 402468.78}
 --- !u!114 &1958800444
 MonoBehaviour:
   m_ObjectHideFlags: 0

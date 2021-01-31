@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Code._2.BUS.Heroes
 {
@@ -40,23 +41,50 @@ namespace Assets.Code._2.BUS.Heroes
         #region Physics
         public override void OnTriggerEnter2D(Collider2D col)
         {
-            base.OnTriggerEnter2D(col);
-
-            if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
+            if ((col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
+            || (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Hero) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillEnemy)))
             {
-                GameSettings.BattleControl.ComboCount++;
-                GameSettings.BattleControl.ShowCombo();
+                if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy))
+                {
+                    //Show combo
+                    GameSettings.BattleControl.ComboCount++;
+                    GameSettings.BattleControl.ShowCombo();
+
+                    var enemy = col.GetComponent<EnemyController>();
+
+                    //Hất tung đối phương
+                    if (IsPushUp)
+                    {
+                        StartCoroutine(GameSettings.BattleControl.PushUpVictim(enemy.ThisRigid2D, ForcePushUp));
+                    }
+                    //Đẩy đối phương từ trên xuống
+                    else if ((IsPushDown || IsPushDownOnJump) && GameSettings.PlayerController.IsJumping)
+                    {
+                        StartCoroutine(GameSettings.BattleControl.PushDownVictim(enemy.ThisRigid2D, IsPushDown ? ForcePushDown : ForcePushDownOnJump));
+                        if (IsRepelWhenTouchLane)
+                        {
+                            enemy.IsRepelWhenTouchLane = true;
+                            enemy.ForceRepelWhenTouchLane = ForceRepelWhenTouchLane;
+                        }
+                    }
+                    //Giữ đối phương trên không
+                    else if (!enemy.IsLaning)
+                    {
+                        StartCoroutine(GameSettings.BattleControl.PushUpVictim(enemy.ThisRigid2D, ForceKeepPushUp));
+                    }
+                    //Đẩy lùi nếu trạng thái bình thường
+                    else
+                    {
+                        print("daylui");
+                        StartCoroutine(GameSettings.BattleControl.RepelVictim(enemy.ThisRigid2D, this.transform.position, col.gameObject.transform.position, (Random.Range(ForceToVictim.x, ForceToVictim.y) + ForceToVictimBonus), enemy.IsViewLeft));
+                    }
+
+                    //Show damage
+                    GameSettings.BattleControl.ShowDmgText(col.transform.position, UnityEngine.Random.Range(0001, 5000).ToString());
+
+                    enemy.SetAnimation(EnemyController.Actions.Hited);
+                }
             }
-            //Stop motion (Nhìn chưa đc ưng lắm, để làm sau)
-            //if ((col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Enemy) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillPlayer))
-            //    || (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Hero) && gameObject.layer.Equals((int)GameSettings.LayerSettings.SkillEnemy)))
-            //{
-            //    if (!IsStopMotion)
-            //    {
-            //        StartCoroutine(StopMotionAction());
-            //        IsStopMotion = true;
-            //    }
-            //}
         }
         #endregion
     }
