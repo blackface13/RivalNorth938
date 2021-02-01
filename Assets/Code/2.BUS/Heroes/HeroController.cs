@@ -63,7 +63,7 @@ public class HeroController : MonoBehaviour
     [TabGroup("Misc")]
     public bool IsAtking = false;//Có đang thực hiện tấn công hay ko
     [TabGroup("Misc")]
-    private bool IsPressAtk = false;//Có đang nhấn atk hay ko
+    public bool IsPressAtk = false;//Có đang nhấn atk hay ko
     [TabGroup("Misc")]
     private bool IsPressMove = false;//Có đang chạm nút di chuyển hay ko
     [TabGroup("Misc")]
@@ -104,6 +104,7 @@ public class HeroController : MonoBehaviour
     public enum Actions//Hành động hiện tại
     {
         Idle,
+        Stand,
         Move,
         Jump,
         Surf,
@@ -227,9 +228,9 @@ public class HeroController : MonoBehaviour
             //HeroRigidBody2D.velocity = new Vector2((JoystickController.Horizontal < 0 ? -1 : 1) *  MoveSpeed, HeroRigidBody2D.velocity.y);
             //this.transform.Translate(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
             //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
-            if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
+            if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
             {
-                SetAnimation(HeroController.Actions.Move);
+                SetAnimation(Actions.Move);
                 IsMoving = true;
             }
 
@@ -275,7 +276,8 @@ public class HeroController : MonoBehaviour
     public void ChangeWeaponTmp(BaseEventData eventData)
     {
         CurrentWeapon = CurrentWeapon.Equals(Weapons.Blade) ? Weapons.Staff : CurrentWeapon.Equals(Weapons.Staff) ? Weapons.Katana : CurrentWeapon.Equals(Weapons.Katana) ? Weapons.Sword : Weapons.Blade;
-        SetAnimation(CurrentAction);
+        if (!IsAtking)
+            SetAnimation(CurrentAction);
     }
 
     /// <summary>
@@ -303,7 +305,7 @@ public class HeroController : MonoBehaviour
     /// </summary>
     public void ActionSurf(BaseEventData eventData)
     {
-        if ((CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Jump)) && IsAllowSurf)
+        if ((CurrentAction.Equals(Actions.Idle) || (CurrentAction.Equals(Actions.Stand)) || CurrentAction.Equals(Actions.Move) || CurrentAction.Equals(Actions.Jump)) && IsAllowSurf)
         //if (!IsSurfing)
         {
             StartCoroutine(DelayAlowAtk());
@@ -327,11 +329,11 @@ public class HeroController : MonoBehaviour
         if (!IsAtking)
         {
             if (IsTouchingLane)
-                SetAnimation(Actions.Idle);
+                SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
             else if (IsJumping)
                 SetAnimation(Actions.Jump);
             else
-                SetAnimation(Actions.Idle);
+                SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
         }
         if (IsTouchingLane)
             IsJumping = false;
@@ -349,7 +351,7 @@ public class HeroController : MonoBehaviour
     public void ActionJump(BaseEventData eventData)
     {
         // if (!IsJumping && !IsAtking && !IsSurfing)
-        if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move))
+        if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand) || CurrentAction.Equals(Actions.Move))
         {
             StartCoroutine(DelayAlowAtk());
             IsJumping = true;
@@ -464,7 +466,7 @@ public class HeroController : MonoBehaviour
         IsAtking = false;
         IsAllowAtk = true;
         if (!IsPressAtk && !IsPressMove && !IsJumping)
-            SetAnimation(Actions.Idle);
+            SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
         else if (IsPressMove && !IsPressAtk && !IsJumping)
             SetAnimation(Actions.Move);
         else if (IsJumping)
@@ -500,7 +502,7 @@ public class HeroController : MonoBehaviour
                 {
                     CurrentCombo = 0;
                     IsAtkPushUp = true;
-            HeroRigidBody2D.velocity += Vector2.up * JumpForce;
+                    HeroRigidBody2D.velocity += Vector2.up * JumpForce;
                     SetAnimation(Actions.AtkPushUp, true);
                 }
                 else
@@ -528,6 +530,20 @@ public class HeroController : MonoBehaviour
                 CurrentCombo = 0;
         }
     }
+
+    /// <summary>
+    /// Đưa trạng thái nhân vật về bình thường
+    /// </summary>
+    public void ResetAction()
+    {
+        IsAtking = false;
+        IsJumping = false;
+        IsPressAtk = false;
+        IsPressMove = false;
+        IsSurfing = false;
+        IsAtkPushUp = false;
+        IsAtkMoving = false;
+    }
     #endregion
 
     #region Physics
@@ -543,7 +559,7 @@ public class HeroController : MonoBehaviour
         {
             if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
             {
-                SetAnimation(Actions.Idle);
+                SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
             }
             IsJumping = false;
             if (IsAutoJumping)
@@ -565,7 +581,7 @@ public class HeroController : MonoBehaviour
         {
             if (!CurrentAction.Equals(Actions.Atk) && !CurrentAction.Equals(Actions.Surf))
             {
-                if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Move))
+                if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand) || CurrentAction.Equals(Actions.Move))
                 {
                     SetAnimation(Actions.Jump);
                 }
@@ -641,7 +657,7 @@ public class HeroController : MonoBehaviour
     /// <param name="eventData"></param>
     public void BtnAtkDown(BaseEventData eventData)
     {
-        if (GameSettings.IsAllowActions)
+        if (GameSettings.IsAllowActions && GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion))
         {
             IsPressAtk = true;
         }
@@ -653,7 +669,7 @@ public class HeroController : MonoBehaviour
     /// <param name="eventData"></param>
     public void BtnAtkUp(BaseEventData eventData)
     {
-        if (GameSettings.IsAllowActions)
+        if (GameSettings.IsAllowActions && GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion))
         {
             IsPressAtk = false;
         }
@@ -674,7 +690,7 @@ public class HeroController : MonoBehaviour
             IsPressMove = false;
             if (CurrentAction.Equals(Actions.Move))
             {
-                SetAnimation(Actions.Idle);
+                SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
                 IsMoving = false;
             }
         }
@@ -769,7 +785,7 @@ public class HeroController : MonoBehaviour
             IsViewLeft = IsKeyboardPress = true;
             SetView();
             //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
-            if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
+            if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
             {
                 SetAnimation(HeroController.Actions.Move);
                 IsMoving = true;
@@ -782,7 +798,7 @@ public class HeroController : MonoBehaviour
             IsKeyboardPress = true;
             SetView();
             //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
-            if (CurrentAction.Equals(Actions.Idle))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
+            if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
             {
                 SetAnimation(HeroController.Actions.Move);
                 IsMoving = true;
@@ -800,7 +816,7 @@ public class HeroController : MonoBehaviour
         }
 
         //Lướt
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             ActionSurf(null);
         }
@@ -813,7 +829,7 @@ public class HeroController : MonoBehaviour
                 IsPressMove = IsKeyboardPress = false;
 
                 if (IsMoving && !IsAtking)
-                    SetAnimation(HeroController.Actions.Idle);
+                    SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
                 IsMoving = false;
             }
         }
@@ -823,7 +839,7 @@ public class HeroController : MonoBehaviour
             {
                 IsPressMove = IsKeyboardPress = false;
                 if (IsMoving && !IsAtking)
-                    SetAnimation(HeroController.Actions.Idle);
+                    SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
                 IsMoving = false;
             }
         }

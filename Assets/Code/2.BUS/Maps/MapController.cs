@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using Assets.Code._4.CORE;
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 public class MapController : MonoBehaviour
 {
     #region Variables
+    [Required]
     [Title("ID của Map")]
     public int MapID;
     [Title("Số lượng Background tối thiểu được fill")]
@@ -16,6 +18,9 @@ public class MapController : MonoBehaviour
     public Color MainCameraBackgroundColor;
     [Title("Object background")]
     public GameObject BackgroundObject;
+    [Required]
+    [Title("Location của map")]
+    public GameSettings.LocationSettings Location;
     private Vector3 BackgroundPositionOriginal;
     public GameObject Player;
     public float ObjectMoveSpeed = -0.005f;
@@ -24,6 +29,9 @@ public class MapController : MonoBehaviour
 
     public virtual void Awake()
     {
+        GameSystems.Location = Location;
+        GameSettings.PlayerController.ResetAction();
+
         Player = GameObject.FindGameObjectWithTag("Player");
         if (BackgroundObject != null)
             BackgroundPositionOriginal = BackgroundObject.transform.localPosition;

@@ -24,6 +24,12 @@ namespace Assets.Code._4.CORE
             NPC = 31
         }
 
+        public enum LocationSettings
+        {
+            CombatRegion = 0,//Vùng combat, có thể đánh nhau
+            TownRegion = 1//Vùng thành phố, thị trấn, ko cho combat
+        }
+
         //Battle 
         public static int MaxAtkCombo = 2;//Tối da combo atk của player
         public static float TimeDelayComboNormalAtk = .5f;//Thời gian xóa combo atk

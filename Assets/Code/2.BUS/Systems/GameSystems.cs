@@ -13,6 +13,7 @@ public class GameSystems : MonoBehaviour
     public static Image ImgTranslate;
     public static GameController GameControl;
     public static Dictionary<string, string> Language;
+    public static GameSettings.LocationSettings Location = GameSettings.LocationSettings.TownRegion;
 
     // Start is called before the first frame update
     void Start()

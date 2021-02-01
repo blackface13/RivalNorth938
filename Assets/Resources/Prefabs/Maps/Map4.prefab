@@ -55750,6 +55750,7 @@ MonoBehaviour:
   ObjectFogBehind: {fileID: 5672672385937867430}
   MainCameraBackgroundColor: {r: 0.49411765, g: 0.78039217, b: 1, a: 0}
   BackgroundObject: {fileID: 2092976744200277538}
+  Location: 1
   Player: {fileID: 0}
   ObjectMoveSpeed: -0.01
   ObjectMoveSpeedY: -0.03
