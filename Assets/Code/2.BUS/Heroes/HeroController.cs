@@ -416,11 +416,9 @@ public class HeroController : MonoBehaviour
             }
         Begin:
             {
-                //if (Anim != null)
-                {
-                    Anim.SetTrigger(CurrentWeapon + action.ToString());
-                    CurrentAction = action;
-                }
+                Anim.Rebind();
+                Anim.SetTrigger(CurrentWeapon + action.ToString());
+                CurrentAction = action;
             }
         End: { }
         }
@@ -697,22 +695,18 @@ public class HeroController : MonoBehaviour
     }
 
 
-    public void DisableTest1()
+    public void TestAnim(BaseEventData eventData)
     {
-        try
-        {
-            var count = Light.Count;
-            var boolset = Light[0].activeSelf;
-            for (int i = 0; i < count; i++)
-            {
-                Light[i].SetActive(!boolset);
-            }
-        }
-        catch (System.Exception)
-        {
+        ////Anim.Play(CurrentWeapon + Actions.Stand.ToString());
+        //Anim.Play(CurrentWeapon + Actions.Move.ToString());
+        //print((CurrentWeapon + Actions.Stand.ToString()).ToString());
+        //SetAnimation(Actions.Stand);
+        //SetAnimation(Actions.Move);
 
-            throw;
-        }
+        Anim.SetTrigger(CurrentWeapon + Actions.Stand.ToString());
+        Anim.Rebind();
+        Anim.SetTrigger(CurrentWeapon + Actions.Move.ToString());
+        print(CurrentAction);
     }
     public void DisableTest2()
     {
