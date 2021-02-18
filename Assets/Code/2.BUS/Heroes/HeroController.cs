@@ -416,7 +416,7 @@ public class HeroController : MonoBehaviour
             }
         Begin:
             {
-                Anim.Rebind();
+                //Anim.Rebind();
                 Anim.SetTrigger(CurrentWeapon + action.ToString());
                 CurrentAction = action;
             }
