@@ -194,6 +194,7 @@ public class HeroController : MonoBehaviour
             RespawnController();
             KeyPressController();
         }
+        //print(CurrentAction);
     }
 
     /// <summary>
@@ -329,11 +330,11 @@ public class HeroController : MonoBehaviour
         if (!IsAtking)
         {
             if (IsTouchingLane)
-                SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
+                SetAnimNormal();
             else if (IsJumping)
                 SetAnimation(Actions.Jump);
             else
-                SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
+                SetAnimNormal();
         }
         if (IsTouchingLane)
             IsJumping = false;
@@ -464,7 +465,7 @@ public class HeroController : MonoBehaviour
         IsAtking = false;
         IsAllowAtk = true;
         if (!IsPressAtk && !IsPressMove && !IsJumping)
-            SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
+            SetAnimNormal();
         else if (IsPressMove && !IsPressAtk && !IsJumping)
             SetAnimation(Actions.Move);
         else if (IsJumping)
@@ -542,6 +543,15 @@ public class HeroController : MonoBehaviour
         IsAtkPushUp = false;
         IsAtkMoving = false;
     }
+
+    /// <summary>
+    /// Đưa player về trạng thái bình thường khi kết thúc anim
+    /// </summary>
+    public void SetAnimNormal()
+    {
+        if (!IsAtking && !IsPressAtk)
+            SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
+    }
     #endregion
 
     #region Physics
@@ -557,7 +567,10 @@ public class HeroController : MonoBehaviour
         {
             if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
             {
-                SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
+                if (IsPressMove)
+                    SetAnimation(Actions.Move);
+                else
+                    SetAnimNormal();
             }
             IsJumping = false;
             if (IsAutoJumping)
@@ -688,7 +701,7 @@ public class HeroController : MonoBehaviour
             IsPressMove = false;
             if (CurrentAction.Equals(Actions.Move))
             {
-                SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
+                SetAnimNormal();
                 IsMoving = false;
             }
         }
@@ -823,7 +836,7 @@ public class HeroController : MonoBehaviour
                 IsPressMove = IsKeyboardPress = false;
 
                 if (IsMoving && !IsAtking)
-                    SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
+                    SetAnimNormal();
                 IsMoving = false;
             }
         }
@@ -833,7 +846,7 @@ public class HeroController : MonoBehaviour
             {
                 IsPressMove = IsKeyboardPress = false;
                 if (IsMoving && !IsAtking)
-                    SetAnimation(GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand);
+                    SetAnimNormal();
                 IsMoving = false;
             }
         }
