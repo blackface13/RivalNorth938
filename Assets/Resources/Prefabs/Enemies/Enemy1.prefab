@@ -1631,7 +1631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyID: 1
   MoveSpeed: 6.5
-  ActiveRange: 35
+  ActiveRange: 60
   DetectRange: 20
   AttackRange: 5
   Weight: 13
@@ -1641,6 +1641,9 @@ MonoBehaviour:
   IsMoving: 0
   IsAtking: 0
   IsHited: 0
+  IsLaning: 0
+  IsRepelWhenTouchLane: 0
+  ForceRepelWhenTouchLane: 0
   ThisRigid2D: {fileID: 0}
 --- !u!210 &4548541005448216579
 SortingGroup:

@@ -311,7 +311,8 @@ public class HeroController : MonoBehaviour
         {
             StartCoroutine(DelayAlowAtk());
             HeroRigidBody2D.velocity = Vector3.zero;
-            HeroRigidBody2D.gravityScale = 0;
+            if (IsAutoJumping)
+                HeroRigidBody2D.gravityScale = 0;
             HeroRigidBody2D.velocity += (IsViewLeft ? Vector2.left : Vector2.right) * SurfForce;
             //HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
             IsSurfing = true;
@@ -592,10 +593,10 @@ public class HeroController : MonoBehaviour
         {
             if (!CurrentAction.Equals(Actions.Atk) && !CurrentAction.Equals(Actions.Surf))
             {
-                if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand) || CurrentAction.Equals(Actions.Move))
-                {
-                    SetAnimation(Actions.Jump);
-                }
+                //if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand) || CurrentAction.Equals(Actions.Move))
+                //{
+                //    SetAnimation(Actions.Jump);
+                //}
                 IsJumping = true;
             }
             IsTouchingWall = false;
