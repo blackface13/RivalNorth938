@@ -37,6 +37,15 @@ public class HeroController : MonoBehaviour
     [Title("Tốc độ di chuyển")]
     public float MoveSpeed;
     [TabGroup("Cấu hình thuộc tính")]
+    [Title("ObjectWallCheck")]
+    public Transform WallCheck;
+    [TabGroup("Cấu hình thuộc tính")]
+    [Title("ObjectLedgeCheck")]
+    public Transform LedgeCheck;
+    [TabGroup("Cấu hình thuộc tính")]
+    [Title("Đâu là lane")]
+    public LayerMask WhatIsLane;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Nút di chuyển")]
     public RectTransform JoystickHandle;
     [TabGroup("Cấu hình thuộc tính")]
@@ -80,6 +89,8 @@ public class HeroController : MonoBehaviour
     public bool IsAutoJumping;//Nhảy bị động bởi các object hỗ trợ
     [TabGroup("Misc")]
     public bool IsAtkPushUp;//Đang thực hiện đòn đánh hất tung
+    [TabGroup("Misc")]
+    public bool IsClimbing;//Đang thực hiện leo lên vách
 
     ContactPoint2D[] points = new ContactPoint2D[20];
     Vector3 wallNormal; //this will store the vector that points out from the wall
@@ -93,6 +104,10 @@ public class HeroController : MonoBehaviour
     private SpriteRenderer HeroSpriteRenderer;
     private int CurrentCombo, CurrentComboTmp = 0;
     private bool IsKeyboardPress;
+
+    private bool IsDetectWall;
+    private bool IsDetectLedge;
+    private bool LedgeDetected;//Có thể leo tường
 
     public enum Weapons//Vũ khí nhân vật có thể sử dụng
     {
@@ -110,7 +125,8 @@ public class HeroController : MonoBehaviour
         Surf,
         Atk,
         AtkPushUp,
-        AtkPushDown
+        AtkPushDown,
+        Climb,
     }
 
     //private bool IsStay = false;
@@ -193,8 +209,54 @@ public class HeroController : MonoBehaviour
             MoveController();
             RespawnController();
             KeyPressController();
+            CheckingClimb();
         }
-        //print(CurrentAction);
+        print(LedgeDetected);
+    }
+
+    /// <summary>
+    /// Phát hiện xem có thể leo lên vách đá được không
+    /// </summary>
+    private void CheckingClimb()
+    {
+        IsDetectWall = Physics2D.Raycast(WallCheck.position, IsViewingLeft ? Vector2.left : Vector2.right, 2f, WhatIsLane);
+        IsDetectLedge = Physics2D.Raycast(LedgeCheck.position, IsViewingLeft ? Vector2.left : Vector2.right, 2f, WhatIsLane);
+
+        if (IsDetectWall && !IsDetectLedge && !LedgeDetected)
+        {
+            LedgeDetected = true;
+            ActionClimb(null);
+        }
+    }
+    private IEnumerator WaitEnableTrigger()
+    {
+        yield return new WaitForSeconds(.2f);
+        HeroRigidBody2D.GetComponent<BoxCollider2D>().isTrigger = false;
+    }
+
+    private void ActionClimb(BaseEventData eventData)
+    {
+        HeroRigidBody2D.velocity = Vector3.zero;
+        //HeroRigidBody2D.gravityScale = 0;
+
+        HeroRigidBody2D.velocity += Vector2.up * (JumpForce/1.3f);
+        HeroRigidBody2D.velocity += IsViewingLeft ? Vector2.left : Vector2.right * (JumpForce / 5f);
+        HeroRigidBody2D.GetComponent<BoxCollider2D>().isTrigger = true;
+        StartCoroutine(WaitEnableTrigger());
+        //StartCoroutine(GameSettings.ObjControl.MoveObjectCurve(false, this.gameObject, transform.position, new Vector3(IsViewingLeft ? (this.transform.position.x - 5f) : (this.transform.position.x + 5f), transform.position.y + 4.05f, transform.position.z), 1f, GameSystems.GameControl.MoveAnim));
+        GameSettings.IsAllowActions = false;
+        ResetAction();
+        SetAnimation(Actions.Climb);
+    }
+
+    public void EndClimb()
+    {
+        GameSettings.IsAllowActions = true;
+        SetAnimNormal();
+        //this.transform.position = new Vector3(IsViewingLeft ? (this.transform.position.x - 3.83f) : (this.transform.position.x + 3.83f), transform.position.y + 4.05f, transform.position.z);
+        HeroRigidBody2D.velocity = Vector3.zero;
+        HeroRigidBody2D.gravityScale = HeroWeight;
+        LedgeDetected = false;
     }
 
     /// <summary>
@@ -419,7 +481,10 @@ public class HeroController : MonoBehaviour
         Begin:
             {
                 //Anim.Rebind();
-                Anim.SetTrigger(CurrentWeapon + action.ToString());
+                if (action.Equals(Actions.Climb))
+                    Anim.SetTrigger(action.ToString());
+                else
+                    Anim.SetTrigger(CurrentWeapon + action.ToString());
                 CurrentAction = action;
             }
         End: { }
@@ -539,7 +604,7 @@ public class HeroController : MonoBehaviour
         IsAtking = false;
         IsJumping = false;
         IsPressAtk = false;
-        IsPressMove = false;
+        //IsPressMove = false;
         IsSurfing = false;
         IsAtkPushUp = false;
         IsAtkMoving = false;

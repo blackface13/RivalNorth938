@@ -35,7 +35,7 @@ public class BattleController : MonoBehaviour
         GameSystems.GameControl = GameObject.FindGameObjectWithTag("GameControl").GetComponent<GameController>();
         SetupPlayer();
         GameSystems.ImgTranslate = ImgTranslate;
-        GameSystems.GameControl.LoadMap(3, new Vector2(0, 0));
+        GameSystems.GameControl.LoadMap(1, new Vector2(0, 0));
         //StartCoroutine( GameSystems.LoadMap(2, new Vector2(0, 0)));
     }
 
@@ -132,7 +132,7 @@ public class BattleController : MonoBehaviour
         if (!IsShowCombo)
         {
             IsShowCombo = true;
-            StartCoroutine(GameSettings.ObjControl.MoveObjectCurve(true, ComboText.gameObject, ComboText.gameObject.transform.localPosition, new Vector2(-885.61f, ComboText.gameObject.transform.localPosition.y), .5f, GameSystems.GameControl.MoveAnim));
+            StartCoroutine(GameSettings.ObjControl.MoveObjectCurveV2(true, ComboText.gameObject, ComboText.gameObject.transform.localPosition, new Vector2(-885.61f, ComboText.gameObject.transform.localPosition.y), .5f, GameSystems.GameControl.MoveAnim));
         }
         else
             ComboText.text = string.Format("Combo {0}", ComboCount);

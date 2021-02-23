@@ -45,12 +45,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_71CF46: 0.05
+    - Vector1_71CF46: 0.1
     - Vector1_965F8384: 0
     - Vector1_C9C331C5: 1
     - Vector1_D2A1EC1: 0
     - Vector1_F9A72DCF: 36.6
-    - Wind: 0.6
+    - Wind: 0.5
     - _EnableExternalAlpha: 0
     m_Colors:
     - Vector3_177ACF34: {r: 24.6, g: 0.05, b: 0, a: 0}
