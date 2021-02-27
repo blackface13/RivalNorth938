@@ -38,10 +38,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - PixelSnap: 0
-    - Vector1_71CF46: 0.5
-    - Wind: 0.3
+    - Vector1_6CAF8F56: 5
+    - Vector1_71CF46: 1
+    - Vector1_98FEC6E2: 0.5
+    - Wind: 1
+    - WindSpeed: 5
     - _EnableExternalAlpha: 0
     m_Colors:
+    - Vector2_B68EB422: {r: 1, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

@@ -10,7 +10,7 @@ Material:
   m_Name: WaterShaderMaterial
   m_Shader: {fileID: -6465566751694194690, guid: 925fb67e277eef946aa3de8cb9c48bc5,
     type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
