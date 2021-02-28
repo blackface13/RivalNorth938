@@ -46,6 +46,12 @@ public class HeroController : MonoBehaviour
     [Title("Đâu là lane")]
     public LayerMask WhatIsLane;
     [TabGroup("Cấu hình thuộc tính")]
+    [Title("Check rời địa hình từ trên xuống")]
+    public Transform[] OutLaneCheck;
+    [TabGroup("Cấu hình thuộc tính")]
+    [Title("Check nhảy lên địa hình cao hơn")]
+    public Transform JumpHighLandCheck;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Nút di chuyển")]
     public RectTransform JoystickHandle;
     [TabGroup("Cấu hình thuộc tính")]
@@ -91,6 +97,8 @@ public class HeroController : MonoBehaviour
     public bool IsAtkPushUp;//Đang thực hiện đòn đánh hất tung
     [TabGroup("Misc")]
     public bool IsClimbing;//Đang thực hiện leo lên vách
+    [TabGroup("Misc")]
+    public BoxCollider2D HeroCollider2D;
 
     ContactPoint2D[] points = new ContactPoint2D[20];
     Vector3 wallNormal; //this will store the vector that points out from the wall
@@ -108,6 +116,11 @@ public class HeroController : MonoBehaviour
     private bool IsDetectWall;
     private bool IsDetectLedge;
     private bool LedgeDetected;//Có thể leo tường
+    private bool IsOutLaneCheck0;
+    private bool IsOutLaneCheck1;
+    private bool IsDetectOutLane;
+    private bool IsDetectFalling;//Có thể rơi xuống
+    private bool IsDetectHighLand;//Phát hiện phía trên đầu có wall
 
     public enum Weapons//Vũ khí nhân vật có thể sử dụng
     {
@@ -147,6 +160,7 @@ public class HeroController : MonoBehaviour
         GameSettings.ObjControl = new ObjectController();
         HeroSpriteRenderer = this.GetComponent<SpriteRenderer>();
         HeroRigidBody2D = this.GetComponent<Rigidbody2D>();
+        HeroCollider2D = HeroRigidBody2D.GetComponent<BoxCollider2D>();
         HeroRigidBody2D.gravityScale = HeroWeight;
         Anim = this.GetComponent<Animator>();
         GameSettings.CreateSkillsPosition();
@@ -209,9 +223,12 @@ public class HeroController : MonoBehaviour
             MoveController();
             RespawnController();
             KeyPressController();
-            CheckingClimb();
+            //CheckingClimb();
+            CheckingOutLane();
+            CheckingJumpHighLand();
         }
-        print(LedgeDetected);
+        //print(IsOutLaneCheck0);
+        //print(IsOutLaneCheck1);
     }
 
     /// <summary>
@@ -228,10 +245,48 @@ public class HeroController : MonoBehaviour
             ActionClimb(null);
         }
     }
+
+    private void CheckingOutLane()
+    {
+        IsOutLaneCheck0 = Physics2D.Raycast(OutLaneCheck[0].position, Vector2.down, 2f, WhatIsLane);
+        IsOutLaneCheck1 = Physics2D.Raycast(OutLaneCheck[1].position, Vector2.down, 2f, WhatIsLane);
+        if (!IsOutLaneCheck0 && !IsOutLaneCheck1)
+            IsDetectOutLane = false;
+        else
+            IsDetectOutLane = true;
+
+        if (!CurrentAction.Equals(Actions.Atk) && !CurrentAction.Equals(Actions.Surf) && !IsJumping && !IsDetectOutLane && !IsDetectFalling)
+        {
+            if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand) || CurrentAction.Equals(Actions.Move))
+            {
+                IsDetectFalling = true;
+                IsJumping = true;
+                SetAnimation(Actions.Jump);
+            }
+        }
+        //if (IsDetectFalling && !IsDetectOutLane && IsTouchingLane && CurrentAction.Equals(Actions.Jump))
+        //{
+        //    CurrentAction = GameSystems.Location.Equals(GameSettings.LocationSettings.CombatRegion) ? Actions.Idle : Actions.Stand;
+        //    SetAnimation(CurrentAction);
+        //    IsJumping = false;
+        //    IsDetectFalling = false;
+        //}
+    }
+
+    private void CheckingJumpHighLand()
+    {
+        IsDetectHighLand = Physics2D.Raycast(JumpHighLandCheck.position, Vector2.up, 1f, WhatIsLane);
+
+        if (IsDetectHighLand && !IsTouchingWall && IsJumping)
+        {
+            HeroCollider2D.isTrigger = true;
+        }
+    }
+
     private IEnumerator WaitEnableTrigger()
     {
         yield return new WaitForSeconds(.2f);
-        HeroRigidBody2D.GetComponent<BoxCollider2D>().isTrigger = false;
+        HeroCollider2D.isTrigger = false;
     }
 
     private void ActionClimb(BaseEventData eventData)
@@ -239,7 +294,7 @@ public class HeroController : MonoBehaviour
         HeroRigidBody2D.velocity = Vector3.zero;
         //HeroRigidBody2D.gravityScale = 0;
 
-        HeroRigidBody2D.velocity += Vector2.up * (JumpForce/1.3f);
+        HeroRigidBody2D.velocity += Vector2.up * (JumpForce / 1.3f);
         HeroRigidBody2D.velocity += IsViewingLeft ? Vector2.left : Vector2.right * (JumpForce / 5f);
         HeroRigidBody2D.GetComponent<BoxCollider2D>().isTrigger = true;
         StartCoroutine(WaitEnableTrigger());
@@ -376,7 +431,8 @@ public class HeroController : MonoBehaviour
             if (IsAutoJumping)
                 HeroRigidBody2D.gravityScale = 0;
             HeroRigidBody2D.velocity += (IsViewLeft ? Vector2.left : Vector2.right) * SurfForce;
-            //HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
+            if (IsJumping)
+                HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
             IsSurfing = true;
             //IsJumping = true;
             SetAnimation(Actions.Surf);
@@ -403,7 +459,7 @@ public class HeroController : MonoBehaviour
             IsJumping = false;
         HeroRigidBody2D.velocity = Vector3.zero;
         HeroRigidBody2D.gravityScale = HeroWeight;
-        //HeroRigidBody2D.constraints = RigidbodyConstraints2D.None;
+        HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         yield return new WaitForSeconds(SurfDelayTime - .2f);
         IsSurfing = false;
         SetView();
@@ -631,6 +687,7 @@ public class HeroController : MonoBehaviour
         //Va chạm với mặt đất
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
+            IsDetectFalling = false;
             if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Surf))
             {
                 if (IsPressMove)
@@ -653,17 +710,17 @@ public class HeroController : MonoBehaviour
     /// <param name="col"></param>
     public void OnCollisionExit2D(Collision2D col)
     {
-        //Đổi animation khi rơi từ map xuống
+        //Rời khỏi lane
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
         {
-            if (!CurrentAction.Equals(Actions.Atk) && !CurrentAction.Equals(Actions.Surf))
-            {
-                //if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand) || CurrentAction.Equals(Actions.Move))
-                //{
-                //    SetAnimation(Actions.Jump);
-                //}
-                IsJumping = true;
-            }
+            //if (!CurrentAction.Equals(Actions.Atk) && !CurrentAction.Equals(Actions.Surf))
+            //{
+            //    if (CurrentAction.Equals(Actions.Jump) || CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand) || CurrentAction.Equals(Actions.Move))
+            //    {
+            //        SetAnimation(Actions.Jump);
+            //    }
+            //    IsJumping = true;
+            //}
             IsTouchingWall = false;
             IsTouchingLane = false;
         }
@@ -695,6 +752,13 @@ public class HeroController : MonoBehaviour
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.NPC))
         {
             GameSystems.GameControl.BtnActionNPC.SetActive(false);
+        }
+
+        //Xử lý bỏ trigger khi nhảy lên vượt qua lane cao hơn
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+        {
+            if (IsJumping)
+                HeroCollider2D.isTrigger = false;
         }
     }
 

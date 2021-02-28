@@ -49,7 +49,7 @@ Material:
     - Vector1_965F8384: 151
     - Vector1_C9C331C5: 1
     - Vector1_F9A72DCF: 36.6
-    - Wind: 0.5
+    - Wind: 0.3
     - _EnableExternalAlpha: 0
     m_Colors:
     - Vector3_177ACF34: {r: 0, g: 0, b: 0, a: 0}

@@ -48,17 +48,19 @@ Material:
     - Vector1_216413AC: 0.5
     - Vector1_4B202D39: 0.2
     - Vector1_71CF46: 0.1
-    - Vector1_8EF46EA9: 1
+    - Vector1_8EF46EA9: 2
     - Vector1_965F8384: 0
     - Vector1_C9C331C5: 1
     - Vector1_D2A1EC1: 0
     - Vector1_F9A72DCF: 36.6
     - Wind: 0.5
     - _EnableExternalAlpha: 0
-    - _WindSpeed: 5
+    - _WindSpeed: 3
     m_Colors:
     - Vector3_177ACF34: {r: 24.6, g: 0.05, b: 0, a: 0}
-    - WindDirection: {r: 1, g: 0, b: 0, a: 0}
+    - WindDirection: {r: 1, g: 0.3, b: 0, a: 0}
+    - WindDirectionMax: {r: 1, g: 0, b: 0, a: 0}
+    - WindDirectionMin: {r: -1, g: 0.3, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
