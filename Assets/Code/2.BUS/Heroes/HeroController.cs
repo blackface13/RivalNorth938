@@ -49,9 +49,6 @@ public class HeroController : MonoBehaviour
     [Title("Check rời địa hình từ trên xuống")]
     public Transform[] OutLaneCheck;
     [TabGroup("Cấu hình thuộc tính")]
-    [Title("Check nhảy lên địa hình cao hơn")]
-    public Transform JumpHighLandCheck;
-    [TabGroup("Cấu hình thuộc tính")]
     [Title("Nút di chuyển")]
     public RectTransform JoystickHandle;
     [TabGroup("Cấu hình thuộc tính")]
@@ -120,7 +117,6 @@ public class HeroController : MonoBehaviour
     private bool IsOutLaneCheck1;
     private bool IsDetectOutLane;
     private bool IsDetectFalling;//Có thể rơi xuống
-    private bool IsDetectHighLand;//Phát hiện phía trên đầu có wall
 
     public enum Weapons//Vũ khí nhân vật có thể sử dụng
     {
@@ -275,12 +271,12 @@ public class HeroController : MonoBehaviour
 
     private void CheckingJumpHighLand()
     {
-        IsDetectHighLand = Physics2D.Raycast(JumpHighLandCheck.position, Vector2.up, 1f, WhatIsLane);
-
-        if (IsDetectHighLand && !IsTouchingWall && IsJumping)
+        if (HeroRigidBody2D.velocity.y > 0 && IsJumping)
         {
-            HeroCollider2D.isTrigger = true;
+            Physics2D.IgnoreLayerCollision(8, 9, true);
         }
+        else
+            Physics2D.IgnoreLayerCollision(8, 9, false);
     }
 
     private IEnumerator WaitEnableTrigger()
@@ -723,6 +719,7 @@ public class HeroController : MonoBehaviour
             //}
             IsTouchingWall = false;
             IsTouchingLane = false;
+            //IsJumping = true;
         }
     }
 
@@ -755,11 +752,11 @@ public class HeroController : MonoBehaviour
         }
 
         //Xử lý bỏ trigger khi nhảy lên vượt qua lane cao hơn
-        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
-        {
-            if (IsJumping)
-                HeroCollider2D.isTrigger = false;
-        }
+        //if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane))
+        //{
+        //    if (IsJumping)
+        //        HeroCollider2D.isTrigger = false;
+        //}
     }
 
     public void OnCollisionStay2D(Collision2D col)
@@ -919,7 +916,8 @@ public class HeroController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            IsViewLeft = IsKeyboardPress = true;
+            IsViewLeft = true;
+            IsKeyboardPress = true;
             SetView();
             //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
             if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
@@ -943,7 +941,7 @@ public class HeroController : MonoBehaviour
             }
         }
         if (IsPressMove && IsKeyboardPress)
-            HeroRigidBody2D.velocity = new Vector2((JoystickController.Horizontal < 0 ? -1 : 1) * (IsTouchingWall ? 0 : MoveSpeed), HeroRigidBody2D.velocity.y);
+            HeroRigidBody2D.velocity = new Vector2((IsViewLeft ? -1 : 1) * (IsTouchingWall ? 0 : MoveSpeed), HeroRigidBody2D.velocity.y);
         //this.transform.Translate(new Vector2(IsViewLeft ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
 
         //Nhảy
