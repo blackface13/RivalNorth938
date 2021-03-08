@@ -751,6 +751,12 @@ public class HeroController : MonoBehaviour
                 GameSystems.GameControl.CurrentNPC = npcController;
             }
         }
+
+        //Các object ẩn
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane) && col.gameObject.tag.Equals("MapObjectHidden"))
+        {
+            col.transform.GetChild(0).gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -762,6 +768,12 @@ public class HeroController : MonoBehaviour
         if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.NPC))
         {
             GameSystems.GameControl.BtnActionNPC.SetActive(false);
+        }
+
+        //Các object ẩn
+        if (col.gameObject.layer.Equals((int)GameSettings.LayerSettings.Lane) && col.gameObject.tag.Equals("MapObjectHidden"))
+        {
+            col.transform.GetChild(0).gameObject.SetActive(true);
         }
 
         //Xử lý bỏ trigger khi nhảy lên vượt qua lane cao hơn

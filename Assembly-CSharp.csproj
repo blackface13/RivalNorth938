@@ -92,6 +92,7 @@
     <Compile Include="Assets\Code\2.BUS\FunctionsController\AnimationObjectControl.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\DamageTextController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MainCameraController.cs" />
+    <Compile Include="Assets\Code\2.BUS\FunctionsController\MapObjectHidden.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\MessageController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\ObjectController.cs" />
     <Compile Include="Assets\Code\2.BUS\FunctionsController\ObjectJumpSupport.cs" />
