@@ -46,8 +46,14 @@ public class HeroController : MonoBehaviour
     [Title("Đâu là lane")]
     public LayerMask WhatIsLane;
     [TabGroup("Cấu hình thuộc tính")]
+    [Title("Đâu là wall")]
+    public LayerMask WhatIsWall;
+    [TabGroup("Cấu hình thuộc tính")]
     [Title("Check rời địa hình từ trên xuống")]
     public Transform[] OutLaneCheck;
+    [TabGroup("Cấu hình thuộc tính")]
+    [Title("Check nhảy xuống")]
+    public Transform JumpDownCheck;
     [TabGroup("Cấu hình thuộc tính")]
     [Title("Nút di chuyển")]
     public RectTransform JoystickHandle;
@@ -117,6 +123,8 @@ public class HeroController : MonoBehaviour
     private bool IsOutLaneCheck1;
     private bool IsDetectOutLane;
     private bool IsDetectFalling;//Có thể rơi xuống
+    private bool IsDetectWallDown;//Có khoảng trống phía dưới để nhảy xuông hay ko
+    private bool IsJumpDowning;//Đang nhảy xuống
 
     public enum Weapons//Vũ khí nhân vật có thể sử dụng
     {
@@ -275,8 +283,12 @@ public class HeroController : MonoBehaviour
         {
             Physics2D.IgnoreLayerCollision(8, 9, true);
         }
-        else
+        if (HeroRigidBody2D.velocity.y <= 0 && IsJumping && !IsJumpDowning)
+        {
             Physics2D.IgnoreLayerCollision(8, 9, false);
+        }
+        //else
+        //    Physics2D.IgnoreLayerCollision(8, 9, false);
     }
 
     private IEnumerator WaitEnableTrigger()
@@ -719,6 +731,7 @@ public class HeroController : MonoBehaviour
             //}
             IsTouchingWall = false;
             IsTouchingLane = false;
+
             //IsJumping = true;
         }
     }
@@ -831,6 +844,33 @@ public class HeroController : MonoBehaviour
                 SetAnimNormal();
                 IsMoving = false;
             }
+        }
+    }
+
+    /// <summary>
+    /// Nhấn nút nhảy xuống vị trí phía dưới
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void BtnJumpDown(BaseEventData eventData)
+    {
+        IsDetectWallDown = Physics2D.Raycast(JumpDownCheck.position, Vector2.down, 2f, WhatIsWall);
+
+        if (IsDetectWallDown && !IsJumpDowning)
+        {
+            IsJumpDowning = true;
+            Physics2D.IgnoreLayerCollision(8, 9, true);
+            StartCoroutine(WaitJumpDown());
+        }
+    }
+
+    private IEnumerator WaitJumpDown()
+    {
+        yield return new WaitForSeconds(.3f);
+
+        if (IsJumpDowning)
+        {
+            Physics2D.IgnoreLayerCollision(8, 9, false);
+            IsJumpDowning = false;
         }
     }
 
