@@ -518,7 +518,7 @@ public class HeroController : MonoBehaviour
                     ControlTimeComboNormalAtk[0] = ControlTimeComboNormalAtk[1];
 
                     //Ko chạm đất => khóa Y
-                    if (!IsTouchingLane)
+                    if (!IsTouchingLane && !IsAtkPushUp)
                     {
                         HeroRigidBody2D.velocity = Vector3.zero;
                         HeroRigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
@@ -536,6 +536,7 @@ public class HeroController : MonoBehaviour
                     }
                     else
                         IsAtkMoving = false;
+
                     CurrentAction = action;
                     IsAllowAtk = false;
                     IsAtkPushUp = false;
@@ -627,7 +628,7 @@ public class HeroController : MonoBehaviour
                 //if (IsJumping)
                 //    HeroRigidBody2D.velocity = Vector3.zero;
                 CurrentComboTmp = CurrentCombo;
-                if (JoystickHandle.localPosition.y > GameSettings.JoystickPosYLimitDetect && !IsJumping)
+                if (JoystickHandle.localPosition.y > GameSettings.JoystickPosYLimitDetect && !IsJumping && !IsAtkPushUp)
                 {
                     CurrentCombo = 0;
                     IsAtkPushUp = true;
@@ -732,7 +733,7 @@ public class HeroController : MonoBehaviour
             IsTouchingWall = false;
             IsTouchingLane = false;
 
-            //IsJumping = true;
+            IsJumping = true;
         }
     }
 
@@ -968,32 +969,36 @@ public class HeroController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            IsViewLeft = true;
-            IsKeyboardPress = true;
-            SetView();
-            //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
-            if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
-            {
-                SetAnimation(HeroController.Actions.Move);
-                IsMoving = true;
-                IsPressMove = true;
-            }
+            IsPressMove = true;
+            JoystickHandle.localPosition = new Vector3(-1, 0, JoystickHandle.localPosition.z);
+            //IsViewLeft = true;
+            //IsKeyboardPress = true;
+            //SetView();
+            ////HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
+            //if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
+            //{
+            //    SetAnimation(HeroController.Actions.Move);
+            //    IsMoving = true;
+            //    IsPressMove = true;
+            //}
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            IsViewLeft = false;
-            IsKeyboardPress = true;
-            SetView();
-            //HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
-            if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
-            {
-                SetAnimation(HeroController.Actions.Move);
-                IsMoving = true;
-                IsPressMove = true;
-            }
+            IsPressMove = true;
+            JoystickHandle.localPosition = new Vector3(1, 0, JoystickHandle.localPosition.z);
+            //IsViewLeft = false;
+            //IsKeyboardPress = true;
+            //SetView();
+            ////HeroRigidBody2D.AddForce(new Vector2(JoystickController.Horizontal < 0 ? -1 : 1, 0) * MoveSpeed * Time.deltaTime,ForceMode2D.Impulse);
+            //if (CurrentAction.Equals(Actions.Idle) || CurrentAction.Equals(Actions.Stand))// && !IsJumping && !IsSurfing && !IsMoving && !IsAtking)
+            //{
+            //    SetAnimation(HeroController.Actions.Move);
+            //    IsMoving = true;
+            //    IsPressMove = true;
+            //}
         }
-        if (IsPressMove && IsKeyboardPress)
-            HeroRigidBody2D.velocity = new Vector2((IsViewLeft ? -1 : 1) * (IsTouchingWall ? 0 : MoveSpeed), HeroRigidBody2D.velocity.y);
+        //if (IsPressMove && IsKeyboardPress)
+        //    HeroRigidBody2D.velocity = new Vector2((IsViewLeft ? -1 : 1) * (IsTouchingWall ? 0 : MoveSpeed), HeroRigidBody2D.velocity.y);
         //this.transform.Translate(new Vector2(IsViewLeft ? -1 : 1, 0) * MoveSpeed * Time.deltaTime);
 
         //Nhảy
@@ -1013,21 +1018,24 @@ public class HeroController : MonoBehaviour
         {
             if (!Input.GetKey(KeyCode.D))
             {
-                IsPressMove = IsKeyboardPress = false;
-
-                if (IsMoving && !IsAtking)
-                    SetAnimNormal();
-                IsMoving = false;
+                BtnMoveUp(null);
+                //IsPressMove = IsKeyboardPress = false;
+                //JoystickHandle.localPosition = new Vector3(0, 0, JoystickHandle.localPosition.z);
+                //if (IsMoving && !IsAtking)
+                //    SetAnimNormal();
+                //IsMoving = false;
             }
         }
         if (Input.GetKeyUp(KeyCode.D))
         {
             if (!Input.GetKey(KeyCode.A))
             {
-                IsPressMove = IsKeyboardPress = false;
-                if (IsMoving && !IsAtking)
-                    SetAnimNormal();
-                IsMoving = false;
+                BtnMoveUp(null);
+                //IsPressMove = IsKeyboardPress = false;
+                //JoystickHandle.localPosition = new Vector3(0, 0, JoystickHandle.localPosition.z);
+                //if (IsMoving && !IsAtking)
+                //    SetAnimNormal();
+                //IsMoving = false;
             }
         }
     }
