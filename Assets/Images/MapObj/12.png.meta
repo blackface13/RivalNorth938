@@ -1344,7 +1344,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: MapObj_Plant
+  spritePackingTag: MapObj_BehindObj
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
